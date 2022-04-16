@@ -39,6 +39,70 @@
 #define ENCODER_ACTION_ENTER 2
 #define ENCODER_ACTION_EXIT 3
 
+//LEVEL 0
+#define CLOCK_ENTRY 0
+#define CLOCK_LEVEL 0
+
+#define BAROMETER_ENTRY 1
+#define BAROMETER_LEVEL 0
+
+#define HIGROMETER_ENTRY 2
+#define HIGROMETER_LEVEL 0
+
+#define TEMPERATURE_ENTRY 3
+#define TEMPERATURE_LEVEL 0
+
+#define ALTITUDE_ENTRY 4
+#define ALTITUDE_LEVEL 0
+
+#define AZIMUTH_ENTRY 5
+#define AZIMUTH_LEVEL 0
+
+#define CHRONO_ENTRY 6
+#define CHRONO_LEVEL 0
+
+#define SETTINGS_ENTRY 7
+#define SETTINGS_LEVEL 0
+
+
+//LEVEL 1
+#define CLOCK_DATE_ENTRY 0
+#define CLOCK_DATE_LEVEL 1
+
+#define CLOCK_SECONDHAND_ENTRY 1
+#define CLOCK_SECONDHAND_LEVEL 1
+
+#define CHRONO_HOURS_ENTRY 2
+#define CHRONO_HOURS_LEVEL 1
+
+#define CHRONO_RESET_ENTRY 3
+#define CHRONO_RESET_LEVEL 1
+
+#define SETTINGS_CLOCK_ENTRY 4
+#define SETTINGS_CLOCK_LEVEL 1
+
+#define SETTINGS_CALENDAR_ENTRY 5
+#define SETTINGS_CALENDAR_LEVEL 1
+
+#define SETTINGS_REFERENCE_ENTRY 6
+#define SETTINGS_REFERENCE_LEVEL 1
+
+#define SETTINGS_CORRECTION_ENTRY 7
+#define SETTINGS_CORRECTION_LEVEL 1
+
+//LEVEL 3
+#define SETTINGS_CLOCK_HOURMINUTE_ENTRY 0
+#define SETTINGS_CLOCK_HOURMINUTE_LEVEL 2
+
+#define SETTINGS_CLOCK_SECONDS_ENTRY 1
+#define SETTINGS_CLOCK_SECONDS_LEVEL 2
+
+#define SETTINGS_CALENDAR_DAYMONTH_ENTRY 2
+#define SETTINGS_CALENDAR_DAYMONTH_LEVEL 2
+
+#define SETTINGS_CALENDAR_YEAR_ENTRY 3
+#define SETTINGS_CALENDAR_YEAR_LEVEL 2
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -62,7 +126,6 @@ UART_HandleTypeDef huart2;
 LEDdisplayTypeDef display;
 //												MENU INSTANCE CREATE
 MenuTypeDef menu;
-
 
 volatile uint16_t counter = 5000;
 /* USER CODE END PV */
@@ -131,43 +194,60 @@ int main(void) {
 	LEDseparator(&display, " ");
 
 	//												MENU INIT
-
+	menuClear(&menu);
 	//												MENU ITEMS CONFIG
 	//level 0
 	menuItemInit(&menu, CLOCK_ENTRY, CLOCK_LEVEL, NONE, 0, 1);
 	menuItemInit(&menu, BAROMETER_ENTRY, BAROMETER_LEVEL, NONE, NONE, NONE);
 	menuItemInit(&menu, HIGROMETER_ENTRY, HIGROMETER_LEVEL, NONE, NONE, NONE);
-	menuItemInit(&menu, HIGROMETER_ENTRY, HIGROMETER_LEVEL, NONE, NONE, NONE);
 	menuItemInit(&menu, TEMPERATURE_ENTRY, TEMPERATURE_LEVEL, NONE, NONE, NONE);
 	menuItemInit(&menu, ALTITUDE_ENTRY, ALTITUDE_LEVEL, NONE, NONE, NONE);
-	menuItemInit(&menu, AZIMUTH_ENTRY, AZIMUTH_LEVEL, NONE, NONE,  NONE);
+	menuItemInit(&menu, AZIMUTH_ENTRY, AZIMUTH_LEVEL, NONE, NONE, NONE);
 	menuItemInit(&menu, CHRONO_ENTRY, CHRONO_LEVEL, NONE, 2, 3);
 	menuItemInit(&menu, SETTINGS_ENTRY, SETTINGS_LEVEL, NONE, 4, 7);
 
-
 	//level 1
-	menuItemInit(&menu, CLOCK_DATE_ENTRY, CLOCK_DATE_LEVEL, 0, NONE, NONE);
-	menuItemInit(&menu, CLOCK_SECONDHAND_ENTRY, CLOCK_SECONDHAND_LEVEL, 0, NONE,
-	NONE);
+	menuItemInit(&menu, CLOCK_DATE_ENTRY, CLOCK_DATE_LEVEL, CLOCK_ENTRY, NONE, NONE);
+	menuItemInit(&menu, CLOCK_SECONDHAND_ENTRY, CLOCK_SECONDHAND_LEVEL, CLOCK_ENTRY, NONE,
+			NONE);
+	menuItemInit(&menu, CHRONO_HOURS_ENTRY, CHRONO_HOURS_LEVEL, CHRONO_ENTRY, NONE, NONE);
+	menuItemInit(&menu, CHRONO_RESET_ENTRY, CHRONO_RESET_LEVEL, CHRONO_ENTRY, NONE, NONE);
+	menuItemInit(&menu, SETTINGS_CLOCK_ENTRY, SETTINGS_CLOCK_LEVEL, SETTINGS_ENTRY, 0, 1);
+	menuItemInit(&menu, SETTINGS_CALENDAR_ENTRY, SETTINGS_CALENDAR_LEVEL, SETTINGS_ENTRY, 2, 3);
+	menuItemInit(&menu, SETTINGS_REFERENCE_ENTRY, SETTINGS_REFERENCE_LEVEL, SETTINGS_ENTRY, NONE, NONE);
+	menuItemInit(&menu, SETTINGS_CORRECTION_ENTRY, SETTINGS_CORRECTION_LEVEL, SETTINGS_ENTRY, NONE, NONE);
 
 	//level 2
+	menuItemInit(&menu, SETTINGS_CLOCK_HOURMINUTE_ENTRY, SETTINGS_CLOCK_HOURMINUTE_LEVEL, SETTINGS_CLOCK_ENTRY, NONE, NONE);
+	menuItemInit(&menu, SETTINGS_CLOCK_SECONDS_ENTRY, SETTINGS_CLOCK_SECONDS_LEVEL, SETTINGS_CLOCK_ENTRY, NONE, NONE);
+	menuItemInit(&menu, SETTINGS_CALENDAR_DAYMONTH_ENTRY, SETTINGS_CALENDAR_DAYMONTH_LEVEL, SETTINGS_CALENDAR_ENTRY, NONE, NONE);
+	menuItemInit(&menu, SETTINGS_CALENDAR_YEAR_ENTRY, SETTINGS_CALENDAR_YEAR_LEVEL, SETTINGS_CALENDAR_ENTRY, NONE, NONE);
+
 
 
 	//												MENU ITEMS VALUES
-	menuItemChangeValue(&menu.items[CLOCK_ENTRY][CLOCK_LEVEL], "1210");
-	menuItemChangeValue(&menu.items[CLOCK_DATE_ENTRY][CLOCK_DATE_LEVEL],
-			"1604");
-	menuItemChangeValue(
-			&menu.items[CLOCK_SECONDHAND_ENTRY][CLOCK_SECONDHAND_LEVEL],
-			"0059");
+	//level 1
+	menuItemChangeValue(&menu, CLOCK_ENTRY, CLOCK_LEVEL, "2114", 1);
+	menuItemChangeValue(&menu, BAROMETER_ENTRY, BAROMETER_LEVEL, "1024",
+			DOT_DISABLED);
+	menuItemChangeValue(&menu, HIGROMETER_ENTRY, HIGROMETER_LEVEL, "42 H",
+			DOT_DISABLED);
+	menuItemChangeValue(&menu, TEMPERATURE_ENTRY, TEMPERATURE_LEVEL, "20 ^",
+			DOT_DISABLED);
+	menuItemChangeValue(&menu, ALTITUDE_ENTRY, ALTITUDE_LEVEL, " 102",
+			DOT_DISABLED);
+	menuItemChangeValue(&menu, AZIMUTH_ENTRY, AZIMUTH_LEVEL, "350^",
+			DOT_DISABLED);
+	menuItemChangeValue(&menu, CHRONO_ENTRY, CHRONO_LEVEL, "0000", 1);
+	menuItemChangeValue(&menu, SETTINGS_ENTRY, SETTINGS_LEVEL, "SE ",
+			DOT_DISABLED);
 
-	menuItemChangeValue(&menu.items[BAROMETER_ENTRY][BAROMETER_LEVEL], "1022");
-	menuItemChangeValue(&menu.items[HIGROMETER_ENTRY][HIGROMETER_LEVEL],
-			"43 H");
-	menuItemChangeValue(&menu.items[TEMPERATURE_ENTRY][TEMPERATURE_LEVEL],
-			"20 ^");
-
-	menuItemChangeValue(&menu.items[ALTITUDE_ENTRY][ALTITUDE_LEVEL], "102");
+	//level 2
+	menuItemChangeValue(&menu, CLOCK_DATE_ENTRY, CLOCK_DATE_LEVEL, "1604", 0);
+	menuItemChangeValue(&menu, CLOCK_SECONDHAND_ENTRY, CLOCK_SECONDHAND_LEVEL, "  45", 0);
+	menuItemChangeValue(&menu, CHRONO_HOURS_ENTRY, CHRONO_HOURS_LEVEL, "02 h", DOT_DISABLED);
+	menuItemChangeValue(&menu, CHRONO_RESET_ENTRY, CHRONO_RESET_LEVEL, "----", 1);
+//	menuItemChangeValue(&menu, entry, level, value, value2)
 
 	menuInit(&menu);
 
@@ -612,12 +692,14 @@ void encoderAction(uint8_t direction) {
 	if (direction == ENCODER_ACTION_ENTER) {
 		if (menuSwitch(&menu, ENTER)) {
 			LEDstr(&display, 0, menu.current.value, LED_TRANSITION_DIR_LEFT);
+			LEDdot(&display, menu.current.value2);
 		}
 	}
 
 	if (direction == ENCODER_ACTION_EXIT) {
 		if (menuSwitch(&menu, EXIT)) {
 			LEDstr(&display, 0, menu.current.value, LED_TRANSITION_DIR_RIGHT);
+			LEDdot(&display, menu.current.value2);
 		}
 	}
 
@@ -625,6 +707,7 @@ void encoderAction(uint8_t direction) {
 
 		if (menuSwitch(&menu, UP)) {
 			LEDstr(&display, 0, menu.current.value, LED_TRANSITION_DIR_LEFT);
+			LEDdot(&display, menu.current.value2);
 		}
 		counter--;
 	}
@@ -632,6 +715,7 @@ void encoderAction(uint8_t direction) {
 
 		if (menuSwitch(&menu, DOWN)) {
 			LEDstr(&display, 0, menu.current.value, LED_TRANSITION_DIR_RIGHT);
+			LEDdot(&display, menu.current.value2);
 		}
 		counter++;
 	}

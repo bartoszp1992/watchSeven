@@ -18,70 +18,7 @@
 
 #define LEVELS 3
 #define ENTRIES_MAX 8
-
-
-
-//LEVEL 0
-#define CLOCK_ENTRY 0
-#define CLOCK_LEVEL 0
-
-#define BAROMETER_ENTRY 1
-#define BAROMETER_LEVEL 0
-
-#define HIGROMETER_ENTRY 2
-#define HIGROMETER_LEVEL 0
-
-#define TEMPERATURE_ENTRY 3
-#define TEMPERATURE_LEVEL 0
-
-#define ALTITUDE_ENTRY 4
-#define ALTITUDE_LEVEL 0
-
-#define AZIMUTH_ENTRY 5
-#define AZIMUTH_LEVEL 0
-
-#define CHRONO_ENTRY 6
-#define CHRONO_LEVEL 0
-
-#define SETTINGS_ENTRY 7
-#define SETTINGS_LEVEL 0
-
-
-//LEVEL 1
-#define CLOCK_DATE_ENTRY 0
-#define CLOCK_DATE_LEVEL 1
-
-#define CLOCK_SECONDHAND_ENTRY 1
-#define CLOCK_SECONDHAND_LEVEL 1
-
-#define CHRONO_STARTSTOP_ENTRY 2
-#define CHRONO_STARTSTOP_LEVEL 1
-
-#define CHRONO_RESET_ENTRY 3
-#define CHRONO_RESET_LEVEL 1
-
-#define SETTINGS_CLOCK_ENTRY 4
-#define SETTINGS_CLOCK_LEVEL 1
-
-#define SETTINGS_CALENDAR_ENTRY 5
-#define SETTINGS_CALENDAR_LEVEL 1
-
-#define SETTINGS_REFERENCE_ENTRY 6
-#define SETTINGS_CORRECTION_LEVEL 1
-
-//LEVEL 3
-#define SETTINGS_CLOCK_HOURMINUTE_ENTRY 0
-#define SETTINGS_CLOCK_HOURMINUTE_LEVEL 2
-
-#define SETTINGS_CLOCK_SECONDS_ENTRY 1
-#define SETTINGS_CLOCK_SECONDS_LEVEL 2
-
-#define SETTINGS_CALENDAR_DAYMONTH_ENTRY 2
-#define SETTINGS_CALENDAR_DAYMONTH_LEVEL 2
-
-#define SETTINGS_CALENDAR_YEAR_ENTRY 3
-#define SETTINGS_CALENDAR_YEAR_LEVEL 2
-
+#define ENTRIES_MAIN 8
 
 
 //END OF USER COFIGURATION
@@ -104,6 +41,7 @@
 typedef struct {
 
 	char value[MENU_ITEM_VALUE_SIZE]; //value for display
+	uint8_t value2;//additional info
 
 	uint8_t entry;
 	uint8_t level;
@@ -119,16 +57,16 @@ typedef struct {
 //whole menu
 typedef struct{
 
-	MenuItemTypeDef items[ENTRIES_MAX][LEVELS];
+	MenuItemTypeDef items[ENTRIES_MAX+1][LEVELS];
 	MenuItemTypeDef current;
 
 }MenuTypeDef;
 
 
 void menuInit(MenuTypeDef* menu);
-void menuItemChangeValue(MenuItemTypeDef* item, char* value);
+void menuItemChangeValue(MenuTypeDef *menu, uint8_t entry, uint8_t level, char *value, uint8_t value2);
 void menuItemInit(MenuTypeDef* menu, uint8_t entry, uint8_t level, uint8_t parent, uint8_t childFirst, uint8_t childLast);
-
+void menuClear(MenuTypeDef *menu);
 
 uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction);
 

@@ -340,6 +340,13 @@ static void _LEDwriteCharacter(LEDdisplayTypeDef *LEDdisplay, uint8_t character)
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_F);
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_G);
 			break;
+
+		case 'h':
+			_LEDsegmentOn(LEDdisplay, DISP_SEG_C);
+			_LEDsegmentOn(LEDdisplay, DISP_SEG_E);
+			_LEDsegmentOn(LEDdisplay, DISP_SEG_F);
+			_LEDsegmentOn(LEDdisplay, DISP_SEG_G);
+			break;
 		case 'J':
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_B);
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_C);
@@ -383,6 +390,12 @@ static void _LEDwriteCharacter(LEDdisplayTypeDef *LEDdisplay, uint8_t character)
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_G);
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_C);
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_D);
+			break;
+
+		case 't':
+			_LEDsegmentOn(LEDdisplay, DISP_SEG_E);
+			_LEDsegmentOn(LEDdisplay, DISP_SEG_F);
+			_LEDsegmentOn(LEDdisplay, DISP_SEG_G);
 			break;
 		case 'U':
 			_LEDsegmentOn(LEDdisplay, DISP_SEG_B);
