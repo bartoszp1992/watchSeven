@@ -1,0 +1,13 @@
+7seg.c:40:6:LEDmultiplexing	32	static
+7seg.c:110:6:_LEDtransition	16	static
+7seg.c:117:13:_LEDsegmentOn	16	static
+7seg.c:145:13:_LEDfieldOn	16	static
+7seg.c:172:13:_LEDallOff	16	static
+7seg.c:199:13:_LEDwriteCharacter	16	static
+7seg.c:422:6:LEDinit	24	static
+7seg.c:492:6:LEDseparator	32	static
+7seg.c:507:6:LEDclear	16	static
+7seg.c:526:6:LEDchar	16	static
+7seg.c:545:6:LEDint	32	static
+7seg.c:590:6:LEDstr	32	static
+7seg.c:615:6:LEDdot	16	static
