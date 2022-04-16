@@ -1,6 +1,8 @@
 #include <Menu/menu.h>
 
-
+void menuInit(MenuTypeDef *menu) {
+	menu->current = menu->items[0][0];
+}
 
 /**
  * @brief  Change stored menu item value
@@ -13,12 +15,11 @@
  *
  * @retval None
  */
-void menuItemChangeValue(MenuItemTypeDef* item, char* value){
+void menuItemChangeValue(MenuItemTypeDef *item, char *value) {
 
-	for(uint8_t i = 0; i<= MENU_ITEM_VALUE_SIZE; i++){
+	for (uint8_t i = 0; i <= MENU_ITEM_VALUE_SIZE; i++) {
 		item->value[i] = value[i];
 	}
-
 
 }
 
@@ -39,8 +40,77 @@ void menuItemChangeValue(MenuItemTypeDef* item, char* value){
  *
  * @retval None
  */
-void menuItemInit(MenuTypeDef* menu, uint8_t number, uint8_t entry, uint8_t level, uint8_t parent){
-	menu->items[number].id[ENTRY] = entry;
-	menu->items[number].id[LEVEL] = level;
-	menu->items[number].parent = parent;
+void menuItemInit(MenuTypeDef *menu, uint8_t entry, uint8_t level,
+		uint8_t parent, uint8_t childFirst, uint8_t childLast) {
+	menu->items[entry][level].entry = entry;
+	menu->items[entry][level].level = level;
+	menu->items[entry][level].parent = parent;
+	menu->items[entry][level].childFirst = childFirst;
+	menu->items[entry][level].childLast = childLast;
+	menu->items[entry][level].defined = 1;
+
+}
+
+uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction) {
+
+	if (direction == UP && menu->current.entry > 0) {
+
+		menu->current.entry--;
+		memcpy(menu->current.value,
+				menu->items[menu->current.entry][menu->current.level].value,
+				sizeof(menu->current.value));
+		menu->current.parent =
+				menu->items[menu->current.entry][menu->current.level].parent;
+		menu->current.childFirst =
+				menu->items[menu->current.entry][menu->current.level].childFirst;
+		menu->current.childLast =
+				menu->items[menu->current.entry][menu->current.level].childLast;
+		return OK;
+
+	} else if (direction == DOWN
+			&& (menu->items[menu->current.entry + 1][menu->current.level].defined
+					== 1)) {
+
+		menu->current.entry++;
+
+		memcpy(menu->current.value,
+				menu->items[menu->current.entry][menu->current.level].value,
+				sizeof(menu->current.value));
+		menu->current.parent =
+				menu->items[menu->current.entry][menu->current.level].parent;
+		menu->current.childFirst =
+				menu->items[menu->current.entry][menu->current.level].childFirst;
+		menu->current.childLast =
+				menu->items[menu->current.entry][menu->current.level].childLast;
+		return OK;
+
+	} else if (direction == ENTER && menu->current.childFirst != NONE) {
+
+		menu->current.parent = menu->current.entry;
+		menu->current.entry = menu->current.childFirst;
+		menu->current.level++;
+
+		menu->current.childFirst =
+				menu->items[menu->current.entry][menu->current.level].childFirst;
+		menu->current.childLast =
+				menu->items[menu->current.entry][menu->current.level].childLast;
+		memcpy(menu->current.value,
+				menu->items[menu->current.entry][menu->current.level].value,
+				sizeof(menu->current.value));
+		return OK;
+	} else if (direction == EXIT && menu->current.parent != NONE) {
+
+		menu->current.parent--; //automaticalli set to 255(NONE) if was zero
+		menu->current.level --;
+		menu->current.entry = 0;
+		menu->current.childFirst = menu->items[menu->current.entry][menu->current.level].childFirst;
+		menu->current.childLast = menu->items[menu->current.entry][menu->current.level].childLast;
+
+		memcpy(menu->current.value,
+				menu->items[menu->current.entry][menu->current.level].value,
+				sizeof(menu->current.value));
+		return OK;
+	} else {
+		return ERROR;
+	}
 }
