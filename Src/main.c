@@ -239,7 +239,7 @@ int main(void) {
 	menuItemChangeValue(&menu, AZIMUTH_ENTRY, AZIMUTH_LEVEL, "350^",
 			DOT_DISABLED);
 	menuItemChangeValue(&menu, CHRONO_ENTRY, CHRONO_LEVEL, "0000", 1);
-	menuItemChangeValue(&menu, SETTINGS_ENTRY, SETTINGS_LEVEL, "SE ",
+	menuItemChangeValue(&menu, SETTINGS_ENTRY, SETTINGS_LEVEL, "SEt",
 			DOT_DISABLED);
 
 	//level 2

@@ -16,9 +16,11 @@
 //item value size
 #define MENU_ITEM_VALUE_SIZE 4
 
+//matrix size
 #define LEVELS 3
 #define ENTRIES_MAX 8
-#define ENTRIES_MAIN 8
+
+#define ENTRIES_MAIN 8 //entries in main menu - becouse main have no parent and dont know what is last element.
 
 
 //END OF USER COFIGURATION
@@ -50,14 +52,14 @@ typedef struct {
 	uint8_t childFirst; //first child entry number
 	uint8_t childLast; //last child entry number
 
-	uint8_t defined;
+//	uint8_t defined;
 
 } MenuItemTypeDef;
 
 //whole menu
 typedef struct{
 
-	MenuItemTypeDef items[ENTRIES_MAX+1][LEVELS];
+	MenuItemTypeDef items[ENTRIES_MAX][LEVELS];
 	MenuItemTypeDef current;
 
 }MenuTypeDef;

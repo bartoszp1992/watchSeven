@@ -56,7 +56,7 @@ void menuItemInit(MenuTypeDef *menu, uint8_t entry, uint8_t level,
 	menu->items[entry][level].parent = parent;
 	menu->items[entry][level].childFirst = childFirst;
 	menu->items[entry][level].childLast = childLast;
-	menu->items[entry][level].defined = 1;
+//	menu->items[entry][level].defined = 1;
 
 }
 
@@ -68,7 +68,7 @@ uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction) {
 				|| (menu->current.level != 0
 						&& menu->current.entry
 								> menu->items[menu->current.parent][menu->current.level
-										+ 1].childFirst)) {
+										- 1].childFirst)) {
 
 			menu->current.entry--;
 			memcpy(menu->current.value,
@@ -91,8 +91,7 @@ uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction) {
 	} else if (direction == DOWN) {
 
 		if ((menu->current.level == 0
-				&& menu->items[menu->current.entry + 1][menu->current.level].defined
-						== 1)
+				&& menu->current.entry < ENTRIES_MAIN)
 				|| (menu->current.level != 0
 						&& menu->current.entry
 								< menu->items[menu->current.parent][menu->current.level
