@@ -1,0 +1,4 @@
+menu.c:3:6:menuInit	8	static
+menu.c:23:6:menuItemChangeValue	20	static
+menu.c:52:6:menuItemInit	20	static
+menu.c:63:9:menuSwitch	16	static

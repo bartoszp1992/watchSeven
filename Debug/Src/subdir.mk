@@ -5,7 +5,10 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/7seg.c \
 ../Src/main.c \
+../Src/menu.c \
+../Src/rtc.c \
 ../Src/stm32g0xx_hal_msp.c \
 ../Src/stm32g0xx_it.c \
 ../Src/syscalls.c \
@@ -13,7 +16,10 @@ C_SRCS += \
 ../Src/system_stm32g0xx.c 
 
 OBJS += \
+./Src/7seg.o \
 ./Src/main.o \
+./Src/menu.o \
+./Src/rtc.o \
 ./Src/stm32g0xx_hal_msp.o \
 ./Src/stm32g0xx_it.o \
 ./Src/syscalls.o \
@@ -21,7 +27,10 @@ OBJS += \
 ./Src/system_stm32g0xx.o 
 
 C_DEPS += \
+./Src/7seg.d \
 ./Src/main.d \
+./Src/menu.d \
+./Src/rtc.d \
 ./Src/stm32g0xx_hal_msp.d \
 ./Src/stm32g0xx_it.d \
 ./Src/syscalls.d \
@@ -36,7 +45,7 @@ Src/%.o: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/main.d ./Src/main.o ./Src/stm32g0xx_hal_msp.d ./Src/stm32g0xx_hal_msp.o ./Src/stm32g0xx_it.d ./Src/stm32g0xx_it.o ./Src/syscalls.d ./Src/syscalls.o ./Src/sysmem.d ./Src/sysmem.o ./Src/system_stm32g0xx.d ./Src/system_stm32g0xx.o
+	-$(RM) ./Src/7seg.d ./Src/7seg.o ./Src/main.d ./Src/main.o ./Src/menu.d ./Src/menu.o ./Src/rtc.d ./Src/rtc.o ./Src/stm32g0xx_hal_msp.d ./Src/stm32g0xx_hal_msp.o ./Src/stm32g0xx_it.d ./Src/stm32g0xx_it.o ./Src/syscalls.d ./Src/syscalls.o ./Src/sysmem.d ./Src/sysmem.o ./Src/system_stm32g0xx.d ./Src/system_stm32g0xx.o
 
 .PHONY: clean-Src
 

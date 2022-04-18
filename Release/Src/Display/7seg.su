@@ -1,0 +1,11 @@
+7seg.c:117:13:_LEDsegmentOn.part.0	8	static
+7seg.c:117:13:_LEDsegmentOn	8	static
+7seg.c:40:6:LEDmultiplexing	32	static
+7seg.c:110:6:_LEDtransition	0	static
+7seg.c:505:6:LEDseparator	0	static
+7seg.c:520:6:LEDclear	8	static
+7seg.c:435:6:LEDinit	48	static
+7seg.c:539:6:LEDchar	0	static
+7seg.c:558:6:LEDint	24	static
+7seg.c:603:6:LEDstr	20	static
+7seg.c:628:6:LEDdot	0	static

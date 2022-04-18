@@ -38,7 +38,7 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim_ex.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h \
- ../Inc/Display/7seg.h ../Inc/Menu/menu.h
+ ../Inc/7seg.h ../Inc/main.h ../Inc/menu.h ../Inc/rtc.h
 
 ../Inc/main.h:
 
@@ -120,6 +120,10 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h:
 
-../Inc/Display/7seg.h:
+../Inc/7seg.h:
 
-../Inc/Menu/menu.h:
+../Inc/main.h:
+
+../Inc/menu.h:
+
+../Inc/rtc.h:
