@@ -31,7 +31,12 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdlib.h>
+#include "main.h"
+#include "7seg.h"
+#include "menu.h"
+#include "rtc.h"
+#include "interrupts.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -105,6 +110,44 @@ void Error_Handler(void);
 #define ENC1_GPIO_Port GPIOB
 #define ENC1_EXTI_IRQn EXTI4_15_IRQn
 /* USER CODE BEGIN Private defines */
+//LEVEL 0
+#define CLOCK 0
+#define BAROMETER 1
+#define HIGROMETER 2
+#define TEMPERATURE 3
+#define ALTITUDE 4
+#define AZIMUTH 5
+#define CHRONO 6
+#define SETTINGS 7
+
+//LEVEL 1
+#define CLOCK_DATE 0
+#define CLOCK_SECONDHAND 1
+#define CHRONO_HOURS 2
+#define CHRONO_RESET 3
+#define SETTINGS_CLOCK 4
+#define SETTINGS_CALENDAR 5
+#define SETTINGS_REFERENCE 6
+#define SETTINGS_CORRECTION 7
+
+//LEVEL 3
+#define SETTINGS_CLOCK_HOUR 0
+#define SETTINGS_CLOCK_MINUTE 1
+#define SETTINGS_CLOCK_SECONDS 2
+#define SETTINGS_CALENDAR_DAY 3
+#define SETTINGS_CALENDAR_MONTH 4
+#define SETTINGS_CALENDAR_YEAR 5
+
+//LEVELS
+#define SETTINGS_TIME_LEVEL 2
+#define SETTINGS_OTHER_LEVEL 1
+
+//DISPLAY DOTS
+#define INTER_COLON 1
+#define INTER_DOT 0
+#define INTER_DISABLED LED_DOT_DISABLED
+
+
 
 /* USER CODE END Private defines */
 

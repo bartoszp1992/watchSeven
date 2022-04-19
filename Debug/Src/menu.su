@@ -1,4 +1,4 @@
-menu.c:27:6:menuInit	16	static
+menu.c:27:6:menuReset	16	static
 menu.c:49:6:menuItemChangeValue	48	static
-menu.c:89:6:menuItemInit	24	static
-menu.c:110:9:menuSwitch	24	static
+menu.c:92:6:menuItemInit	24	static
+menu.c:113:9:menuSwitch	24	static

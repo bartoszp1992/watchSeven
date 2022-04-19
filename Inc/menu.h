@@ -39,11 +39,13 @@
 
 
 
+
 //each menu position
 typedef struct {
 
 	char value[MENU_ITEM_VALUE_SIZE]; //value for display
 	uint8_t value2;//additional info
+	uint8_t value3;
 
 	uint8_t entry;
 	uint8_t level;
@@ -63,8 +65,8 @@ typedef struct{
 }MenuTypeDef;
 
 
-void menuInit(MenuTypeDef* menu);
-void menuItemChangeValue(MenuTypeDef *menu, uint8_t entry, uint8_t level, char *value, uint8_t value2);
+void menuReset(MenuTypeDef* menu);
+void menuItemChangeValue(MenuTypeDef *menu, uint8_t entry, uint8_t level, char *value, uint8_t value2, uint8_t value3);
 void menuItemInit(MenuTypeDef* menu, uint8_t entry, uint8_t level, uint8_t parent, uint8_t childFirst, uint8_t childLast);
 //void menuClear(MenuTypeDef *menu);
 

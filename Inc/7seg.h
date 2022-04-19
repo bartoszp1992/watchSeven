@@ -8,7 +8,7 @@
 #ifndef SRC_7DISP_SEG_7DISP_SEG_H_
 #define SRC_7DISP_SEG_7DISP_SEG_H_
 
-#include "main.h"
+//#include "main.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,10 +26,10 @@
 #define LED_FIELDS 4
 
 //prescaler for animation
-#define LED_TRANSITION_PRE 50
+#define LED_TRANSITION_PRE 30
 
 //transition separator size
-#define LED_TRANSITION_SEPARATOR_SIZE 2
+#define LED_TRANSITION_SEPARATOR_SIZE 4
 
 //END OF USER CONFIGURATION
 

@@ -24,7 +24,7 @@
  *
  * @retval None
  */
-void menuInit(MenuTypeDef *menu) {
+void menuReset(MenuTypeDef *menu) {
 
 	menu->current = menu->items[0][0];
 }
@@ -47,7 +47,7 @@ void menuInit(MenuTypeDef *menu) {
  * @retval None
  */
 void menuItemChangeValue(MenuTypeDef *menu, uint8_t entry, uint8_t level,
-		char *value, uint8_t value2) {
+		char *value, uint8_t value2, uint8_t value3) {
 
 	for (uint8_t i = 0; i <= MENU_ITEM_VALUE_SIZE; i++) {
 
@@ -55,6 +55,7 @@ void menuItemChangeValue(MenuTypeDef *menu, uint8_t entry, uint8_t level,
 	}
 
 	menu->items[entry][level].value2 = value2;
+	menu->items[entry][level].value3 = value3;
 
 	//automatically refresh current item
 	if (menu->current.entry == entry && menu->current.level == level) {
@@ -63,6 +64,8 @@ void menuItemChangeValue(MenuTypeDef *menu, uint8_t entry, uint8_t level,
 				sizeof(menu->current.value));
 		menu->current.value2 =
 				menu->items[menu->current.entry][menu->current.level].value2;
+		menu->current.value3 =
+				menu->items[menu->current.entry][menu->current.level].value3;
 	}
 
 }
@@ -123,6 +126,8 @@ uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction) {
 					sizeof(menu->current.value));
 			menu->current.value2 =
 					menu->items[menu->current.entry][menu->current.level].value2;
+			menu->current.value3 =
+					menu->items[menu->current.entry][menu->current.level].value3;
 
 			menu->current.parent =
 					menu->items[menu->current.entry][menu->current.level].parent;
@@ -151,6 +156,8 @@ uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction) {
 					sizeof(menu->current.value));
 			menu->current.value2 =
 					menu->items[menu->current.entry][menu->current.level].value2;
+			menu->current.value3 =
+					menu->items[menu->current.entry][menu->current.level].value3;
 
 			menu->current.parent =
 					menu->items[menu->current.entry][menu->current.level].parent;
@@ -179,12 +186,15 @@ uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction) {
 				sizeof(menu->current.value));
 		menu->current.value2 =
 				menu->items[menu->current.entry][menu->current.level].value2;
+		menu->current.value3 =
+				menu->items[menu->current.entry][menu->current.level].value3;
 		return MENU_OK;
+
 	} else if (direction == MENU_EXIT && menu->current.parent != MENU_NONE) {
 
 		menu->current.entry = menu->current.parent;
-		menu->current.parent--; //automaticalli set to 255(MENU_NONE) if was zero
 		menu->current.level--;
+		menu->current.parent = menu->items[menu->current.parent][menu->current.level].parent;
 		menu->current.childFirst =
 				menu->items[menu->current.entry][menu->current.level].childFirst;
 		menu->current.childLast =
@@ -195,6 +205,8 @@ uint8_t menuSwitch(MenuTypeDef *menu, uint8_t direction) {
 				sizeof(menu->current.value));
 		menu->current.value2 =
 				menu->items[menu->current.entry][menu->current.level].value2;
+		menu->current.value3 =
+									menu->items[menu->current.entry][menu->current.level].value3;
 		return MENU_OK;
 	} else {
 		return MENU_ERROR;

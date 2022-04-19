@@ -3087,7 +3087,7 @@
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 7f65ca97-3595-4569-b83c-ac72722892c2)
   )
-  (label "ENCODER_ACTIVE" (at 50.165 120.015 180)
+  (label "ENCODER_ACTIVE" (at 42.545 120.015 180)
     (effects (font (size 1.27 1.27)) (justify right bottom))
     (uuid 8633e582-6586-42da-be24-994775811f1e)
   )
@@ -3366,6 +3366,21 @@
     )
     (pin "1" (uuid e29b8fd8-52e9-4003-9468-859f4bb37b2f))
     (pin "2" (uuid 4392f51b-7d43-4835-8a31-6bcbfd772406))
+  )
+
+  (symbol (lib_id "Device:R") (at 46.355 120.015 90) (unit 1)
+    (in_bom yes) (on_board yes) (fields_autoplaced)
+    (uuid 21fe163d-5c16-42b5-8408-6e6165b7b3e7)
+    (property "Reference" "R?" (id 0) (at 46.355 115.2992 90))
+    (property "Value" "1k" (id 1) (at 46.355 117.8361 90))
+    (property "Footprint" "" (id 2) (at 46.355 121.793 90)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (id 3) (at 46.355 120.015 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 30834466-df1e-45cc-9752-de058ac1c411))
+    (pin "2" (uuid c41543a3-3bad-4682-9e5f-797025664df0))
   )
 
   (symbol (lib_id "power:GND") (at 215.9 26.035 0) (unit 1)
@@ -3888,7 +3903,7 @@
     (property "Reference" "R?" (id 0) (at 41.275 86.995 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "100k" (id 1) (at 38.735 90.17 0)
+    (property "Value" "10k" (id 1) (at 38.735 90.17 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "" (id 2) (at 43.307 88.9 90)
@@ -4127,7 +4142,7 @@
     (in_bom yes) (on_board yes)
     (uuid 90f62ab4-3b57-4e43-92c1-505510d0ded2)
     (property "Reference" "R?" (id 0) (at 31.115 88.265 0))
-    (property "Value" "100k" (id 1) (at 31.115 90.805 0))
+    (property "Value" "10k" (id 1) (at 31.115 90.805 0))
     (property "Footprint" "" (id 2) (at 33.147 89.535 90)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -5372,6 +5387,9 @@
     (path "/0eb5a0d6-5cd0-4f65-af67-3d466efbeeea"
       (reference "R?") (unit 1) (value "220") (footprint "")
     )
+    (path "/21fe163d-5c16-42b5-8408-6e6165b7b3e7"
+      (reference "R?") (unit 1) (value "1k") (footprint "")
+    )
     (path "/3cf880b3-5c9a-41b3-9cf9-9a6d06aa346b"
       (reference "R?") (unit 1) (value "220") (footprint "")
     )
@@ -5385,10 +5403,10 @@
       (reference "R?") (unit 1) (value "MCU_INT") (footprint "")
     )
     (path "/6758fe33-c8d5-4407-9f16-c72d8affd56a"
-      (reference "R?") (unit 1) (value "100k") (footprint "")
+      (reference "R?") (unit 1) (value "10k") (footprint "")
     )
     (path "/90f62ab4-3b57-4e43-92c1-505510d0ded2"
-      (reference "R?") (unit 1) (value "100k") (footprint "")
+      (reference "R?") (unit 1) (value "10k") (footprint "")
     )
     (path "/a1456448-0362-4548-a09f-83bda68ee060"
       (reference "R?") (unit 1) (value "MCU_INT") (footprint "")

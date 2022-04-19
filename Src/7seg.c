@@ -522,7 +522,6 @@ void LEDseparator(LEDdisplayTypeDef *LEDdisplay, char* separator){
  */
 void LEDclear(LEDdisplayTypeDef *LEDdisplay) {
 	memset(LEDdisplay->digitBuffer, ' ', LED_FIELDS);
-//	memset(LEDdisplay->dotBuffer, 0, LED_FIELDS);
 	LEDdisplay->dotPosition = LED_DOT_DISABLED;
 }
 

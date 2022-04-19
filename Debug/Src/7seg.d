@@ -1,4 +1,4 @@
-Src/7seg.o: ../Src/7seg.c ../Inc/7seg.h ../Inc/main.h \
+Src/7seg.o: ../Src/7seg.c ../Inc/7seg.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h \
  ../Inc/stm32g0xx_hal_conf.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rcc.h \
@@ -40,8 +40,6 @@ Src/7seg.o: ../Src/7seg.c ../Inc/7seg.h ../Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h
 
 ../Inc/7seg.h:
-
-../Inc/main.h:
 
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h:
 
