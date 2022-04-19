@@ -38,7 +38,8 @@ Src/interrupts.o: ../Src/interrupts.c ../Inc/interrupts.h ../Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim_ex.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h \
- ../Inc/7seg.h ../Inc/menu.h ../Inc/rtc.h ../Inc/interrupts.h
+ ../Inc/7seg.h ../Inc/menu.h ../Inc/rtc.h ../Inc/interrupts.h \
+ ../Inc/interface.h
 
 ../Inc/interrupts.h:
 
@@ -129,3 +130,5 @@ Src/interrupts.o: ../Src/interrupts.c ../Inc/interrupts.h ../Inc/main.h \
 ../Inc/rtc.h:
 
 ../Inc/interrupts.h:
+
+../Inc/interface.h:

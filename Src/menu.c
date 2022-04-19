@@ -15,8 +15,10 @@
 
 #include <menu.h>
 
+
+
 /**
- * @brief  Initialize menu
+ * @brief  Reset current
  *
  * @note   Sets current as positon 0, 0
  *

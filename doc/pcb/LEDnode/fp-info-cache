@@ -1,4 +1,4 @@
-20115303863416098
+20118605267598803
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -27,6 +27,13 @@ LED 7.2mm
 0
 12
 12
+BartLib_Display
+LED 7.2mm SMD
+
+
+0
+12
+12
 BartLib_Encoder
 EC11J12-15P30C-SW
 
@@ -34,6 +41,13 @@ EC11J12-15P30C-SW
 0
 7
 5
+BartLib_Switch
+MFP 120
+
+
+0
+3
+3
 Battery
 BatteryHolder_Bulgin_BX0036_1xC
 Bulgin Battery Holder, BX0036, Battery Type C (https://www.bulgin.com/products/pub/media/bulgin/data/Battery_holders.pdf)

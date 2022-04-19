@@ -37,6 +37,7 @@ extern "C" {
 #include "menu.h"
 #include "rtc.h"
 #include "interrupts.h"
+#include "interface.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

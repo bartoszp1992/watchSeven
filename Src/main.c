@@ -26,6 +26,16 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef struct{
+	uint8_t hour;
+	uint8_t minute;
+	uint8_t second;
+}TimeTypeDef;
+
+
+TimeTypeDef aktualnyCzas;
+
+
 
 /* USER CODE END PTD */
 
@@ -60,7 +70,7 @@ MenuTypeDef menu;
 //												CHRONOGRAPF INSTANCE CREATE
 RTCChronoTypeDef chronograph;
 
-char buffer[4];
+
 
 /* USER CODE END PV */
 
@@ -75,8 +85,8 @@ static void MX_RTC_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 
-void twoIntsToArray(char *destination, int8_t int1, int8_t int2);
-void oneIntToArray(char *destination, uint8_t offset, int8_t integer);
+//void twoIntsToArray(char *destination, int8_t int1, int8_t int2);
+//void oneIntToArray(char *destination, uint8_t offset, int8_t integer);
 
 /* USER CODE END PFP */
 
@@ -91,7 +101,6 @@ void oneIntToArray(char *destination, uint8_t offset, int8_t integer);
  */
 int main(void) {
 	/* USER CODE BEGIN 1 */
-
 	/* USER CODE END 1 */
 
 	/* MCU Configuration--------------------------------------------------------*/
@@ -220,77 +229,15 @@ int main(void) {
 		//read RTC time
 		rtcGetTime(&chronograph);
 
-		//write values to clock
-		{
-			//write time to CLOCK item
-			memset(buffer, 0, sizeof(buffer));
-			twoIntsToArray(buffer, chronograph.actual.hour,
-					chronograph.actual.minute);
-			if (rtcBlink(&chronograph)) {
-				menuItemChangeValue(&menu, CLOCK, 0, buffer, INTER_COLON, 0);
-			} else {
-				menuItemChangeValue(&menu, CLOCK, 0, buffer, INTER_DISABLED, 0);
-			}
-
-			//write seconds to CLOCK_SECONDHAND
-			memset(buffer, 0, sizeof(buffer));
-			oneIntToArray(buffer, 2, chronograph.actual.second);
-
-			if (rtcBlink(&chronograph)) {
-				menuItemChangeValue(&menu, CLOCK_SECONDHAND, 1, buffer,
-				INTER_COLON, 0);
-			} else {
-				menuItemChangeValue(&menu, CLOCK_SECONDHAND, 1, buffer,
-				INTER_DISABLED, 0);
-			}
-
-			//write date to CLOCK_DATE
-			memset(buffer, 0, sizeof(buffer));
-			twoIntsToArray(buffer, chronograph.actual.day,
-					chronograph.actual.month);
-			menuItemChangeValue(&menu, CLOCK_DATE, 1, buffer, INTER_DOT, 0);
-		}
-
-		//write values to settings
-		{
-			memset(buffer, 0, sizeof(buffer));
-			oneIntToArray(buffer, 0, chronograph.actual.hour);
-			menuItemChangeValue(&menu, SETTINGS_CLOCK_HOUR, 2, buffer,
-			INTER_COLON, 1);
-
-			memset(buffer, 0, sizeof(buffer));
-			oneIntToArray(buffer, 2, chronograph.actual.minute);
-			menuItemChangeValue(&menu, SETTINGS_CLOCK_MINUTE, 2, buffer,
-			INTER_COLON, 1);
-
-			memset(buffer, 0, sizeof(buffer));
-			oneIntToArray(buffer, 2, chronograph.actual.second);
-			menuItemChangeValue(&menu, SETTINGS_CLOCK_SECONDS, 2, buffer,
-			INTER_COLON, 1);
-
-			memset(buffer, 0, sizeof(buffer));
-			oneIntToArray(buffer, 0, chronograph.actual.day);
-			menuItemChangeValue(&menu, SETTINGS_CALENDAR_DAY, 2, buffer,
-			INTER_DOT, 1);
-
-			memset(buffer, 0, sizeof(buffer));
-			oneIntToArray(buffer, 2, chronograph.actual.month);
-			menuItemChangeValue(&menu, SETTINGS_CALENDAR_MONTH, 2, buffer,
-			INTER_DOT, 1);
-
-			memset(buffer, 0, sizeof(buffer));
-			oneIntToArray(buffer, 0, chronograph.actual.year);
-			menuItemChangeValue(&menu, SETTINGS_CALENDAR_YEAR, 2, buffer,
-			INTER_DISABLED, 1);
-		}
+		//write actual values to menu matrix
+		interfaceWrite();
 
 		//display current item
 		if (display.transitionStatus == LED_TRANSITION_DISABLED) {
-			LEDstr(&display, 0, menu.current.value, LED_TRANSITION_DISABLED);
-			LEDdot(&display, menu.current.value2);
+			interfaceShowActual();
 		}
 
-		//go to sleep
+		//												LOW POWER SECTION
 		if (flags[FLAG_SLEEP]
 				&& HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin) == 1) {
 			LEDclear(&display);
@@ -298,6 +245,8 @@ int main(void) {
 			HAL_Delay(10);
 			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 0);
 			HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+
+			//											AFTER WAKE UP
 			menuReset(&menu);
 			flags[FLAG_LOCKED] = 0;
 		}
@@ -722,36 +671,7 @@ static void MX_GPIO_Init(void) {
 
 /* USER CODE BEGIN 4 */
 
-void twoIntsToArray(char *destination, int8_t int1, int8_t int2) {
-	char halfBuffer1[2];
-	char halfBuffer2[2];
 
-	itoa(int1, halfBuffer1, 10);
-	itoa(int2, halfBuffer2, 10);
-
-	destination[0] = halfBuffer1[0];
-	destination[1] = halfBuffer1[1];
-	destination[2] = halfBuffer2[0];
-	destination[3] = halfBuffer2[1];
-
-	if (destination[1] == 0) {
-		destination[1] = destination[0];
-		destination[0] = '0';
-	}
-	if (destination[3] == 0) {
-		destination[3] = destination[2];
-		destination[2] = '0';
-	}
-}
-
-void oneIntToArray(char *destination, uint8_t offset, int8_t integer) {
-	itoa(integer, &destination[offset], 10);
-
-	if (destination[offset + 1] == 0) {
-		destination[offset + 1] = destination[offset];
-		destination[offset] = '0';
-	}
-}
 
 /* USER CODE END 4 */
 
