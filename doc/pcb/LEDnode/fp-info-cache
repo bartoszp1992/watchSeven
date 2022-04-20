@@ -1,4 +1,4 @@
-20118605267598803
+20125207245568462
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -19,6 +19,20 @@ BC-0401 AAA R3
 
 0
 4
+2
+BartLib_Capacitor
+C_Elec_D5.0mmxL11.0mmxP2.0mm_Horizontal
+
+
+0
+2
+2
+BartLib_Capacitor
+C_Elec_D6.3mmxL9.0mmxP2.5mm_Horizontal
+
+
+0
+2
 2
 BartLib_Display
 LED 7.2mm
@@ -41,6 +55,20 @@ EC11J12-15P30C-SW
 0
 7
 5
+BartLib_Pad
+WirePad 4mm^2
+
+
+0
+1
+1
+BartLib_Pad
+WirePad 4mm^2 Rect
+
+
+0
+1
+1
 BartLib_Switch
 MFP 120
 

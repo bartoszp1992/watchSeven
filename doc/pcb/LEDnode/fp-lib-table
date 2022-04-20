@@ -3,4 +3,6 @@
   (lib (name "BartLib_Battery")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Battery.pretty")(options "")(descr ""))
   (lib (name "BartLib_Encoder")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Encoder.pretty")(options "")(descr ""))
   (lib (name "BartLib_Switch")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Switch.pretty")(options "")(descr ""))
+  (lib (name "BartLib_Pad")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Pad.pretty")(options "")(descr ""))
+  (lib (name "BartLib_Capacitor")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Capacitor.pretty")(options "")(descr ""))
 )

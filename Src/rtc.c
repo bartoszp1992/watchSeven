@@ -5,9 +5,10 @@
  *
  * 	Created on: 16 APR 2022
  *      Author: Bartosz
- *      varsion: 1.0
+ *      version: 1.1
  *
  *      changelog:
+ *      1.1 added resume, decimal changed by hundredths
  *
  */
 
@@ -49,7 +50,7 @@ void rtcGetTime(RTCChronoTypeDef *chrono) {
 	chrono->actual.minute = Time.Minutes;
 	chrono->actual.second = Time.Seconds;
 
-	chrono->actual.decimal = (((255 - Time.SubSeconds) * 100) / 255) / 10; //^ subsecond from RTC is 1/255 of second(becouse of RTC sync predivider)
+	chrono->actual.hundredth = (((255 - Time.SubSeconds) * 100) / 255); //^ subsecond from RTC is 1/255 of second(becouse of RTC sync predivider)
 
 	chrono->actual.day = Date.Date;
 	chrono->actual.month = Date.Month;
@@ -79,7 +80,7 @@ void rtcGetTime(RTCChronoTypeDef *chrono) {
 	if (chrono->chronoMode == RTC_CHRONO_MODE_INACTIVE) {
 		chrono->chrono.minute = 0;
 		chrono->chrono.second = 0;
-		chrono->chrono.decimal = 0;
+		chrono->chrono.hundredth = 0;
 		chrono->chrono.hour = 0;
 		chrono->chrono.day = 0;
 		chrono->chrono.month = 0;
@@ -87,7 +88,12 @@ void rtcGetTime(RTCChronoTypeDef *chrono) {
 	}
 	if (chrono->chronoMode == RTC_CHRONO_MODE_RUNNING) {
 
-		chrono->chrono.decimal = 0;
+#if RTC_FREEZED_DECIMALS
+		chrono->chrono.hundredth = 0;
+#else
+		chrono->chrono.hundredth = chrono->actual.hundredth - chrono->chronoStart.hundredth;
+#endif
+
 		chrono->chrono.second = chrono->actual.second
 				- chrono->chronoStart.second;
 		chrono->chrono.minute = chrono->actual.minute
@@ -96,9 +102,9 @@ void rtcGetTime(RTCChronoTypeDef *chrono) {
 		chrono->chrono.day = chrono->actual.day - chrono->chronoStart.day;
 		chrono->chrono.month = chrono->actual.month - chrono->chronoStart.month;
 
-		if (chrono->chrono.decimal < 0) {
+		if (chrono->chrono.hundredth < 0) {
 			chrono->chrono.second--;
-			chrono->chrono.decimal = chrono->chrono.decimal + 10;
+			chrono->chrono.hundredth = chrono->chrono.hundredth + 100;
 		}
 
 		if (chrono->chrono.second < 0) {
@@ -172,7 +178,7 @@ void rtcStartChrono(RTCChronoTypeDef *chrono) {
 
 	chrono->chronoStart.second = Time.Seconds;
 	chrono->chronoStart.minute = Time.Minutes;
-	chrono->chronoStart.decimal = (((255 - Time.SubSeconds) * 100) / 255) / 10;
+	chrono->chronoStart.hundredth = (((255 - Time.SubSeconds) * 100) / 255);
 	chrono->chronoStart.hour = Time.Hours;
 	chrono->chronoStart.day = Date.Date;
 	chrono->chronoStart.month = Date.Month;
@@ -197,14 +203,14 @@ void rtcStopChrono(RTCChronoTypeDef *chrono) {
 
 	chrono->actual.minute = Time.Minutes;
 	chrono->actual.second = Time.Seconds;
-	chrono->actual.decimal = (((255 - Time.SubSeconds) * 100) / 255) / 10;
+	chrono->actual.hundredth = (((255 - Time.SubSeconds) * 100) / 255);
 	chrono->actual.hour = Time.Hours;
 	chrono->actual.day = Date.Date;
 	chrono->actual.month = Date.Month;
 	chrono->actual.year = Date.Year;
 
-	chrono->chrono.decimal = chrono->actual.decimal
-			- chrono->chronoStart.decimal;
+	chrono->chrono.hundredth = chrono->actual.hundredth
+			- chrono->chronoStart.hundredth;
 	chrono->chrono.second = chrono->actual.second - chrono->chronoStart.second;
 	chrono->chrono.minute = chrono->actual.minute - chrono->chronoStart.minute;
 	chrono->chrono.hour = chrono->actual.hour - chrono->chronoStart.hour;
@@ -212,7 +218,24 @@ void rtcStopChrono(RTCChronoTypeDef *chrono) {
 	chrono->chrono.month = chrono->actual.month - chrono->chronoStart.month;
 	chrono->chrono.year = chrono->actual.year - chrono->chronoStart.year;
 
+	rtcGetTime(chrono);
+
 	chrono->chronoMode = RTC_CHRONO_MODE_STOP;
+
+
+}
+
+/**
+ * @brief  Resume chronograph
+ *
+ * @note without reseting start time
+ *
+ * @param  RTC item handler
+ *
+ * @retval None
+ */
+void rtcResumeChrono(RTCChronoTypeDef * chrono){
+	chrono->chronoMode = RTC_CHRONO_MODE_RUNNING;
 }
 
 /**
@@ -226,14 +249,14 @@ void rtcStopChrono(RTCChronoTypeDef *chrono) {
  */
 void rtcResetChrono(RTCChronoTypeDef *chrono) {
 
-	chrono->chrono.decimal = 0;
+	chrono->chrono.hundredth = 0;
 	chrono->chrono.minute = 0;
 	chrono->chrono.second = 0;
 	chrono->chrono.hour = 0;
 
 	chrono->chronoStart.second = 0;
 	chrono->chronoStart.minute = 0;
-	chrono->chronoStart.decimal = 0;
+	chrono->chronoStart.hundredth = 0;
 	chrono->chronoStart.hour = 0;
 
 	chrono->chronoMode = RTC_CHRONO_MODE_INACTIVE;

@@ -8,6 +8,11 @@
 #ifndef RTC_H_
 #define RTC_H_
 
+//USER CONFIGURATION
+ //if set to 1, decimals are not refreshing if chrono is running
+#define RTC_FREEZED_DECIMALS 0
+//END OF USER CONFIGURATION
+
 #define RTC_CHRONO_MODE_INACTIVE 0
 #define RTC_CHRONO_MODE_RUNNING 1
 #define RTC_CHRONO_MODE_STOP 2
@@ -22,6 +27,8 @@
 #define RTC_CHANGE_DIR_UP 0
 #define RTC_CHANGE_DIR_DOWN 1
 
+
+
 extern RTC_HandleTypeDef hrtc;
 
 RTC_DateTypeDef Date;
@@ -34,7 +41,8 @@ typedef struct{
 	int8_t hour;
 	int8_t minute;
 	int8_t second;
-	int8_t decimal;
+//	int8_t decimal;
+	int8_t hundredth;
 	uint32_t moonPhase;
 }	RTCTimeTypeDef;
 
@@ -51,6 +59,7 @@ void rtcGetTime(RTCChronoTypeDef *chrono);
 void rtcSetTime(RTCChronoTypeDef *chrono);
 void rtcStartChrono(RTCChronoTypeDef *chrono);
 void rtcStopChrono(RTCChronoTypeDef *chrono);
+void rtcResumeChrono(RTCChronoTypeDef * chrono);
 void rtcResetChrono(RTCChronoTypeDef *chrono);
 void rtcChangeValue(RTCChronoTypeDef * chrono, uint8_t position, uint8_t direction);
 uint8_t rtcBlink(RTCChronoTypeDef *chrono);

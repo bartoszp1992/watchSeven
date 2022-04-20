@@ -57,7 +57,16 @@ void interfaceWrite(void) {
 	menuItemChangeValue(&menu, SETTINGS_CALENDAR_YEAR, 2, buffer,
 			INTER_DISABLED, 1);
 
+	//								WRITE CHRONO TIME
+	twoIntsToArray(buffer, chronograph.chrono.minute, chronograph.chrono.second);
+	menuItemChangeValue(&menu, CHRONO, CHRONO_LEVEL, buffer, INTER_COLON, 0);
 
+	oneIntToArray(buffer, 0, chronograph.chrono.hour);
+	buffer[3] = 'h';
+	menuItemChangeValue(&menu, CHRONO_HOURS, CHRONO_HOURS_LEVEL, buffer, INTER_DISABLED, 0);
+
+	oneIntToArray(buffer, 2, chronograph.chrono.hundredth);
+	menuItemChangeValue(&menu, CHRONO_HUNDREDTHS, CHRONO_HUNDREDTHS_LEVEL, buffer, INTER_DOT, 0);
 
 
 }

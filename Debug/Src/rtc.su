@@ -1,8 +1,9 @@
-rtc.c:27:6:rtcInit	16	static
-rtc.c:42:6:rtcGetTime	80	static
-rtc.c:146:6:rtcSetTime	16	static
-rtc.c:168:6:rtcStartChrono	16	static
-rtc.c:193:6:rtcStopChrono	16	static
-rtc.c:227:6:rtcResetChrono	16	static
-rtc.c:262:6:rtcChangeValue	16	static
-rtc.c:351:9:rtcBlink	16	static
+rtc.c:28:6:rtcInit	16	static
+rtc.c:43:6:rtcGetTime	80	static
+rtc.c:152:6:rtcSetTime	16	static
+rtc.c:174:6:rtcStartChrono	16	static
+rtc.c:199:6:rtcStopChrono	16	static
+rtc.c:237:6:rtcResumeChrono	16	static
+rtc.c:250:6:rtcResetChrono	16	static
+rtc.c:285:6:rtcChangeValue	16	static
+rtc.c:374:9:rtcBlink	16	static

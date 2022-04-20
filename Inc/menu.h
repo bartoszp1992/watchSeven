@@ -18,7 +18,7 @@
 
 //matrix size
 #define MENU_LEVELS 3
-#define MENU_ENTRIES_MAX 8
+#define MENU_ENTRIES_MAX 10
 
 #define MENU_ENTRIES_MAIN 8 //entries in main menu - becouse main have no parent and dont know what is last element.
 

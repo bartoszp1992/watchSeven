@@ -10,14 +10,32 @@
 void encoderAction(uint8_t direction) {
 
 	if (direction == ENCODER_ACTION_ENTER) {
-		if (menuSwitch(&menu, MENU_ENTER)) {
-			LEDstr(&display, 0, menu.current.value, LED_TRANSITION_DIR_LEFT);
-			LEDdot(&display, menu.current.value2);
-		} else { //if theres no child under item
-			if (menu.current.value3) { //check thats editable
-				flags[FLAG_LOCKED] = 1;
+
+		if (menu.current.entry == CHRONO_START
+				&& menu.current.level == CHRONO_START_LEVEL) {
+			if (chronograph.chronoMode == RTC_CHRONO_MODE_INACTIVE) {
+				rtcStartChrono(&chronograph);
+			} else if (chronograph.chronoMode == RTC_CHRONO_MODE_RUNNING) {
+				rtcStopChrono(&chronograph);
+			} else if(chronograph.chronoMode == RTC_CHRONO_MODE_STOP){
+				rtcResumeChrono(&chronograph);
+			}
+
+		} else if (menu.current.entry == CHRONO_RESET && menu.current.level == CHRONO_RESET_LEVEL) {
+			rtcResetChrono(&chronograph);
+		} else {
+
+			if (menuSwitch(&menu, MENU_ENTER)) {
+				LEDstr(&display, 0, menu.current.value,
+				LED_TRANSITION_DIR_LEFT);
+				LEDdot(&display, menu.current.value2);
+			} else { //if theres no child under item
+				if (menu.current.value3) { //check thats editable
+					flags[FLAG_LOCKED] = 1;
+				}
 			}
 		}
+
 	}
 
 	if (direction == ENCODER_ACTION_EXIT) {
@@ -28,7 +46,7 @@ void encoderAction(uint8_t direction) {
 				LED_TRANSITION_DIR_RIGHT);
 				LEDdot(&display, menu.current.value2);
 			}
-		}else{
+		} else {
 			flags[FLAG_LOCKED] = 0;
 		}
 
@@ -39,7 +57,7 @@ void encoderAction(uint8_t direction) {
 		if (!flags[FLAG_LOCKED]) {
 			if (menuSwitch(&menu, MENU_UP)) {
 				LEDstr(&display, 0, menu.current.value,
-				LED_TRANSITION_DIR_LEFT);
+				LED_TRANSITION_DIR_RIGHT);
 				LEDdot(&display, menu.current.value2);
 			}
 		} else {
@@ -83,7 +101,7 @@ void encoderAction(uint8_t direction) {
 		if (!flags[FLAG_LOCKED]) {
 			if (menuSwitch(&menu, MENU_DOWN)) {
 				LEDstr(&display, 0, menu.current.value,
-				LED_TRANSITION_DIR_RIGHT);
+				LED_TRANSITION_DIR_LEFT);
 				LEDdot(&display, menu.current.value2);
 			}
 		} else {
