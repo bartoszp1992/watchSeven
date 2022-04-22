@@ -16,7 +16,6 @@
 #include <menu.h>
 
 
-
 /**
  * @brief  Reset current
  *
@@ -26,7 +25,7 @@
  *
  * @retval None
  */
-void menuReset(MenuTypeDef *menu) {
+void menuResetCurrent(MenuTypeDef *menu) {
 
 	menu->current = menu->items[0][0];
 }

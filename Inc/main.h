@@ -113,12 +113,12 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 //LEVEL 0
 #define CLOCK 0
-#define BAROMETER 1
-#define HIGROMETER 2
-#define TEMPERATURE 3
-#define ALTITUDE 4
-#define AZIMUTH 5
-#define CHRONO 6
+#define CHRONO 1
+#define BAROMETER 2
+#define HIGROMETER 3
+#define TEMPERATURE 4
+#define ALTITUDE 5
+#define AZIMUTH 6
 #define SETTINGS 7
 
 //LEVEL 1

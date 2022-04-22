@@ -63,11 +63,14 @@ typedef struct{
 
 	MenuItemTypeDef items[MENU_ENTRIES_MAX][MENU_LEVELS];
 	MenuItemTypeDef current;
+	uint8_t levels;
+	uint8_t maxEntries;
+	uint8_t mainEntries;
 
 }MenuTypeDef;
 
-
-void menuReset(MenuTypeDef* menu);
+void menuInit(MenuTypeDef *menu, uint8_t levels, uint8_t maxEntries, uint8_t mainEntries);
+void menuResetCurrent(MenuTypeDef* menu);
 void menuItemChangeValue(MenuTypeDef *menu, uint8_t entry, uint8_t level, char *value, uint8_t value2, uint8_t value3);
 void menuItemInit(MenuTypeDef* menu, uint8_t entry, uint8_t level, uint8_t parent, uint8_t childFirst, uint8_t childLast);
 //void menuClear(MenuTypeDef *menu);

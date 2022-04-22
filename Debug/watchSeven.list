@@ -27,23 +27,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   ALLOC
  11 .ARM.attributes 00000028  00000000  00000000  0002000c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00020f69  00000000  00000000  00020034  2**0
+ 12 .debug_info   0002108f  00000000  00000000  00020034  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00003799  00000000  00000000  00040f9d  2**0
+ 13 .debug_abbrev 00003799  00000000  00000000  000410c3  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000015d0  00000000  00000000  00044738  2**3
+ 14 .debug_aranges 000015d0  00000000  00000000  00044860  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 00001478  00000000  00000000  00045d08  2**3
+ 15 .debug_ranges 00001478  00000000  00000000  00045e30  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0001cc22  00000000  00000000  00047180  2**0
+ 16 .debug_macro  0001cc22  00000000  00000000  000472a8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   0001b897  00000000  00000000  00063da2  2**0
+ 17 .debug_line   0001b897  00000000  00000000  00063eca  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000b3056  00000000  00000000  0007f639  2**0
+ 18 .debug_str    000b307b  00000000  00000000  0007f761  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  0013268f  2**0
+ 19 .comment      00000053  00000000  00000000  001327dc  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  0000533c  00000000  00000000  001326e4  2**2
+ 20 .debug_frame  0000533c  00000000  00000000  00132830  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -18091,7 +18091,7 @@ void interfaceWrite(void) {
  8006f96:	2201      	movs	r2, #1
  8006f98:	9200      	str	r2, [sp, #0]
  8006f9a:	2200      	movs	r2, #0
- 8006f9c:	2106      	movs	r1, #6
+ 8006f9c:	2101      	movs	r1, #1
  8006f9e:	f001 f825 	bl	8007fec <menuItemChangeValue>
 
 	oneIntToArray(buffer, 0, chronograph.chrono.hour);
@@ -19107,17 +19107,17 @@ int main(void)
  80075e0:	2200      	movs	r2, #0
  80075e2:	2100      	movs	r1, #0
  80075e4:	f000 fdd2 	bl	800818c <menuItemInit>
-	menuItemInit(&menu, BAROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, CHRONO, 0, MENU_NONE, CHRONO_HUNDREDTHS, CHRONO_RESET);
  80075e8:	48d2      	ldr	r0, [pc, #840]	; (8007934 <main+0x424>)
- 80075ea:	23ff      	movs	r3, #255	; 0xff
+ 80075ea:	2305      	movs	r3, #5
  80075ec:	9301      	str	r3, [sp, #4]
- 80075ee:	23ff      	movs	r3, #255	; 0xff
+ 80075ee:	2302      	movs	r3, #2
  80075f0:	9300      	str	r3, [sp, #0]
  80075f2:	23ff      	movs	r3, #255	; 0xff
  80075f4:	2200      	movs	r2, #0
  80075f6:	2101      	movs	r1, #1
  80075f8:	f000 fdc8 	bl	800818c <menuItemInit>
-	menuItemInit(&menu, HIGROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, BAROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
  80075fc:	48cd      	ldr	r0, [pc, #820]	; (8007934 <main+0x424>)
  80075fe:	23ff      	movs	r3, #255	; 0xff
  8007600:	9301      	str	r3, [sp, #4]
@@ -19127,7 +19127,7 @@ int main(void)
  8007608:	2200      	movs	r2, #0
  800760a:	2102      	movs	r1, #2
  800760c:	f000 fdbe 	bl	800818c <menuItemInit>
-	menuItemInit(&menu, TEMPERATURE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, HIGROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
  8007610:	48c8      	ldr	r0, [pc, #800]	; (8007934 <main+0x424>)
  8007612:	23ff      	movs	r3, #255	; 0xff
  8007614:	9301      	str	r3, [sp, #4]
@@ -19137,7 +19137,7 @@ int main(void)
  800761c:	2200      	movs	r2, #0
  800761e:	2103      	movs	r1, #3
  8007620:	f000 fdb4 	bl	800818c <menuItemInit>
-	menuItemInit(&menu, ALTITUDE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, TEMPERATURE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
  8007624:	48c3      	ldr	r0, [pc, #780]	; (8007934 <main+0x424>)
  8007626:	23ff      	movs	r3, #255	; 0xff
  8007628:	9301      	str	r3, [sp, #4]
@@ -19147,7 +19147,7 @@ int main(void)
  8007630:	2200      	movs	r2, #0
  8007632:	2104      	movs	r1, #4
  8007634:	f000 fdaa 	bl	800818c <menuItemInit>
-	menuItemInit(&menu, AZIMUTH, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, ALTITUDE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
  8007638:	48be      	ldr	r0, [pc, #760]	; (8007934 <main+0x424>)
  800763a:	23ff      	movs	r3, #255	; 0xff
  800763c:	9301      	str	r3, [sp, #4]
@@ -19157,11 +19157,11 @@ int main(void)
  8007644:	2200      	movs	r2, #0
  8007646:	2105      	movs	r1, #5
  8007648:	f000 fda0 	bl	800818c <menuItemInit>
-	menuItemInit(&menu, CHRONO, 0, MENU_NONE, CHRONO_HUNDREDTHS, CHRONO_RESET);
+	menuItemInit(&menu, AZIMUTH, 0, MENU_NONE, MENU_NONE, MENU_NONE);
  800764c:	48b9      	ldr	r0, [pc, #740]	; (8007934 <main+0x424>)
- 800764e:	2305      	movs	r3, #5
+ 800764e:	23ff      	movs	r3, #255	; 0xff
  8007650:	9301      	str	r3, [sp, #4]
- 8007652:	2302      	movs	r3, #2
+ 8007652:	23ff      	movs	r3, #255	; 0xff
  8007654:	9300      	str	r3, [sp, #0]
  8007656:	23ff      	movs	r3, #255	; 0xff
  8007658:	2200      	movs	r2, #0
@@ -19205,7 +19205,7 @@ int main(void)
  80076a0:	9301      	str	r3, [sp, #4]
  80076a2:	23ff      	movs	r3, #255	; 0xff
  80076a4:	9300      	str	r3, [sp, #0]
- 80076a6:	2306      	movs	r3, #6
+ 80076a6:	2301      	movs	r3, #1
  80076a8:	2201      	movs	r2, #1
  80076aa:	2103      	movs	r1, #3
  80076ac:	f000 fd6e 	bl	800818c <menuItemInit>
@@ -19215,7 +19215,7 @@ int main(void)
  80076b4:	9301      	str	r3, [sp, #4]
  80076b6:	23ff      	movs	r3, #255	; 0xff
  80076b8:	9300      	str	r3, [sp, #0]
- 80076ba:	2306      	movs	r3, #6
+ 80076ba:	2301      	movs	r3, #1
  80076bc:	2201      	movs	r2, #1
  80076be:	2102      	movs	r1, #2
  80076c0:	f000 fd64 	bl	800818c <menuItemInit>
@@ -19225,7 +19225,7 @@ int main(void)
  80076c8:	9301      	str	r3, [sp, #4]
  80076ca:	23ff      	movs	r3, #255	; 0xff
  80076cc:	9300      	str	r3, [sp, #0]
- 80076ce:	2306      	movs	r3, #6
+ 80076ce:	2301      	movs	r3, #1
  80076d0:	2201      	movs	r2, #1
  80076d2:	2104      	movs	r1, #4
  80076d4:	f000 fd5a 	bl	800818c <menuItemInit>
@@ -19235,7 +19235,7 @@ int main(void)
  80076dc:	9301      	str	r3, [sp, #4]
  80076de:	23ff      	movs	r3, #255	; 0xff
  80076e0:	9300      	str	r3, [sp, #0]
- 80076e2:	2306      	movs	r3, #6
+ 80076e2:	2301      	movs	r3, #1
  80076e4:	2201      	movs	r2, #1
  80076e6:	2105      	movs	r1, #5
  80076e8:	f000 fd50 	bl	800818c <menuItemInit>
@@ -19361,7 +19361,7 @@ int main(void)
  80077bc:	2204      	movs	r2, #4
  80077be:	9200      	str	r2, [sp, #0]
  80077c0:	2200      	movs	r2, #0
- 80077c2:	2101      	movs	r1, #1
+ 80077c2:	2102      	movs	r1, #2
  80077c4:	f000 fc12 	bl	8007fec <menuItemChangeValue>
 	menuItemChangeValue(&menu, HIGROMETER, 0, "42 H", INTER_DISABLED, 0);
  80077c8:	4b5c      	ldr	r3, [pc, #368]	; (800793c <main+0x42c>)
@@ -19371,7 +19371,7 @@ int main(void)
  80077d0:	2204      	movs	r2, #4
  80077d2:	9200      	str	r2, [sp, #0]
  80077d4:	2200      	movs	r2, #0
- 80077d6:	2102      	movs	r1, #2
+ 80077d6:	2103      	movs	r1, #3
  80077d8:	f000 fc08 	bl	8007fec <menuItemChangeValue>
 	menuItemChangeValue(&menu, TEMPERATURE, 0, "20 ^", INTER_DISABLED, 0);
  80077dc:	4b58      	ldr	r3, [pc, #352]	; (8007940 <main+0x430>)
@@ -19381,7 +19381,7 @@ int main(void)
  80077e4:	2204      	movs	r2, #4
  80077e6:	9200      	str	r2, [sp, #0]
  80077e8:	2200      	movs	r2, #0
- 80077ea:	2103      	movs	r1, #3
+ 80077ea:	2104      	movs	r1, #4
  80077ec:	f000 fbfe 	bl	8007fec <menuItemChangeValue>
 	menuItemChangeValue(&menu, ALTITUDE, 0, " 102", INTER_DISABLED, 0);
  80077f0:	4b54      	ldr	r3, [pc, #336]	; (8007944 <main+0x434>)
@@ -19391,7 +19391,7 @@ int main(void)
  80077f8:	2204      	movs	r2, #4
  80077fa:	9200      	str	r2, [sp, #0]
  80077fc:	2200      	movs	r2, #0
- 80077fe:	2104      	movs	r1, #4
+ 80077fe:	2105      	movs	r1, #5
  8007800:	f000 fbf4 	bl	8007fec <menuItemChangeValue>
 	menuItemChangeValue(&menu, AZIMUTH, 0, "350^", INTER_DISABLED, 0);
  8007804:	4b50      	ldr	r3, [pc, #320]	; (8007948 <main+0x438>)
@@ -19401,7 +19401,7 @@ int main(void)
  800780c:	2204      	movs	r2, #4
  800780e:	9200      	str	r2, [sp, #0]
  8007810:	2200      	movs	r2, #0
- 8007812:	2105      	movs	r1, #5
+ 8007812:	2106      	movs	r1, #6
  8007814:	f000 fbea 	bl	8007fec <menuItemChangeValue>
 //	menuItemChangeValue(&menu, CHRONO, 0, "CH  ", INTER_COLON, 0);
 	menuItemChangeValue(&menu, SETTINGS, 0, "SEt", INTER_DISABLED, 0);
@@ -19485,10 +19485,10 @@ int main(void)
 //	menuItemChangeValue(&menu, SETTINGS_CALENDAR_YEAR, 2, "2022",
 //	INTER_DISABLED, 1);
 
-	menuReset(&menu);
+	menuResetCurrent(&menu);
  80078a4:	4b23      	ldr	r3, [pc, #140]	; (8007934 <main+0x424>)
  80078a6:	0018      	movs	r0, r3
- 80078a8:	f000 fb8f 	bl	8007fca <menuReset>
+ 80078a8:	f000 fb8f 	bl	8007fca <menuResetCurrent>
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
@@ -19554,10 +19554,10 @@ int main(void)
  8007908:	f7fb ff26 	bl	8003758 <HAL_PWR_EnterSTOPMode>
 
 			//											AFTER WAKE UP
-			menuReset(&menu);
+			menuResetCurrent(&menu);
  800790c:	4b09      	ldr	r3, [pc, #36]	; (8007934 <main+0x424>)
  800790e:	0018      	movs	r0, r3
- 8007910:	f000 fb5b 	bl	8007fca <menuReset>
+ 8007910:	f000 fb5b 	bl	8007fca <menuResetCurrent>
 			flags[FLAG_LOCKED] = 0;
  8007914:	4b15      	ldr	r3, [pc, #84]	; (800796c <main+0x45c>)
  8007916:	2200      	movs	r2, #0
@@ -20749,13 +20749,13 @@ void Error_Handler(void)
 	while (1) {
  8007fc8:	e7fe      	b.n	8007fc8 <Error_Handler+0x8>
 
-08007fca <menuReset>:
+08007fca <menuResetCurrent>:
  *
  * @param  Menu item handler
  *
  * @retval None
  */
-void menuReset(MenuTypeDef *menu) {
+void menuResetCurrent(MenuTypeDef *menu) {
  8007fca:	b580      	push	{r7, lr}
  8007fcc:	b082      	sub	sp, #8
  8007fce:	af00      	add	r7, sp, #0

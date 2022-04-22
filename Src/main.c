@@ -146,12 +146,12 @@ int main(void)
 	//												MENU ITEMS CONFIG
 	//level 0
 	menuItemInit(&menu, CLOCK, 0, MENU_NONE, 0, 1);
+	menuItemInit(&menu, CHRONO, 0, MENU_NONE, CHRONO_HUNDREDTHS, CHRONO_RESET);
 	menuItemInit(&menu, BAROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, HIGROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, TEMPERATURE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, ALTITUDE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, AZIMUTH, 0, MENU_NONE, MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, CHRONO, 0, MENU_NONE, CHRONO_HUNDREDTHS, CHRONO_RESET);
 	menuItemInit(&menu, SETTINGS, 0, MENU_NONE, SETTINGS_CLOCK, SETTINGS_CORRECTION);
 
 	//level 1
@@ -221,7 +221,7 @@ int main(void)
 //	menuItemChangeValue(&menu, SETTINGS_CALENDAR_YEAR, 2, "2022",
 //	INTER_DISABLED, 1);
 
-	menuReset(&menu);
+	menuResetCurrent(&menu);
 
 //	menuCurrentItem = menu.items[CLOCK];
 
@@ -252,7 +252,7 @@ int main(void)
 			HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
 
 			//											AFTER WAKE UP
-			menuReset(&menu);
+			menuResetCurrent(&menu);
 			flags[FLAG_LOCKED] = 0;
 		}
 

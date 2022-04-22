@@ -70,7 +70,7 @@ Archive member included to satisfy reference by file (symbol)
 Allocating common symbols
 Common symbol       size              file
 
-menu                0x155             ./Src/main.o
+menu                0x158             ./Src/main.o
 hi2c1               0x4c              ./Src/main.o
 chronograph         0x28              ./Src/main.o
 uwTick              0x4               ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.o
@@ -5700,9 +5700,9 @@ LOAD /opt/st/stm32cubeide_1.8.0/plugins/com.st.stm32cube.ide.mcu.externaltools.g
  .text.Error_Handler
                 0x0000000008007fc0        0xa ./Src/main.o
                 0x0000000008007fc0                Error_Handler
- .text.menuReset
+ .text.menuResetCurrent
                 0x0000000008007fca       0x22 ./Src/menu.o
-                0x0000000008007fca                menuReset
+                0x0000000008007fca                menuResetCurrent
  .text.menuItemChangeValue
                 0x0000000008007fec      0x1a0 ./Src/menu.o
                 0x0000000008007fec                menuItemChangeValue
@@ -6132,7 +6132,7 @@ LOAD /opt/st/stm32cubeide_1.8.0/plugins/com.st.stm32cube.ide.mcu.externaltools.g
 LOAD /opt/st/stm32cubeide_1.8.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.linux64_2.0.0.202105311346/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libm.a
 LOAD /opt/st/stm32cubeide_1.8.0/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.linux64_2.0.0.202105311346/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v6-m/nofp/libgcc.a
 
-.debug_info     0x0000000000000000    0x20f69
+.debug_info     0x0000000000000000    0x2108f
  .debug_info    0x0000000000000000      0xb72 ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.o
  .debug_info    0x0000000000000b72     0x1698 ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.o
  .debug_info    0x000000000000220a      0xa9e ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.o
@@ -6149,15 +6149,15 @@ LOAD /opt/st/stm32cubeide_1.8.0/plugins/com.st.stm32cube.ide.mcu.externaltools.g
  .debug_info    0x000000000000deb4     0x499e ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.o
  .debug_info    0x0000000000012852     0x1061 ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.o
  .debug_info    0x00000000000138b3     0x129d ./Src/7seg.o
- .debug_info    0x0000000000014b50     0x1418 ./Src/interface.o
- .debug_info    0x0000000000015f68     0x1a89 ./Src/interrupts.o
- .debug_info    0x00000000000179f1     0x2b1d ./Src/main.o
- .debug_info    0x000000000001a50e      0xb61 ./Src/menu.o
- .debug_info    0x000000000001b06f     0x1574 ./Src/rtc.o
- .debug_info    0x000000000001c5e3     0x2a44 ./Src/stm32g0xx_hal_msp.o
- .debug_info    0x000000000001f027     0x1a95 ./Src/stm32g0xx_it.o
- .debug_info    0x0000000000020abc      0x48b ./Src/system_stm32g0xx.o
- .debug_info    0x0000000000020f47       0x22 ./Startup/startup_stm32g071kbtx.o
+ .debug_info    0x0000000000014b50     0x1442 ./Src/interface.o
+ .debug_info    0x0000000000015f92     0x1ab3 ./Src/interrupts.o
+ .debug_info    0x0000000000017a45     0x2b47 ./Src/main.o
+ .debug_info    0x000000000001a58c      0xb8b ./Src/menu.o
+ .debug_info    0x000000000001b117     0x159e ./Src/rtc.o
+ .debug_info    0x000000000001c6b5     0x2a6e ./Src/stm32g0xx_hal_msp.o
+ .debug_info    0x000000000001f123     0x1abf ./Src/stm32g0xx_it.o
+ .debug_info    0x0000000000020be2      0x48b ./Src/system_stm32g0xx.o
+ .debug_info    0x000000000002106d       0x22 ./Startup/startup_stm32g071kbtx.o
 
 .debug_abbrev   0x0000000000000000     0x3799
  .debug_abbrev  0x0000000000000000      0x276 ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.o
@@ -6405,7 +6405,7 @@ LOAD /opt/st/stm32cubeide_1.8.0/plugins/com.st.stm32cube.ide.mcu.externaltools.g
  .debug_line    0x000000000001b01c      0x7f7 ./Src/system_stm32g0xx.o
  .debug_line    0x000000000001b813       0x84 ./Startup/startup_stm32g071kbtx.o
 
-.debug_str      0x0000000000000000    0xb3056
+.debug_str      0x0000000000000000    0xb307b
  .debug_str     0x0000000000000000    0xa91d2 ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.o
                                       0xa9986 (size before relaxing)
  .debug_str     0x00000000000a91d2      0xccb ./Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.o
@@ -6438,23 +6438,23 @@ LOAD /opt/st/stm32cubeide_1.8.0/plugins/com.st.stm32cube.ide.mcu.externaltools.g
                                       0xa999a (size before relaxing)
  .debug_str     0x00000000000aeb13     0x375c ./Src/7seg.o
                                       0xac92b (size before relaxing)
- .debug_str     0x00000000000b226f      0xa74 ./Src/interface.o
-                                      0xad3d9 (size before relaxing)
- .debug_str     0x00000000000b2ce3       0x43 ./Src/interrupts.o
-                                      0xad989 (size before relaxing)
- .debug_str     0x00000000000b2d26       0xcf ./Src/main.o
-                                      0xae5b1 (size before relaxing)
- .debug_str     0x00000000000b2df5       0x44 ./Src/menu.o
-                                       0x728b (size before relaxing)
- .debug_str     0x00000000000b2e39       0xb2 ./Src/rtc.o
-                                      0xad3fb (size before relaxing)
- .debug_str     0x00000000000b2eeb       0x25 ./Src/stm32g0xx_hal_msp.o
-                                      0xae4e3 (size before relaxing)
- .debug_str     0x00000000000b2f10       0xda ./Src/stm32g0xx_it.o
-                                      0xad9b9 (size before relaxing)
- .debug_str     0x00000000000b2fea       0x3b ./Src/system_stm32g0xx.o
+ .debug_str     0x00000000000b226f      0xa92 ./Src/interface.o
+                                      0xad3f7 (size before relaxing)
+ .debug_str     0x00000000000b2d01       0x43 ./Src/interrupts.o
+                                      0xad9a7 (size before relaxing)
+ .debug_str     0x00000000000b2d44       0xcf ./Src/main.o
+                                      0xae5cf (size before relaxing)
+ .debug_str     0x00000000000b2e13       0x4b ./Src/menu.o
+                                       0x72b0 (size before relaxing)
+ .debug_str     0x00000000000b2e5e       0xb2 ./Src/rtc.o
+                                      0xad419 (size before relaxing)
+ .debug_str     0x00000000000b2f10       0x25 ./Src/stm32g0xx_hal_msp.o
+                                      0xae501 (size before relaxing)
+ .debug_str     0x00000000000b2f35       0xda ./Src/stm32g0xx_it.o
+                                      0xad9d7 (size before relaxing)
+ .debug_str     0x00000000000b300f       0x3b ./Src/system_stm32g0xx.o
                                       0xa921e (size before relaxing)
- .debug_str     0x00000000000b3025       0x31 ./Startup/startup_stm32g071kbtx.o
+ .debug_str     0x00000000000b304a       0x31 ./Startup/startup_stm32g071kbtx.o
                                          0x5d (size before relaxing)
 
 .comment        0x0000000000000000       0x53
