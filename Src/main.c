@@ -26,17 +26,14 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef struct{
-	uint8_t hour;
-	uint8_t minute;
-	uint8_t second;
-}TimeTypeDef;
-
-
-TimeTypeDef aktualnyCzas;
-
-
-
+//typedef struct{
+//	uint8_t hour;
+//	uint8_t minute;
+//	uint8_t second;
+//}TimeTypeDef;
+//
+//
+//TimeTypeDef aktualnyCzas;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -70,24 +67,20 @@ MenuTypeDef menu;
 //												CHRONOGRAPF INSTANCE CREATE
 RTCChronoTypeDef chronograph;
 
-
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM1_Init(void);
-static void MX_ADC1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
-static void MX_RTC_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_RTC_Init(void);
+static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 
-//void twoIntsToArray(char *destination, int8_t int1, int8_t int2);
-//void oneIntToArray(char *destination, uint8_t offset, int8_t integer);
-
+//uint32_t adcRead(ADC_HandleTypeDef *adcHandler, uint32_t channel);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -123,16 +116,27 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM1_Init();
-  MX_ADC1_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
-  MX_RTC_Init();
   MX_TIM2_Init();
+  MX_RTC_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim1);
 	HAL_TIM_Base_Start_IT(&htim2);
 
-	//												DISPLAY PIN ASSIGNMENT
+	adcInit(&hadc1);
+	adcSetChannel(&hadc1, ADC_CHANNEL_TEMPSENSOR);
+
+//	while(1){
+//
+//		uint32_t temperature = adcTemperature(adcRead(&hadc1));
+//	}
+//	do sprawdzenia:
+//	dłuższy sampling time
+//	filtrowanie na wyjściu przetwornicy, a nie przy MCU.
+
+//												DISPLAY PIN ASSIGNMENT
 	LEDinit(&display, DISP_0_GPIO_Port, DISP_0_Pin, DISP_1_GPIO_Port,
 	DISP_1_Pin,
 	DISP_2_GPIO_Port, DISP_2_Pin, DISP_3_GPIO_Port, DISP_3_Pin,
@@ -146,13 +150,15 @@ int main(void)
 	//												MENU ITEMS CONFIG
 	//level 0
 	menuItemInit(&menu, CLOCK, 0, MENU_NONE, 0, 1);
-	menuItemInit(&menu, CHRONO, 0, MENU_NONE, CHRONO_HUNDREDTHS, CHRONO_RESET);
+	menuItemInit(&menu, CHRONO, 0, MENU_NONE, CHRONO_HUNDREDTHS,
+	CHRONO_RESET);
 	menuItemInit(&menu, BAROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, HIGROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, TEMPERATURE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, ALTITUDE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, AZIMUTH, 0, MENU_NONE, MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, SETTINGS, 0, MENU_NONE, SETTINGS_CLOCK, SETTINGS_CORRECTION);
+	menuItemInit(&menu, SETTINGS, 0, MENU_NONE, SETTINGS_CLOCK,
+	SETTINGS_CORRECTION);
 
 	//level 1
 	menuItemInit(&menu, CLOCK_DATE, 1, CLOCK, MENU_NONE, MENU_NONE);
@@ -163,23 +169,28 @@ int main(void)
 	menuItemInit(&menu, CHRONO_RESET, 1, CHRONO, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, SETTINGS_CLOCK, 1, SETTINGS, SETTINGS_CLOCK_HOUR,
 	SETTINGS_CLOCK_SECONDS);
-	menuItemInit(&menu, SETTINGS_CALENDAR, 1, SETTINGS, SETTINGS_CALENDAR_DAY,
+	menuItemInit(&menu, SETTINGS_CALENDAR, 1, SETTINGS,
+	SETTINGS_CALENDAR_DAY,
 	SETTINGS_CALENDAR_YEAR);
-	menuItemInit(&menu, SETTINGS_REFERENCE, 1, SETTINGS, MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, SETTINGS_CORRECTION, 1, SETTINGS, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, SETTINGS_REFERENCE, 1, SETTINGS, MENU_NONE,
+	MENU_NONE);
+	menuItemInit(&menu, SETTINGS_CORRECTION, 1, SETTINGS, MENU_NONE,
+	MENU_NONE);
 
 	//level 2
 	menuItemInit(&menu, SETTINGS_CLOCK_HOUR, 2, SETTINGS_CLOCK, MENU_NONE,
 	MENU_NONE);
 	menuItemInit(&menu, SETTINGS_CLOCK_MINUTE, 2, SETTINGS_CLOCK, MENU_NONE,
 	MENU_NONE);
-	menuItemInit(&menu, SETTINGS_CLOCK_SECONDS, 2, SETTINGS_CLOCK, MENU_NONE,
+	menuItemInit(&menu, SETTINGS_CLOCK_SECONDS, 2, SETTINGS_CLOCK,
+	MENU_NONE,
 	MENU_NONE);
 	menuItemInit(&menu, SETTINGS_CALENDAR_DAY, 2, SETTINGS_CALENDAR,
 	MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, SETTINGS_CALENDAR_MONTH, 2, SETTINGS_CALENDAR,
 	MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, SETTINGS_CALENDAR_YEAR, 2, SETTINGS_CALENDAR, MENU_NONE,
+	menuItemInit(&menu, SETTINGS_CALENDAR_YEAR, 2, SETTINGS_CALENDAR,
+	MENU_NONE,
 	MENU_NONE);
 
 	//												MENU ITEMS CONSTANT VALUES
@@ -203,10 +214,10 @@ int main(void)
 	menuItemChangeValue(&menu, CHRONO_RESET, 1, "----", INTER_COLON, 0);
 	menuItemChangeValue(&menu, SETTINGS_CLOCK, 1, "SC  ", INTER_DISABLED, 0);
 	menuItemChangeValue(&menu, SETTINGS_CALENDAR, 1, "SCAL", INTER_DISABLED, 0);
-	menuItemChangeValue(&menu, SETTINGS_REFERENCE, 1, "P0  ", INTER_DISABLED,
-			1);
-	menuItemChangeValue(&menu, SETTINGS_CORRECTION, 1, "tC  ", INTER_DISABLED,
-			1);
+	menuItemChangeValue(&menu, SETTINGS_REFERENCE, 1, "P0  ",
+	INTER_DISABLED, 1);
+	menuItemChangeValue(&menu, SETTINGS_CORRECTION, 1, "tC  ",
+	INTER_DISABLED, 1);
 
 	//level 3
 //	menuItemChangeValue(&menu, SETTINGS_CLOCK_HOUR, 2, "21  ",
@@ -249,7 +260,8 @@ int main(void)
 			flags[FLAG_SLEEP] = 0;
 			HAL_Delay(10);
 			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 0);
-			HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON, PWR_STOPENTRY_WFI);
+			HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,
+			PWR_STOPENTRY_WFI);
 
 			//											AFTER WAKE UP
 			menuResetCurrent(&menu);
@@ -344,10 +356,13 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.DMAContinuousRequests = DISABLE;
-  hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
-  hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_1CYCLE_5;
-  hadc1.Init.SamplingTimeCommon2 = ADC_SAMPLETIME_1CYCLE_5;
-  hadc1.Init.OversamplingMode = DISABLE;
+  hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
+  hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_160CYCLES_5;
+  hadc1.Init.SamplingTimeCommon2 = ADC_SAMPLETIME_160CYCLES_5;
+  hadc1.Init.OversamplingMode = ENABLE;
+  hadc1.Init.Oversampling.Ratio = ADC_OVERSAMPLING_RATIO_256;
+  hadc1.Init.Oversampling.RightBitShift = ADC_RIGHTBITSHIFT_8;
+  hadc1.Init.Oversampling.TriggeredMode = ADC_TRIGGEREDMODE_SINGLE_TRIGGER;
   hadc1.Init.TriggerFrequencyMode = ADC_TRIGGER_FREQ_HIGH;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
@@ -356,7 +371,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_0;
+  sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLINGTIME_COMMON_1;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
@@ -502,7 +517,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 4;
+  htim1.Init.Prescaler = 29;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 1999;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -696,8 +711,26 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-
-
+//uint32_t adcRead(ADC_HandleTypeDef *adcHandler, uint32_t channel) {
+//	HAL_ADC_Stop(adcHandler);
+//
+//	ADC_ChannelConfTypeDef chConf = { 0 };
+//	chConf.Channel = channel;
+//	chConf.Rank = ADC_RANK_CHANNEL_NUMBER;
+//
+//	if (HAL_ADC_ConfigChannel(adcHandler, &chConf) != HAL_OK) {
+//		Error_Handler();
+//	}
+//	HAL_ADC_Start(adcHandler);
+//	uint32_t reading = 0;
+//
+//	while (HAL_ADC_PollForConversion(adcHandler, 100) != HAL_OK)
+//		;
+//
+//	reading = HAL_ADC_GetValue(adcHandler);
+//
+//	return reading;
+//}
 /* USER CODE END 4 */
 
 /**

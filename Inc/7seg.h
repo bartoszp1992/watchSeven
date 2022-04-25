@@ -26,7 +26,7 @@
 #define LED_FIELDS 4
 
 //prescaler for animation
-#define LED_TRANSITION_PRE 40
+#define LED_TRANSITION_PRE 8
 
 //transition separator size
 #define LED_TRANSITION_SEPARATOR_SIZE 4

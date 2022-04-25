@@ -39,7 +39,15 @@ static void _LEDallOff(LEDdisplayTypeDef *LEDdisplay);
 static void _LEDwriteCharacter(LEDdisplayTypeDef *LEDdisplay, uint8_t character);
 void _LEDtransition(LEDdisplayTypeDef *LEDdisplay, uint8_t transition);
 
-
+/**
+ * @brief  Multiplexing function
+ *
+ * @note   run cyclic, e.g. in synchronical interrupt
+ *
+ * @param  Display handler
+ *
+ * @retval None
+ */
 void LEDmultiplexing(LEDdisplayTypeDef *LEDdisplay) {
 
 //every intterrupt occurs

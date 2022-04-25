@@ -36,8 +36,10 @@ extern "C" {
 #include "7seg.h"
 #include "menu.h"
 #include "rtc.h"
+#include "adc.h"
 #include "interrupts.h"
 #include "interface.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -114,9 +116,9 @@ void Error_Handler(void);
 //LEVEL 0
 #define CLOCK 0
 #define CHRONO 1
-#define BAROMETER 2
-#define HIGROMETER 3
-#define TEMPERATURE 4
+#define TEMPERATURE 2
+#define BAROMETER 3
+#define HIGROMETER 4
 #define ALTITUDE 5
 #define AZIMUTH 6
 #define SETTINGS 7
@@ -149,13 +151,19 @@ void Error_Handler(void);
 #define CHRONO_HUNDREDTHS_LEVEL 1
 #define CHRONO_START_LEVEL 1
 #define CHRONO_RESET_LEVEL 1
+#define TEMPERATURE_LEVEL 0
 
 //DISPLAY DOTS
 #define INTER_COLON 1
 #define INTER_DOT 0
 #define INTER_DISABLED LED_DOT_DISABLED
 
+//ADC array
+#define ADC_TEMPERATURE
+#define ADC_VOLTAGE
 
+//uint32_t temperature[500];
+//uint32_t temperatureActualIndex;
 
 /* USER CODE END Private defines */
 

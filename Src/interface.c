@@ -68,6 +68,23 @@ void interfaceWrite(void) {
 	oneIntToArray(buffer, 2, chronograph.chrono.hundredth);
 	menuItemChangeValue(&menu, CHRONO_HUNDREDTHS, CHRONO_HUNDREDTHS_LEVEL, buffer, INTER_DOT, 0);
 
+	//								WRITE TEMPERATURE
+
+
+//direct
+	uint32_t temperature = adcTemperature(adcRead(&hadc1));
+
+	//function from adc
+//	uint32_t temperature = adcAveraging(adcTemperature(adcRead(&hadc1)), temperatureArray, sizeof(temperatureArray));
+
+	//modal
+//	temperature
+
+	oneIntToArray(buffer, 0, temperature);
+	buffer[2] = '^';
+	buffer[3] = 'C';
+	menuItemChangeValue(&menu, TEMPERATURE, TEMPERATURE_LEVEL, buffer, INTER_DISABLED, 0);
+
 
 }
 
