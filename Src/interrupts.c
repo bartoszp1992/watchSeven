@@ -17,11 +17,12 @@ void encoderAction(uint8_t direction) {
 				rtcStartChrono(&chronograph);
 			} else if (chronograph.chronoMode == RTC_CHRONO_MODE_RUNNING) {
 				rtcStopChrono(&chronograph);
-			} else if(chronograph.chronoMode == RTC_CHRONO_MODE_STOP){
+			} else if (chronograph.chronoMode == RTC_CHRONO_MODE_STOP) {
 				rtcResumeChrono(&chronograph);
 			}
 
-		} else if (menu.current.entry == CHRONO_RESET && menu.current.level == CHRONO_RESET_LEVEL) {
+		} else if (menu.current.entry == CHRONO_RESET
+				&& menu.current.level == CHRONO_RESET_LEVEL) {
 			rtcResetChrono(&chronograph);
 		} else {
 
@@ -89,6 +90,10 @@ void encoderAction(uint8_t direction) {
 					rtcChangeValue(&chronograph, RTC_CHANGE_YEAR,
 					RTC_CHANGE_DIR_DOWN);
 					break;
+				case SETTINGS_CORRECTION_VALUE:
+					if(temperatureCorrection > TEMPERATURE_CORRECTION_MIN)
+					temperatureCorrection--;
+					break;
 				}
 
 			}
@@ -132,6 +137,10 @@ void encoderAction(uint8_t direction) {
 				case SETTINGS_CALENDAR_YEAR:
 					rtcChangeValue(&chronograph, RTC_CHANGE_YEAR,
 					RTC_CHANGE_DIR_UP);
+					break;
+				case SETTINGS_CORRECTION_VALUE:
+					if(temperatureCorrection < TEMPERATURE_CORRECTION_MAX)
+					temperatureCorrection++;
 					break;
 				}
 
