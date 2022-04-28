@@ -7,7 +7,7 @@
 7seg.c:446:6:LEDinit	24	static
 7seg.c:516:6:LEDseparator	32	static
 7seg.c:531:6:LEDclear	16	static
-7seg.c:549:6:LEDchar	16	static
-7seg.c:568:6:LEDint	32	static
-7seg.c:613:6:LEDstr	32	static
-7seg.c:638:6:LEDdot	16	static
+7seg.c:550:6:LEDchar	16	static
+7seg.c:569:6:LEDint	32	static
+7seg.c:614:6:LEDstr	32	static
+7seg.c:639:6:LEDdot	16	static

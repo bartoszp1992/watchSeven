@@ -16,7 +16,7 @@ void Error_Handler(void);
 void adcInit(ADC_HandleTypeDef *adcHandler);
 void adcSetChannel(ADC_HandleTypeDef *adcHandler, uint32_t channel);
 uint32_t adcRead(ADC_HandleTypeDef *adcHandler);
-uint32_t adcTemperature(uint32_t adcReading);
+uint32_t adcTemperature(uint32_t adcReading, uint32_t reference);
 uint32_t adcVoltage(uint32_t adcReading);
 
 

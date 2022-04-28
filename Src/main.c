@@ -26,14 +26,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-//typedef struct{
-//	uint8_t hour;
-//	uint8_t minute;
-//	uint8_t second;
-//}TimeTypeDef;
-//
-//
-//TimeTypeDef aktualnyCzas;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -55,6 +48,7 @@ RTC_HandleTypeDef hrtc;
 
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
 
 UART_HandleTypeDef huart2;
 
@@ -66,6 +60,11 @@ LEDdisplayTypeDef display;
 MenuTypeDef menu;
 //												CHRONOGRAPF INSTANCE CREATE
 RTCChronoTypeDef chronograph;
+//												BME280 INSTANCE CREATE
+bme280TypeDef bme280;
+
+
+
 
 /* USER CODE END PV */
 
@@ -73,11 +72,12 @@ RTCChronoTypeDef chronograph;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM1_Init(void);
-static void MX_USART2_UART_Init(void);
-static void MX_I2C1_Init(void);
 static void MX_TIM2_Init(void);
+static void MX_USART2_UART_Init(void);
 static void MX_RTC_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_TIM3_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 //uint32_t adcRead(ADC_HandleTypeDef *adcHandler, uint32_t channel);
@@ -115,17 +115,20 @@ int main(void) {
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
 	MX_TIM1_Init();
-	MX_USART2_UART_Init();
-	MX_I2C1_Init();
 	MX_TIM2_Init();
+	MX_USART2_UART_Init();
 	MX_RTC_Init();
 	MX_ADC1_Init();
+	MX_TIM3_Init();
+	MX_I2C1_Init();
 	/* USER CODE BEGIN 2 */
 	HAL_TIM_Base_Start_IT(&htim1);
 	HAL_TIM_Base_Start_IT(&htim2);
+	HAL_TIM_Base_Start_IT(&htim3);
 
 	adcInit(&hadc1);
-	temperatureCorrection = -5;
+	temperatureCorrection = -9;
+
 
 //												DISPLAY PIN ASSIGNMENT
 	LEDinit(&display, DISP_0_GPIO_Port, DISP_0_Pin, DISP_1_GPIO_Port,
@@ -147,7 +150,7 @@ int main(void) {
 	menuItemInit(&menu, HIGROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, TEMPERATURE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, ALTITUDE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, AZIMUTH, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+//	menuItemInit(&menu, AZIMUTH, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, SETTINGS, 0, MENU_NONE, SETTINGS_CLOCK,
 	SETTINGS_REFERENCE);
 
@@ -164,11 +167,11 @@ int main(void) {
 	SETTINGS_CALENDAR_DAY,
 	SETTINGS_CALENDAR_YEAR);
 	menuItemInit(&menu, SETTINGS_REFERENCE, 1, SETTINGS,
-			SETTINGS_REFERENCE_VALUE,
-			SETTINGS_REFERENCE_VALUE);
+	SETTINGS_REFERENCE_VALUE,
+	SETTINGS_REFERENCE_VALUE);
 	menuItemInit(&menu, SETTINGS_CORRECTION, 1, SETTINGS,
-			SETTINGS_CORRECTION_VALUE,
-			SETTINGS_CORRECTION_VALUE);
+	SETTINGS_CORRECTION_VALUE,
+	SETTINGS_CORRECTION_VALUE);
 
 	//level 2
 	menuItemInit(&menu, SETTINGS_CLOCK_HOUR, 2, SETTINGS_CLOCK, MENU_NONE,
@@ -185,32 +188,44 @@ int main(void) {
 	menuItemInit(&menu, SETTINGS_CALENDAR_YEAR, 2, SETTINGS_CALENDAR,
 	MENU_NONE,
 	MENU_NONE);
-	menuItemInit(&menu, SETTINGS_CORRECTION_VALUE, 2, SETTINGS_CORRECTION, MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, SETTINGS_REFERENCE_VALUE, 2, SETTINGS_REFERENCE, MENU_NONE, MENU_NONE);
-
+	menuItemInit(&menu, SETTINGS_CORRECTION_VALUE, 2, SETTINGS_CORRECTION,
+	MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, SETTINGS_REFERENCE_VALUE, 2, SETTINGS_REFERENCE,
+	MENU_NONE, MENU_NONE);
 
 	//												MENU ITEMS CONSTANT VALUES
 	//level 0
 	//value1-string for display, value2-dot postion, value3- is editable
-	menuItemChangeValue(&menu, BAROMETER, 0, "1024", INTER_DISABLED, NOT_EDITABLE);
-	menuItemChangeValue(&menu, HIGROMETER, 0, "42 H", INTER_DISABLED, NOT_EDITABLE);
-	menuItemChangeValue(&menu, TEMPERATURE, 0, "20 ^", INTER_DISABLED, NOT_EDITABLE);
-	menuItemChangeValue(&menu, ALTITUDE, 0, " 102", INTER_DISABLED, NOT_EDITABLE);
-	menuItemChangeValue(&menu, AZIMUTH, 0, "350^", INTER_DISABLED, NOT_EDITABLE);
-	menuItemChangeValue(&menu, SETTINGS, 0, "SEt", INTER_DISABLED, NOT_EDITABLE);
+//	menuItemChangeValue(&menu, BAROMETER, 0, "1024", INTER_DISABLED,
+//	NOT_EDITABLE);
+//	menuItemChangeValue(&menu, HIGROMETER, 0, "42 H", INTER_DISABLED,
+//	NOT_EDITABLE);
+//	menuItemChangeValue(&menu, TEMPERATURE, 0, "20 ^", INTER_DISABLED,
+//	NOT_EDITABLE);
+//	menuItemChangeValue(&menu, ALTITUDE, 0, " 102", INTER_DISABLED,
+//	NOT_EDITABLE);
+	menuItemChangeValue(&menu, SETTINGS, 0, "SEt", INTER_DISABLED,
+	NOT_EDITABLE);
 
 	//level 1
 
-	menuItemChangeValue(&menu, CHRONO_START, 1, "St  ", INTER_DISABLED, NOT_EDITABLE);
-	menuItemChangeValue(&menu, CHRONO_RESET, 1, "----", INTER_COLON, NOT_EDITABLE);
-	menuItemChangeValue(&menu, SETTINGS_CLOCK, 1, "SC  ", INTER_DISABLED, NOT_EDITABLE);
-	menuItemChangeValue(&menu, SETTINGS_CALENDAR, 1, "SCAL", INTER_DISABLED, NOT_EDITABLE);
+	menuItemChangeValue(&menu, CHRONO_START, 1, "St  ", INTER_DISABLED,
+	NOT_EDITABLE);
+	menuItemChangeValue(&menu, CHRONO_RESET, 1, "----", INTER_COLON,
+	NOT_EDITABLE);
+	menuItemChangeValue(&menu, SETTINGS_CLOCK, 1, "SC  ", INTER_DISABLED,
+	NOT_EDITABLE);
+	menuItemChangeValue(&menu, SETTINGS_CALENDAR, 1, "SCAL", INTER_DISABLED,
+	NOT_EDITABLE);
 	menuItemChangeValue(&menu, SETTINGS_CORRECTION, 1, "tC  ",
 	INTER_DISABLED, NOT_EDITABLE);
 	menuItemChangeValue(&menu, SETTINGS_REFERENCE, 1, "P0  ",
 	INTER_DISABLED, NOT_EDITABLE);
 
 	menuResetCurrent(&menu);
+
+	bme280Init(&bme280, &hi2c1);
+
 
 	/* USER CODE END 2 */
 
@@ -220,6 +235,9 @@ int main(void) {
 
 		//read RTC time
 		rtcGetTime(&chronograph);
+
+		//read sensor
+		bme280Read(&bme280);
 
 		//write actual values to menu matrix
 		interfaceWrite();
@@ -232,19 +250,22 @@ int main(void) {
 		//												LOW POWER SECTION
 		if (flags[FLAG_SLEEP]
 				&& HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin) == 1) {
+			HAL_TIM_Base_Stop_IT(&htim1);
 			LEDclear(&display);
 			flags[FLAG_SLEEP] = 0;
-			HAL_Delay(10);
 			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 0);
+			HAL_Delay(10);
+
 			HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,
 			PWR_STOPENTRY_WFI);
 
 			//											AFTER WAKE UP
+			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
+			HAL_Delay(10);
 			menuResetCurrent(&menu);
 			flags[FLAG_LOCKED] = 0;
+			HAL_TIM_Base_Start_IT(&htim1);
 		}
-
-		HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
 
 		/* USER CODE END WHILE */
 
@@ -330,11 +351,11 @@ static void MX_ADC1_Init(void) {
 	hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
 	hadc1.Init.DMAContinuousRequests = DISABLE;
 	hadc1.Init.Overrun = ADC_OVR_DATA_OVERWRITTEN;
-	hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_160CYCLES_5;
-	hadc1.Init.SamplingTimeCommon2 = ADC_SAMPLETIME_160CYCLES_5;
+	hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_79CYCLES_5;
+	hadc1.Init.SamplingTimeCommon2 = ADC_SAMPLETIME_79CYCLES_5;
 	hadc1.Init.OversamplingMode = ENABLE;
-	hadc1.Init.Oversampling.Ratio = ADC_OVERSAMPLING_RATIO_256;
-	hadc1.Init.Oversampling.RightBitShift = ADC_RIGHTBITSHIFT_8;
+	hadc1.Init.Oversampling.Ratio = ADC_OVERSAMPLING_RATIO_16;
+	hadc1.Init.Oversampling.RightBitShift = ADC_RIGHTBITSHIFT_4;
 	hadc1.Init.Oversampling.TriggeredMode = ADC_TRIGGEREDMODE_SINGLE_TRIGGER;
 	hadc1.Init.TriggerFrequencyMode = ADC_TRIGGER_FREQ_HIGH;
 	if (HAL_ADC_Init(&hadc1) != HAL_OK) {
@@ -549,6 +570,48 @@ static void MX_TIM2_Init(void) {
 }
 
 /**
+ * @brief TIM3 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_TIM3_Init(void) {
+
+	/* USER CODE BEGIN TIM3_Init 0 */
+
+	/* USER CODE END TIM3_Init 0 */
+
+	TIM_ClockConfigTypeDef sClockSourceConfig = { 0 };
+	TIM_MasterConfigTypeDef sMasterConfig = { 0 };
+
+	/* USER CODE BEGIN TIM3_Init 1 */
+
+	/* USER CODE END TIM3_Init 1 */
+	htim3.Instance = TIM3;
+	htim3.Init.Prescaler = 999;
+	htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim3.Init.Period = 8999;
+	htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+	if (HAL_TIM_Base_Init(&htim3) != HAL_OK) {
+		Error_Handler();
+	}
+	sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+	if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK) {
+		Error_Handler();
+	}
+	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+	if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig)
+			!= HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN TIM3_Init 2 */
+
+	/* USER CODE END TIM3_Init 2 */
+
+}
+
+/**
  * @brief USART2 Initialization Function
  * @param None
  * @retval None
@@ -607,42 +670,45 @@ static void MX_GPIO_Init(void) {
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 
 	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(GPIOA,
-			ENCODER_ACTIVE_Pin | LED1_Pin | LED2_Pin | DISP_B_Pin | DISP_3_Pin
-					| DISP_D_Pin | DISP_DP_Pin | DISP_A_Pin | DISP_F_Pin
-					| DISP_1_Pin | DISP_2_Pin, GPIO_PIN_RESET);
-
-	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(GPIOB, DISP_G_Pin | DISP_C_Pin | DISP_E_Pin,
+	HAL_GPIO_WritePin(GPIOA, ENCODER_ACTIVE_Pin | LED1_Pin | LED2_Pin,
 			GPIO_PIN_RESET);
 
 	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(DISP_0_GPIO_Port, DISP_0_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOA,
+			DISP_0_Pin | DISP_A_Pin | DISP_B_Pin | DISP_3_Pin | DISP_D_Pin
+					| DISP_DP_Pin | DISP_C_Pin | DISP_G_Pin, GPIO_PIN_SET);
 
-	/*Configure GPIO pins : ENCODER_ACTIVE_Pin LED1_Pin LED2_Pin DISP_B_Pin
-	 DISP_3_Pin DISP_D_Pin DISP_DP_Pin DISP_A_Pin
-	 DISP_F_Pin DISP_1_Pin DISP_2_Pin */
-	GPIO_InitStruct.Pin = ENCODER_ACTIVE_Pin | LED1_Pin | LED2_Pin | DISP_B_Pin
-			| DISP_3_Pin | DISP_D_Pin | DISP_DP_Pin | DISP_A_Pin | DISP_F_Pin
-			| DISP_1_Pin | DISP_2_Pin;
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(GPIOB, DISP_F_Pin | DISP_1_Pin | DISP_2_Pin,
+			GPIO_PIN_SET);
+
+	/*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(DISP_E_GPIO_Port, DISP_E_Pin, GPIO_PIN_SET);
+
+	/*Configure GPIO pins : ENCODER_ACTIVE_Pin LED1_Pin LED2_Pin DISP_0_Pin
+	 DISP_A_Pin DISP_B_Pin DISP_3_Pin DISP_D_Pin
+	 DISP_DP_Pin DISP_C_Pin DISP_G_Pin */
+	GPIO_InitStruct.Pin = ENCODER_ACTIVE_Pin | LED1_Pin | LED2_Pin | DISP_0_Pin
+			| DISP_A_Pin | DISP_B_Pin | DISP_3_Pin | DISP_D_Pin | DISP_DP_Pin
+			| DISP_C_Pin | DISP_G_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-	/*Configure GPIO pins : DISP_G_Pin DISP_C_Pin DISP_E_Pin */
-	GPIO_InitStruct.Pin = DISP_G_Pin | DISP_C_Pin | DISP_E_Pin;
+	/*Configure GPIO pins : DISP_F_Pin DISP_1_Pin DISP_2_Pin */
+	GPIO_InitStruct.Pin = DISP_F_Pin | DISP_1_Pin | DISP_2_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-	/*Configure GPIO pin : DISP_0_Pin */
-	GPIO_InitStruct.Pin = DISP_0_Pin;
+	/*Configure GPIO pin : DISP_E_Pin */
+	GPIO_InitStruct.Pin = DISP_E_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(DISP_0_GPIO_Port, &GPIO_InitStruct);
+	HAL_GPIO_Init(DISP_E_GPIO_Port, &GPIO_InitStruct);
 
 	/*Configure GPIO pins : MODE_Pin BUTTON2_Pin BUTTON1_Pin */
 	GPIO_InitStruct.Pin = MODE_Pin | BUTTON2_Pin | BUTTON1_Pin;
@@ -650,8 +716,8 @@ static void MX_GPIO_Init(void) {
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-	/*Configure GPIO pins : ENC2_Pin ENC1_Pin */
-	GPIO_InitStruct.Pin = ENC2_Pin | ENC1_Pin;
+	/*Configure GPIO pins : ENC1_Pin ENC2_Pin */
+	GPIO_InitStruct.Pin = ENC1_Pin | ENC2_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -667,26 +733,7 @@ static void MX_GPIO_Init(void) {
 
 /* USER CODE BEGIN 4 */
 
-//uint32_t adcRead(ADC_HandleTypeDef *adcHandler, uint32_t channel) {
-//	HAL_ADC_Stop(adcHandler);
-//
-//	ADC_ChannelConfTypeDef chConf = { 0 };
-//	chConf.Channel = channel;
-//	chConf.Rank = ADC_RANK_CHANNEL_NUMBER;
-//
-//	if (HAL_ADC_ConfigChannel(adcHandler, &chConf) != HAL_OK) {
-//		Error_Handler();
-//	}
-//	HAL_ADC_Start(adcHandler);
-//	uint32_t reading = 0;
-//
-//	while (HAL_ADC_PollForConversion(adcHandler, 100) != HAL_OK)
-//		;
-//
-//	reading = HAL_ADC_GetValue(adcHandler);
-//
-//	return reading;
-//}
+
 /* USER CODE END 4 */
 
 /**

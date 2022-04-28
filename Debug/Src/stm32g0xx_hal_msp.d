@@ -39,7 +39,7 @@ Src/stm32g0xx_hal_msp.o: ../Src/stm32g0xx_hal_msp.c ../Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h \
  ../Inc/main.h ../Inc/7seg.h ../Inc/menu.h ../Inc/rtc.h ../Inc/adc.h \
- ../Inc/interrupts.h ../Inc/interface.h
+ ../Inc/interrupts.h ../Inc/interface.h ../Inc/bme280.h
 
 ../Inc/main.h:
 
@@ -134,3 +134,5 @@ Src/stm32g0xx_hal_msp.o: ../Src/stm32g0xx_hal_msp.c ../Inc/main.h \
 ../Inc/interrupts.h:
 
 ../Inc/interface.h:
+
+../Inc/bme280.h:

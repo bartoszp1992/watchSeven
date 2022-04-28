@@ -28,6 +28,15 @@
 void menuResetCurrent(MenuTypeDef *menu) {
 
 	menu->current = menu->items[0][0];
+	menu->current.childFirst = menu->items[0][0].childFirst;
+	menu->current.childLast = menu->items[0][0].childLast;
+	menu->current.entry = menu->items[0][0].entry;
+	menu->current.level = menu->items[0][0].level;
+//	menu->current.parent = menu->items[0][0].parent;
+//	menu->current.value = menu->items[0][0].value;
+//	menu->current.value2 = menu->items[0][0].value2;
+//	menu->current.value3 = menu->items[0][0].value3;
+
 }
 
 /**

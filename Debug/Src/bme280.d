@@ -1,4 +1,4 @@
-Src/interrupts.o: ../Src/interrupts.c ../Inc/interrupts.h ../Inc/main.h \
+Src/bme280.o: ../Src/bme280.c ../Inc/bme280.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h \
  ../Inc/stm32g0xx_hal_conf.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rcc.h \
@@ -37,13 +37,9 @@ Src/interrupts.o: ../Src/interrupts.c ../Inc/interrupts.h ../Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim_ex.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h \
- ../Inc/7seg.h ../Inc/menu.h ../Inc/rtc.h ../Inc/adc.h \
- ../Inc/interrupts.h ../Inc/interface.h ../Inc/bme280.h
+ ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h
 
-../Inc/interrupts.h:
-
-../Inc/main.h:
+../Inc/bme280.h:
 
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h:
 
@@ -122,17 +118,3 @@ Src/interrupts.o: ../Src/interrupts.c ../Inc/interrupts.h ../Inc/main.h \
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h:
 
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h:
-
-../Inc/7seg.h:
-
-../Inc/menu.h:
-
-../Inc/rtc.h:
-
-../Inc/adc.h:
-
-../Inc/interrupts.h:
-
-../Inc/interface.h:
-
-../Inc/bme280.h:

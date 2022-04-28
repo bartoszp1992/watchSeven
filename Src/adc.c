@@ -77,8 +77,8 @@ uint32_t adcRead(ADC_HandleTypeDef *adcHandler){
  *
  * @retval temperature in Celcius degree
  */
-uint32_t adcTemperature(uint32_t adcReading){
-	return __HAL_ADC_CALC_TEMPERATURE(3300, adcReading, ADC_RESOLUTION_12B);
+uint32_t adcTemperature(uint32_t adcReading, uint32_t reference){
+	return __HAL_ADC_CALC_TEMPERATURE(reference, adcReading, ADC_RESOLUTION_12B);
 }
 
 
@@ -92,7 +92,8 @@ uint32_t adcTemperature(uint32_t adcReading){
  * @retval voltage in mV
  */
 uint32_t adcVoltage(uint32_t adcReading){
-	return (3300*1000)/4095;
+//	return (3300*1000)/4095;
+	return __HAL_ADC_CALC_VREFANALOG_VOLTAGE(adcReading, ADC_RESOLUTION_12B);
 }
 
 

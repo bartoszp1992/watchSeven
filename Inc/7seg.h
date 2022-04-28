@@ -17,8 +17,8 @@
 //USER CONFIGURATION
 
 //logical states settings
-#define LED_FIELD_ON 1
-#define LED_FIELD_OFF 0
+#define LED_FIELD_ON 0
+#define LED_FIELD_OFF 1
 #define LED_SEGMENT_ON 0
 #define LED_SEGMENT_OFF 1
 
@@ -26,7 +26,7 @@
 #define LED_FIELDS 4
 
 //prescaler for animation
-#define LED_TRANSITION_PRE 8
+#define LED_TRANSITION_PRE 5
 
 //transition separator size
 #define LED_TRANSITION_SEPARATOR_SIZE 4

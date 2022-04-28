@@ -10,44 +10,50 @@
 void interfaceWrite(void) {
 
 	//								WRITE DATA TO CLOCK
-	twoIntsToArray(buffer, sizeof(buffer), chronograph.actual.hour, chronograph.actual.minute);
+	twoIntsToArray(buffer, sizeof(buffer), chronograph.actual.hour,
+			chronograph.actual.minute);
 	if (rtcBlink(&chronograph)) {
 		menuItemChangeValue(&menu, CLOCK, 0, buffer, INTER_COLON, NOT_EDITABLE);
 	} else {
-		menuItemChangeValue(&menu, CLOCK, 0, buffer, INTER_DISABLED, NOT_EDITABLE);
+		menuItemChangeValue(&menu, CLOCK, 0, buffer, INTER_DISABLED,
+				NOT_EDITABLE);
 	}
 
 	oneIntToArray(buffer, sizeof(buffer), 2, chronograph.actual.second);
 	if (rtcBlink(&chronograph)) {
-		menuItemChangeValue(&menu, CLOCK_SECONDHAND, 1, buffer, INTER_COLON, NOT_EDITABLE);
+		menuItemChangeValue(&menu, CLOCK_SECONDHAND, 1, buffer, INTER_COLON,
+				NOT_EDITABLE);
 	} else {
 		menuItemChangeValue(&menu, CLOCK_SECONDHAND, 1, buffer, INTER_DISABLED,
-				NOT_EDITABLE);
+		NOT_EDITABLE);
 	}
 
 	//								WRITE DATA TO CALENDAR
-	twoIntsToArray(buffer, sizeof(buffer), chronograph.actual.day, chronograph.actual.month);
+	twoIntsToArray(buffer, sizeof(buffer), chronograph.actual.day,
+			chronograph.actual.month);
 	menuItemChangeValue(&menu, CLOCK_DATE, 1, buffer, INTER_DOT, NOT_EDITABLE);
 
 	//								WRITE DATA TO SETTINGS_CLOCK
 	oneIntToArray(buffer, sizeof(buffer), 0, chronograph.actual.hour);
-	menuItemChangeValue(&menu, SETTINGS_CLOCK_HOUR, 2, buffer, INTER_COLON, EDITABLE);
+	menuItemChangeValue(&menu, SETTINGS_CLOCK_HOUR, 2, buffer, INTER_COLON,
+			EDITABLE);
 
 	oneIntToArray(buffer, sizeof(buffer), 2, chronograph.actual.minute);
 	menuItemChangeValue(&menu, SETTINGS_CLOCK_MINUTE, 2, buffer, INTER_COLON,
-			EDITABLE);
+	EDITABLE);
 
 	oneIntToArray(buffer, sizeof(buffer), 2, chronograph.actual.second);
 	menuItemChangeValue(&menu, SETTINGS_CLOCK_SECONDS, 2, buffer, INTER_COLON,
-			EDITABLE);
+	EDITABLE);
 
 	//								WRITE DATA TO SETTINGS_CALENDAR
 	oneIntToArray(buffer, sizeof(buffer), 0, chronograph.actual.day);
-	menuItemChangeValue(&menu, SETTINGS_CALENDAR_DAY, 2, buffer, INTER_DOT, EDITABLE);
+	menuItemChangeValue(&menu, SETTINGS_CALENDAR_DAY, 2, buffer, INTER_DOT,
+			EDITABLE);
 
 	oneIntToArray(buffer, sizeof(buffer), 2, chronograph.actual.month);
 	menuItemChangeValue(&menu, SETTINGS_CALENDAR_MONTH, 2, buffer, INTER_DOT,
-			EDITABLE);
+	EDITABLE);
 
 	oneIntToArray(buffer, sizeof(buffer), 0, chronograph.actual.year);
 	menuItemChangeValue(&menu, SETTINGS_CALENDAR_YEAR, 2, buffer,
@@ -56,12 +62,13 @@ void interfaceWrite(void) {
 	//								WRITE CHRONO TIME
 	twoIntsToArray(buffer, sizeof(buffer), chronograph.chrono.minute,
 			chronograph.chrono.second);
-	menuItemChangeValue(&menu, CHRONO, CHRONO_LEVEL, buffer, INTER_COLON, NOT_EDITABLE);
+	menuItemChangeValue(&menu, CHRONO, CHRONO_LEVEL, buffer, INTER_COLON,
+			NOT_EDITABLE);
 
 	oneIntToArray(buffer, sizeof(buffer), 0, chronograph.chrono.hour);
 	buffer[3] = 'h';
 	menuItemChangeValue(&menu, CHRONO_HOURS, CHRONO_HOURS_LEVEL, buffer,
-			INTER_DISABLED, NOT_EDITABLE);
+	INTER_DISABLED, NOT_EDITABLE);
 
 	oneIntToArray(buffer, sizeof(buffer), 2, chronograph.chrono.hundredth);
 	menuItemChangeValue(&menu, CHRONO_HUNDREDTHS, CHRONO_HUNDREDTHS_LEVEL,
@@ -69,18 +76,42 @@ void interfaceWrite(void) {
 
 	//								WRITE TEMPERATURE
 
-	adcSetChannel(&hadc1, ADC_CHANNEL_TEMPSENSOR);
-	temperature = adcTemperature(adcRead(&hadc1))+temperatureCorrection;
-	oneIntToArray(buffer, sizeof(buffer), 0, temperature);
-	if(temperature>-10)buffer[2] = '^';
+//	oneIntToArray(buffer, sizeof(buffer), 0, temperature);
+//	if(temperature>-10)buffer[2] = '^';
+//	buffer[3] = 'C';
+//	menuItemChangeValue(&menu, TEMPERATURE, TEMPERATURE_LEVEL, buffer,
+//			INTER_DISABLED, 0);
+//
+//	oneIntToArray(buffer, sizeof(buffer), 0, temperatureCorrection);
+//	buffer[3] = '^';
+//	menuItemChangeValue(&menu, SETTINGS_CORRECTION_VALUE, SETTINGS_CORRECTION_VALUE_LEVEL, buffer,
+//			INTER_DISABLED, EDITABLE);
+
+//								WRITE BME280 DATA
+	//temperature
+	oneIntToArray(buffer, sizeof(buffer), 0, (bme280.temperatureValue / 100)+temperatureCorrection);
+	if (((bme280.temperatureValue /100) +temperatureCorrection) > -10)
+		buffer[2] = '^';
 	buffer[3] = 'C';
 	menuItemChangeValue(&menu, TEMPERATURE, TEMPERATURE_LEVEL, buffer,
-			INTER_DISABLED, 0);
+	INTER_DISABLED, NOT_EDITABLE);
 
+	//temperature Correction
 	oneIntToArray(buffer, sizeof(buffer), 0, temperatureCorrection);
 	buffer[3] = '^';
 	menuItemChangeValue(&menu, SETTINGS_CORRECTION_VALUE, SETTINGS_CORRECTION_VALUE_LEVEL, buffer,
 			INTER_DISABLED, EDITABLE);
+
+	//pressure
+	oneIntToArray(buffer, sizeof(buffer), 0, bme280.pressureValue / 100);
+		menuItemChangeValue(&menu, BAROMETER, BAROMETER_LEVEL, buffer,
+		INTER_DISABLED, NOT_EDITABLE);
+
+		//humidity
+		oneIntToArray(buffer, sizeof(buffer), 0, bme280.humidityValue);
+		buffer[3] = 'H';
+		menuItemChangeValue(&menu, HIGROMETER, HIGROMETER_LEVEL, buffer, INTER_DISABLED, NOT_EDITABLE);
+
 
 }
 
@@ -89,7 +120,7 @@ void interfaceShowActual(void) {
 	LEDdot(&display, menu.current.value2);
 }
 
-void twoIntsToArray(char *destination, uint8_t size, int8_t int1, int8_t int2) {
+void twoIntsToArray(char *destination, uint8_t size, int32_t int1, int32_t int2) {
 	memset(destination, 0, size);
 
 	char halfBuffer1[2];
@@ -113,7 +144,8 @@ void twoIntsToArray(char *destination, uint8_t size, int8_t int1, int8_t int2) {
 	}
 }
 
-void oneIntToArray(char *destination, uint8_t size, uint8_t offset, int8_t integer) {
+void oneIntToArray(char *destination, uint8_t size, uint8_t offset,
+		int32_t integer) {
 	memset(destination, 0, size);
 	itoa(integer, &destination[offset], 10);
 

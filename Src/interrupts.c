@@ -91,8 +91,8 @@ void encoderAction(uint8_t direction) {
 					RTC_CHANGE_DIR_DOWN);
 					break;
 				case SETTINGS_CORRECTION_VALUE:
-					if(temperatureCorrection > TEMPERATURE_CORRECTION_MIN)
-					temperatureCorrection--;
+					if (temperatureCorrection > TEMPERATURE_CORRECTION_MIN)
+						temperatureCorrection--;
 					break;
 				}
 
@@ -139,8 +139,8 @@ void encoderAction(uint8_t direction) {
 					RTC_CHANGE_DIR_UP);
 					break;
 				case SETTINGS_CORRECTION_VALUE:
-					if(temperatureCorrection < TEMPERATURE_CORRECTION_MAX)
-					temperatureCorrection++;
+					if (temperatureCorrection < TEMPERATURE_CORRECTION_MAX)
+						temperatureCorrection++;
 					break;
 				}
 
@@ -199,5 +199,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	}
 	if (htim->Instance == TIM2) {
 		flags[FLAG_SLEEP] = 1;
+	}
+	if (htim->Instance == TIM3) {
+		//								READ REF VOLTAGE
+		adcSetChannel(&hadc1, ADC_CHANNEL_VREFINT);
+		uint32_t voltageRef = adcVoltage(adcRead(&hadc1));
+
+		adcSetChannel(&hadc1, ADC_CHANNEL_TEMPSENSOR);
+		temperature = adcTemperature(adcRead(&hadc1), voltageRef)
+				+ temperatureCorrection;
 	}
 }

@@ -39,6 +39,7 @@ extern "C" {
 #include "adc.h"
 #include "interrupts.h"
 #include "interface.h"
+#include "bme280.h"
 
 /* USER CODE END Includes */
 
@@ -73,30 +74,30 @@ void Error_Handler(void);
 #define LED1_GPIO_Port GPIOA
 #define LED2_Pin GPIO_PIN_5
 #define LED2_GPIO_Port GPIOA
-#define DISP_B_Pin GPIO_PIN_6
-#define DISP_B_GPIO_Port GPIOA
-#define DISP_3_Pin GPIO_PIN_7
-#define DISP_3_GPIO_Port GPIOA
-#define DISP_G_Pin GPIO_PIN_0
-#define DISP_G_GPIO_Port GPIOB
-#define DISP_C_Pin GPIO_PIN_1
-#define DISP_C_GPIO_Port GPIOB
-#define DISP_E_Pin GPIO_PIN_2
-#define DISP_E_GPIO_Port GPIOB
-#define DISP_D_Pin GPIO_PIN_8
-#define DISP_D_GPIO_Port GPIOA
-#define DISP_DP_Pin GPIO_PIN_9
-#define DISP_DP_GPIO_Port GPIOA
 #define DISP_0_Pin GPIO_PIN_6
-#define DISP_0_GPIO_Port GPIOC
-#define DISP_A_Pin GPIO_PIN_10
+#define DISP_0_GPIO_Port GPIOA
+#define DISP_A_Pin GPIO_PIN_7
 #define DISP_A_GPIO_Port GPIOA
-#define DISP_F_Pin GPIO_PIN_11
-#define DISP_F_GPIO_Port GPIOA
-#define DISP_1_Pin GPIO_PIN_12
-#define DISP_1_GPIO_Port GPIOA
-#define DISP_2_Pin GPIO_PIN_15
-#define DISP_2_GPIO_Port GPIOA
+#define DISP_F_Pin GPIO_PIN_0
+#define DISP_F_GPIO_Port GPIOB
+#define DISP_1_Pin GPIO_PIN_1
+#define DISP_1_GPIO_Port GPIOB
+#define DISP_2_Pin GPIO_PIN_2
+#define DISP_2_GPIO_Port GPIOB
+#define DISP_B_Pin GPIO_PIN_8
+#define DISP_B_GPIO_Port GPIOA
+#define DISP_3_Pin GPIO_PIN_9
+#define DISP_3_GPIO_Port GPIOA
+#define DISP_E_Pin GPIO_PIN_6
+#define DISP_E_GPIO_Port GPIOC
+#define DISP_D_Pin GPIO_PIN_10
+#define DISP_D_GPIO_Port GPIOA
+#define DISP_DP_Pin GPIO_PIN_11
+#define DISP_DP_GPIO_Port GPIOA
+#define DISP_C_Pin GPIO_PIN_12
+#define DISP_C_GPIO_Port GPIOA
+#define DISP_G_Pin GPIO_PIN_15
+#define DISP_G_GPIO_Port GPIOA
 #define MODE_Pin GPIO_PIN_3
 #define MODE_GPIO_Port GPIOB
 #define MODE_EXTI_IRQn EXTI2_3_IRQn
@@ -106,12 +107,12 @@ void Error_Handler(void);
 #define BUTTON1_Pin GPIO_PIN_5
 #define BUTTON1_GPIO_Port GPIOB
 #define BUTTON1_EXTI_IRQn EXTI4_15_IRQn
-#define ENC2_Pin GPIO_PIN_6
-#define ENC2_GPIO_Port GPIOB
-#define ENC2_EXTI_IRQn EXTI4_15_IRQn
-#define ENC1_Pin GPIO_PIN_7
+#define ENC1_Pin GPIO_PIN_6
 #define ENC1_GPIO_Port GPIOB
 #define ENC1_EXTI_IRQn EXTI4_15_IRQn
+#define ENC2_Pin GPIO_PIN_7
+#define ENC2_GPIO_Port GPIOB
+#define ENC2_EXTI_IRQn EXTI4_15_IRQn
 /* USER CODE BEGIN Private defines */
 //LEVEL 0
 #define CLOCK 0
@@ -120,8 +121,7 @@ void Error_Handler(void);
 #define BAROMETER 3
 #define HIGROMETER 4
 #define ALTITUDE 5
-#define AZIMUTH 6
-#define SETTINGS 7
+#define SETTINGS 6
 
 //LEVEL 1
 #define CLOCK_DATE 0
@@ -156,6 +156,8 @@ void Error_Handler(void);
 #define TEMPERATURE_LEVEL 0
 #define SETTINGS_CORRECTION_VALUE_LEVEL 2
 #define SETTINGS_REFERENCE_VALUE_LEVEL 2
+#define BAROMETER_LEVEL 0
+#define HIGROMETER_LEVEL 0
 
 //DISPLAY DOTS
 #define INTER_COLON 1

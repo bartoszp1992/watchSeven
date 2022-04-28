@@ -1,4 +1,4 @@
 interface.c:10:6:interfaceWrite	16	static
-interface.c:87:6:interfaceShowActual	8	static
-interface.c:92:6:twoIntsToArray	32	static
-interface.c:116:6:oneIntToArray	24	static
+interface.c:118:6:interfaceShowActual	8	static
+interface.c:123:6:twoIntsToArray	40	static
+interface.c:147:6:oneIntToArray	32	static
