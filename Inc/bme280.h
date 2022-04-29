@@ -9,12 +9,8 @@
 #define BME280_H_
 
 #include "stm32g0xx_hal.h"
-//#define BME280_SKIPPED 0x0
-//#define BME280_OVERSAMPLING_1X 0x1
-//#define BME280_OVERSAMPLING_2x 0x2
-//#define BME280_OVERSAMPLING_4X 0x3
-//#define BME280_OVERSAMPLING_8X 0x4
-//#define BME280_OVERSAMPLING_16X 0x5
+#include <math.h>
+
 
 //USER CONFIGURATION
 #define BME280_I2C_TIMEOUT 100
@@ -28,6 +24,8 @@ typedef struct {
 	int32_t temperatureValue; //Celsius mDegree
 	uint32_t pressureValue; //Pa
 	uint32_t humidityValue; //% RH
+	int32_t altitudeValue; //meter
+	uint32_t pressureReference; //hPa
 
 //									MODE/OVERSAMPLING CONFIG
 	uint8_t ctrlMeas;
@@ -60,10 +58,6 @@ typedef struct {
 
 	int32_t t_fine;
 
-	uint8_t dig_T[6];
-	uint8_t dig_P[18];
-	uint8_t dig_H_1;
-	uint8_t dig_H_2_6[7];
 
 	I2C_HandleTypeDef *I2Chandler;
 

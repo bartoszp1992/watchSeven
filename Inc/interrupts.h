@@ -32,8 +32,10 @@ extern LEDdisplayTypeDef display;
 extern MenuTypeDef menu;
 extern RTCChronoTypeDef chronograph;
 
-extern volatile int32_t temperature;
+extern volatile int32_t temperature;//adc
 extern volatile int32_t temperatureCorrection;
+
+
 
 
 void encoderAction(uint8_t direction);

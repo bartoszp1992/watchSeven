@@ -94,6 +94,10 @@ void encoderAction(uint8_t direction) {
 					if (temperatureCorrection > TEMPERATURE_CORRECTION_MIN)
 						temperatureCorrection--;
 					break;
+				case SETTINGS_REFERENCE_VALUE:
+					if (bme280.pressureReference > PRESSURE_REFERENCE_MIN)
+						bme280.pressureReference--;
+					break;
 				}
 
 			}
@@ -142,6 +146,10 @@ void encoderAction(uint8_t direction) {
 					if (temperatureCorrection < TEMPERATURE_CORRECTION_MAX)
 						temperatureCorrection++;
 					break;
+				case SETTINGS_REFERENCE_VALUE:
+					if (bme280.pressureReference < PRESSURE_REFERENCE_MAX)
+						bme280.pressureReference++;
+					break;
 				}
 
 			}
@@ -152,6 +160,8 @@ void encoderAction(uint8_t direction) {
 }
 
 void GPIO_EXTI_Rising_FallingCallback(uint16_t GPIO_Pin) {
+
+	HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
 
 	TIM2->CNT = 0; // reset timer if interrupt occurs
 
@@ -181,6 +191,8 @@ void GPIO_EXTI_Rising_FallingCallback(uint16_t GPIO_Pin) {
 	if (GPIO_Pin == MODE_Pin) {
 
 	}
+
+	HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 0);
 }
 
 void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin) {

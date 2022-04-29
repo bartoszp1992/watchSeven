@@ -158,6 +158,7 @@ void Error_Handler(void);
 #define SETTINGS_REFERENCE_VALUE_LEVEL 2
 #define BAROMETER_LEVEL 0
 #define HIGROMETER_LEVEL 0
+#define ALTITUDE_LEVEL 0
 
 //DISPLAY DOTS
 #define INTER_COLON 1
