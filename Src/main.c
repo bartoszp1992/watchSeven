@@ -128,7 +128,7 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim3);
 
 	adcInit(&hadc1);
-	temperatureCorrection = -1;
+	temperatureCorrection = 0;
 	bme280.pressureReference = 1013;
 
 
@@ -197,20 +197,10 @@ int main(void)
 
 	//												MENU ITEMS CONSTANT VALUES
 	//level 0
-	//value1-string for display, value2-dot postion, value3- is editable
-//	menuItemChangeValue(&menu, BAROMETER, 0, "1024", INTER_DISABLED,
-//	NOT_EDITABLE);
-//	menuItemChangeValue(&menu, HIGROMETER, 0, "42 H", INTER_DISABLED,
-//	NOT_EDITABLE);
-//	menuItemChangeValue(&menu, TEMPERATURE, 0, "20 ^", INTER_DISABLED,
-//	NOT_EDITABLE);
-//	menuItemChangeValue(&menu, ALTITUDE, 0, " 102", INTER_DISABLED,
-//	NOT_EDITABLE);
 	menuItemChangeValue(&menu, SETTINGS, 0, "SEt", INTER_DISABLED,
 	NOT_EDITABLE);
 
 	//level 1
-
 	menuItemChangeValue(&menu, CHRONO_START, 1, "St  ", INTER_DISABLED,
 	NOT_EDITABLE);
 	menuItemChangeValue(&menu, CHRONO_RESET, 1, "----", INTER_COLON,
@@ -224,9 +214,11 @@ int main(void)
 	menuItemChangeValue(&menu, SETTINGS_REFERENCE, 1, "P0  ",
 	INTER_DISABLED, NOT_EDITABLE);
 
-	menuResetCurrent(&menu);
+
 
 	bme280Init(&bme280, &hi2c1);
+	HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
+	menuResetCurrent(&menu);
 
 
   /* USER CODE END 2 */

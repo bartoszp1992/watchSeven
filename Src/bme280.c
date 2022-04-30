@@ -21,16 +21,17 @@
 #define BME280_CTRL_HUM_REG 0xF2
 
 //									DATA REGISTERS
-#define BME280_HUM_MSB_REG 0xFD
-#define BME280_HUM_LSB_REG 0xFE
+
+#define BME280_PRESS_MSB_REG 0xF7//also beginning
+#define BME280_PRESS_LSB_REG 0xF8
+#define BME280_PRESS_XLSB_REG 0xF9
 
 #define BME280_TEMP_MSB_REG 0xFA
 #define BME280_TEMP_LSB_REG 0xFB
 #define BME280_TEMP_XLSB_REG 0xFC
 
-#define BME280_PRESS_MSB_REG 0xF7
-#define BME280_PRESS_LSB_REG 0xF8
-#define BME280_PRESS_XLSB_REG 0xF9
+#define BME280_HUM_MSB_REG 0xFD
+#define BME280_HUM_LSB_REG 0xFE
 
 //									STATUS REGISTER
 #define BME280_STATUS_REG 0xF3
@@ -54,8 +55,14 @@ void bme280Init(bme280TypeDef *bme280, I2C_HandleTypeDef *I2Chandler) {
 
 	bme280->i2cTimeout = BME280_I2C_TIMEOUT;
 
-	bme280->ctrlHum = 0x01; //oversampling for humidity disabled
-	bme280->ctrlMeas = 0x24; //oversampling for temp, pressure disabled
+//	bme280->ctrlHum = 0x01; //oversampling for humidity disabled
+////	bme280->ctrlMeas = 0x24; //oversampling for temp, pressure disabled
+//	bme280->ctrlMeas = 0x34; //pressure oversampling x16
+
+//set oversampling
+	bme280->ctrlMeas = (BME280_OVERSAMPLING_TEM << 5)
+			| (BME280_OVERSAMPLING_PRE << 2);
+	bme280->ctrlHum = BME280_OVERSAMPLING_HUM;
 
 	uint8_t dig_T[6];
 	uint8_t dig_P[18];
@@ -104,20 +111,11 @@ void bme280Init(bme280TypeDef *bme280, I2C_HandleTypeDef *I2Chandler) {
 	HAL_I2C_Mem_Write(bme280->I2Chandler, BME280_ADDR, BME280_CTRL_HUM_REG, 1,
 			&bme280->ctrlHum, 1, bme280->i2cTimeout); //write humidity oversampling
 
-
 }
 
 void bme280Read(bme280TypeDef *bme280) {
-	uint8_t temperatureMSB = 0;
-	uint8_t temperatureLSB = 0;
-	uint8_t temperatureXLSB = 0;
 
-	uint8_t pressureMSB = 0;
-	uint8_t pressureLSB = 0;
-	uint8_t pressureXLSB = 0;
-
-	uint8_t humidityMSB = 0;
-	uint8_t humidityLSB = 0;
+	uint8_t readings[8] = {0};
 
 	//adc data
 	int32_t temperatureADC = 0;
@@ -129,53 +127,34 @@ void bme280Read(bme280TypeDef *bme280) {
 	HAL_I2C_Mem_Write(bme280->I2Chandler, BME280_ADDR, BME280_CTRL_MEAS_REG, 1,
 			&startConversion, 1, bme280->i2cTimeout);
 
-	HAL_Delay(70); //wait for measurement
+	//wait for measurement
+	uint8_t status = 0;
+	do {
+		HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_STATUS_REG, 1,
+				&status, 1, bme280->i2cTimeout);
+	} while (((status >> 3) & 1) == 1);
 
-	//	uint8_t status = 0;
-//	while ((status >> 3) & 1) {
-//		HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_STATUS_REG, 1,
-//				&status, 1, bme280->i2cTimeout);
-//	}
+	//read output registers
+	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_PRESS_MSB_REG, 1,
+			readings, 8, bme280->i2cTimeout);
+
 
 	//TEMPERATURE
-
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_TEMP_MSB_REG, 1,
-			&temperatureMSB, 1, bme280->i2cTimeout);
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_TEMP_LSB_REG, 1,
-			&temperatureLSB, 1, bme280->i2cTimeout);
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_TEMP_XLSB_REG, 1,
-			&temperatureXLSB, 1, bme280->i2cTimeout);
-
-	temperatureADC =
-			((((int32_t) temperatureMSB << 12) | ((int32_t) temperatureLSB << 4)
-					| ((int32_t) temperatureXLSB >> 4)));
+	temperatureADC = ((((int32_t) readings[3] << 12)
+			| ((int32_t) readings[4] << 4) | ((int32_t) readings[5] >> 4)));
 
 	bme280->temperatureValue = (_BME280_compensate_T_int32(bme280,
 			temperatureADC));
 
 	//PRESSURE
-
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_PRESS_MSB_REG, 1,
-			&pressureMSB, 1, bme280->i2cTimeout);
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_PRESS_LSB_REG, 1,
-			&pressureLSB, 1, bme280->i2cTimeout);
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_PRESS_XLSB_REG, 1,
-			&pressureXLSB, 1, bme280->i2cTimeout);
-
-	pressureADC = ((((int32_t) pressureMSB << 12) | ((int32_t) pressureLSB << 4)
-			| ((int32_t) pressureXLSB >> 4)));
+	pressureADC = ((((int32_t) readings[0] << 12) | ((int32_t) readings[1] << 4)
+			| ((int32_t) readings[2] >> 4)));
 
 	bme280->pressureValue = _BME280_compensate_P_int64(bme280, pressureADC)
 			/ 256;
 
 	//HUMIDITY
-
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_HUM_MSB_REG, 1,
-			&humidityMSB, 1, bme280->i2cTimeout);
-	HAL_I2C_Mem_Read(bme280->I2Chandler, BME280_ADDR, BME280_HUM_LSB_REG, 1,
-			&humidityLSB, 1, bme280->i2cTimeout);
-
-	humidityADC = (((int32_t) humidityMSB << 8) | (int32_t) humidityLSB);
+	humidityADC = (((int32_t) readings[6] << 8) | (int32_t) readings[7]);
 
 	bme280->humidityValue = _BME280_compensate_H_int32(bme280, humidityADC)
 			/ 1024;
@@ -198,11 +177,11 @@ void bme280Read(bme280TypeDef *bme280) {
 	 */
 
 	bme280->altitudeValue = -((8.314
-			* ((float) (bme280->temperatureValue / 100) + 273.15))
+			* ((((float) bme280->temperatureValue) / 100) + 273.15))
 			/ (10 * 0.0289))
 			* log(
 					(float) bme280->pressureValue
-							/ ((float) bme280->pressureReference * 100));
+							/ (((float) bme280->pressureReference) * 100));
 }
 
 //									COMP FUNCTIONS DEFINITIONS
