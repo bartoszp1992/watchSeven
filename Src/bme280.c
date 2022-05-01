@@ -19,6 +19,7 @@
 #define BME280_ADDR (0x77<<1)
 #define BME280_CTRL_MEAS_REG 0xF4
 #define BME280_CTRL_HUM_REG 0xF2
+#define BME280_CONFIG_REG 0xF5
 
 //									DATA REGISTERS
 
@@ -49,6 +50,19 @@ int32_t _BME280_compensate_T_int32(bme280TypeDef *bme280, int32_t adc_T);
 uint32_t _BME280_compensate_P_int64(bme280TypeDef *bme280, int32_t adc_P);
 uint32_t _BME280_compensate_H_int32(bme280TypeDef *bme280, int32_t adc_H);
 
+
+
+/**
+ * @brief  Initialize sensor
+ *
+ * @note   none
+ *
+ * @param  BME280 handler
+ *
+ * @param  i2C handler
+ *
+ * @retval None
+ */
 void bme280Init(bme280TypeDef *bme280, I2C_HandleTypeDef *I2Chandler) {
 
 	bme280->I2Chandler = I2Chandler;
@@ -63,6 +77,7 @@ void bme280Init(bme280TypeDef *bme280, I2C_HandleTypeDef *I2Chandler) {
 	bme280->ctrlMeas = (BME280_OVERSAMPLING_TEM << 5)
 			| (BME280_OVERSAMPLING_PRE << 2);
 	bme280->ctrlHum = BME280_OVERSAMPLING_HUM;
+	bme280->config = BME280_IIR_FILTER << 2;
 
 	uint8_t dig_T[6];
 	uint8_t dig_P[18];
@@ -111,8 +126,22 @@ void bme280Init(bme280TypeDef *bme280, I2C_HandleTypeDef *I2Chandler) {
 	HAL_I2C_Mem_Write(bme280->I2Chandler, BME280_ADDR, BME280_CTRL_HUM_REG, 1,
 			&bme280->ctrlHum, 1, bme280->i2cTimeout); //write humidity oversampling
 
+	HAL_I2C_Mem_Write(bme280->I2Chandler, BME280_ADDR, BME280_CONFIG_REG, 1,
+				&bme280->config, 1, bme280->i2cTimeout); //write iir filter config
+
+
 }
 
+
+/**
+ * @brief  Read data
+ *
+ * @note   data are stored in temperatureValue, pressureValue and humidityValue
+ *
+ * @param  BME280 handler
+ *
+ * @retval None
+ */
 void bme280Read(bme280TypeDef *bme280) {
 
 	uint8_t readings[8] = {0};
@@ -176,12 +205,12 @@ void bme280Read(bme280TypeDef *bme280) {
 	 *
 	 */
 
-	bme280->altitudeValue = -((8.314
+	bme280->altitudeValue = (-((8.314
 			* ((((float) bme280->temperatureValue) / 100) + 273.15))
 			/ (10 * 0.0289))
 			* log(
 					(float) bme280->pressureValue
-							/ (((float) bme280->pressureReference) * 100));
+							/ (((float) bme280->pressureReference) * 100)))*100;
 }
 
 //									COMP FUNCTIONS DEFINITIONS

@@ -19,6 +19,11 @@
 #define PRESSURE_REFERENCE_MAX 1400
 #define PRESSURE_REFERENCE_MIN 600
 
+//DISPLAY DOTS
+#define INTER_COLON 1
+#define INTER_DOT 0
+#define INTER_DISABLED LED_DOT_DISABLED
+
 extern ADC_HandleTypeDef hadc1;
 char buffer[6];
 
@@ -27,7 +32,6 @@ extern bme280TypeDef bme280;
 volatile int32_t temperature;
 
 volatile int32_t temperatureCorrection;
-
 
 
 

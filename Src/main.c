@@ -15,6 +15,15 @@
  *
  ******************************************************************************
  */
+
+/*
+ * Software for LEDnode
+ *
+ * changelog:
+ * v1.1 altimeter with centimeters
+ *
+ *
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -218,6 +227,7 @@ int main(void)
 
 	bme280Init(&bme280, &hi2c1);
 	HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
+	HAL_Delay(20);
 	menuResetCurrent(&menu);
 
 

@@ -8,7 +8,7 @@
 #include "interface.h"
 
 void _interfaceIntToArray(char *destination, uint8_t offset, int16_t integer);
-void _interfaceClear(char * buffer);
+void _interfaceClear(char *buffer);
 
 void interfaceWrite(void) {
 
@@ -49,12 +49,10 @@ void interfaceWrite(void) {
 	menuItemChangeValue(&menu, SETTINGS_CLOCK_HOUR, 2, buffer, INTER_COLON,
 	EDITABLE);
 
-
 	_interfaceClear(buffer);
 	_interfaceIntToArray(buffer, 2, chronograph.actual.minute);
 	menuItemChangeValue(&menu, SETTINGS_CLOCK_MINUTE, 2, buffer, INTER_COLON,
 	EDITABLE);
-
 
 	_interfaceClear(buffer);
 	_interfaceIntToArray(buffer, 2, chronograph.actual.second);
@@ -68,12 +66,10 @@ void interfaceWrite(void) {
 	menuItemChangeValue(&menu, SETTINGS_CALENDAR_DAY, 2, buffer, INTER_DOT,
 	EDITABLE);
 
-
 	_interfaceClear(buffer);
 	_interfaceIntToArray(buffer, 2, chronograph.actual.month);
 	menuItemChangeValue(&menu, SETTINGS_CALENDAR_MONTH, 2, buffer, INTER_DOT,
 	EDITABLE);
-
 
 	_interfaceClear(buffer);
 	_interfaceIntToArray(buffer, 0, chronograph.actual.year);
@@ -87,7 +83,6 @@ void interfaceWrite(void) {
 	_interfaceIntToArray(buffer, 2, chronograph.chrono.second);
 	menuItemChangeValue(&menu, CHRONO, CHRONO_LEVEL, buffer, INTER_COLON,
 	NOT_EDITABLE);
-
 
 	_interfaceClear(buffer);
 	_interfaceIntToArray(buffer, 0, chronograph.chrono.hour);
@@ -116,7 +111,8 @@ void interfaceWrite(void) {
 //								WRITE BME280 DATA
 	//temperature
 	_interfaceClear(buffer);
-	_interfaceIntToArray(buffer, 0, (bme280.temperatureValue /100)+temperatureCorrection);
+	_interfaceIntToArray(buffer, 0,
+			(bme280.temperatureValue / 100) + temperatureCorrection);
 	if (((bme280.temperatureValue / 100) + temperatureCorrection) > -10)
 		buffer[2] = '^';
 	buffer[3] = 'C';
@@ -128,19 +124,20 @@ void interfaceWrite(void) {
 	_interfaceIntToArray(buffer, 0, temperatureCorrection);
 	buffer[3] = '^';
 	menuItemChangeValue(&menu, SETTINGS_CORRECTION_VALUE,
-			SETTINGS_CORRECTION_VALUE_LEVEL, buffer,
-			INTER_DISABLED, EDITABLE);
+	SETTINGS_CORRECTION_VALUE_LEVEL, buffer,
+	INTER_DISABLED, EDITABLE);
 
 	//pressure
 	_interfaceClear(buffer);
-	_interfaceIntToArray(buffer, 0, bme280.pressureValue/100);
+	_interfaceIntToArray(buffer, 0, bme280.pressureValue / 100);
 	menuItemChangeValue(&menu, BAROMETER, BAROMETER_LEVEL, buffer,
 	INTER_DISABLED, NOT_EDITABLE);
 
 	//pressure reference(altimeter)
 	_interfaceClear(buffer);
 	_interfaceIntToArray(buffer, 0, bme280.pressureReference);
-	menuItemChangeValue(&menu, SETTINGS_REFERENCE_VALUE, SETTINGS_REFERENCE_VALUE_LEVEL, buffer,
+	menuItemChangeValue(&menu, SETTINGS_REFERENCE_VALUE,
+	SETTINGS_REFERENCE_VALUE_LEVEL, buffer,
 	INTER_DISABLED, EDITABLE);
 
 	//humidity
@@ -148,14 +145,40 @@ void interfaceWrite(void) {
 	_interfaceIntToArray(buffer, 0, bme280.humidityValue);
 	buffer[3] = 'H';
 	menuItemChangeValue(&menu, HIGROMETER, HIGROMETER_LEVEL, buffer,
-			INTER_DISABLED, NOT_EDITABLE);
+	INTER_DISABLED, NOT_EDITABLE);
 
 	//altitude
 	_interfaceClear(buffer);
-	_interfaceIntToArray(buffer, 0, bme280.altitudeValue);
+	if (bme280.altitudeValue < -99999) {
+//		_interfaceIntToArray(buffer, 0, bme280.altitudeValue / 100);
+		menuItemChangeValue(&menu, ALTITUDE, ALTITUDE_LEVEL, "OL  ",
+		INTER_DISABLED,
+		NOT_EDITABLE);
+	}
 
-	menuItemChangeValue(&menu, ALTITUDE, ALTITUDE_LEVEL, buffer, INTER_DISABLED,
-			NOT_EDITABLE);
+	else if (bme280.altitudeValue < 0) {
+		_interfaceIntToArray(buffer, 0, bme280.altitudeValue / 100);
+		menuItemChangeValue(&menu, ALTITUDE, ALTITUDE_LEVEL, buffer,
+		INTER_DISABLED,
+		NOT_EDITABLE);
+	}
+
+	else if (bme280.altitudeValue < 1000) {
+		_interfaceIntToArray(buffer, 1, bme280.altitudeValue);
+		menuItemChangeValue(&menu, ALTITUDE, ALTITUDE_LEVEL, buffer,
+		INTER_DOT,
+		NOT_EDITABLE);
+	} else if (bme280.altitudeValue < 10000) {
+		_interfaceIntToArray(buffer, 0, bme280.altitudeValue);
+		menuItemChangeValue(&menu, ALTITUDE, ALTITUDE_LEVEL, buffer,
+		INTER_DOT,
+		NOT_EDITABLE);
+	} else {
+		_interfaceIntToArray(buffer, 0, bme280.altitudeValue / 100);
+		menuItemChangeValue(&menu, ALTITUDE, ALTITUDE_LEVEL, buffer,
+		INTER_DISABLED,
+		NOT_EDITABLE);
+	}
 
 }
 
@@ -164,19 +187,16 @@ void interfaceShowActual(void) {
 	LEDdot(&display, menu.current.value2);
 }
 
+void _interfaceIntToArray(char *destination, uint8_t offset, int16_t integer) {
 
-
-
-void _interfaceIntToArray(char *destination, uint8_t offset, int16_t integer){
-
-	if(integer<10 && integer >= 0){
+	if (integer < 10 && integer >= 0) {
 		sprintf(destination + offset + 1, "%d", integer);
 		*(destination + offset) = '0';
-	}else{
+	} else {
 		sprintf(destination + offset, "%d", integer);
 	}
 }
 
-void _interfaceClear(char *buffer){
+void _interfaceClear(char *buffer) {
 	memset(buffer, ' ', 4);
 }

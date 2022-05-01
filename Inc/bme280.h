@@ -18,12 +18,21 @@
 #define BME280_OVERSAMPLING_X8 0x4
 #define BME280_OVERSAMPLING_X16 0x5
 
+#define BME280_IIR_OFF 0x0
+#define BME280_IIR_2 0x1
+#define BME280_IIR_4 0x2
+#define BME280_IIR_8 0x4
+#define BME280_IIR_16 0x4
+
+
 //USER CONFIGURATION
 #define BME280_I2C_TIMEOUT 100
 
 #define BME280_OVERSAMPLING_HUM BME280_OVERSAMPLING_X16
 #define BME280_OVERSAMPLING_TEM BME280_OVERSAMPLING_X16
 #define BME280_OVERSAMPLING_PRE BME280_OVERSAMPLING_X16
+
+#define BME280_IIR_FILTER BME280_IIR_4
 
 
 
@@ -36,12 +45,15 @@ typedef struct {
 	int32_t temperatureValue; //Celsius mDegree
 	uint32_t pressureValue; //Pa
 	uint32_t humidityValue; //% RH
-	int32_t altitudeValue; //meter
+	int32_t altitudeValue; //centimeter
 	uint32_t pressureReference; //hPa
 
 //									MODE/OVERSAMPLING CONFIG
 	uint8_t ctrlMeas;
 	uint8_t ctrlHum ;
+
+//									CONFIG
+	uint8_t config;
 
 //									i2c timeout
 	uint8_t i2cTimeout;

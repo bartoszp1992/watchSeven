@@ -160,11 +160,6 @@ void Error_Handler(void);
 #define HIGROMETER_LEVEL 0
 #define ALTITUDE_LEVEL 0
 
-//DISPLAY DOTS
-#define INTER_COLON 1
-#define INTER_DOT 0
-#define INTER_DISABLED LED_DOT_DISABLED
-
 //Editable
 #define EDITABLE 1
 #define NOT_EDITABLE 0
