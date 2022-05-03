@@ -3,6 +3,8 @@
  *
  *  Created on: 18 kwi 2022
  *      Author: bartosz
+ *
+ *      Manages sync/async interrupts from internal timaers, encoder, button and switch
  */
 
 #include "interrupts.h"
@@ -24,6 +26,11 @@ void encoderAction(uint8_t direction) {
 		} else if (menu.current.entry == CHRONO_RESET
 				&& menu.current.level == CHRONO_RESET_LEVEL) {
 			rtcResetChrono(&chronograph);
+
+		}else if(menu.current.entry == SETTINGS_SAVE && menu.current.level == SETTINGS_SAVE_LEVEL){
+
+			backupWrite(&chronograph);
+
 		} else {
 
 			if (menuSwitch(&menu, MENU_ENTER)) {

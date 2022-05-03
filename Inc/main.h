@@ -28,6 +28,17 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32g0xx_hal.h"
+#include "stm32g0xx_ll_crc.h"
+#include "stm32g0xx_ll_bus.h"
+#include "stm32g0xx_ll_cortex.h"
+#include "stm32g0xx_ll_rcc.h"
+#include "stm32g0xx_ll_system.h"
+#include "stm32g0xx_ll_utils.h"
+#include "stm32g0xx_ll_pwr.h"
+#include "stm32g0xx_ll_gpio.h"
+#include "stm32g0xx_ll_dma.h"
+
+#include "stm32g0xx_ll_exti.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -40,6 +51,8 @@ extern "C" {
 #include "interrupts.h"
 #include "interface.h"
 #include "bme280.h"
+//#include "eeprom_emul.h"
+#include "backup.h"
 
 /* USER CODE END Includes */
 
@@ -134,6 +147,7 @@ void Error_Handler(void);
 #define SETTINGS_CALENDAR 7
 #define SETTINGS_CORRECTION 8
 #define SETTINGS_REFERENCE 9
+#define SETTINGS_SAVE 10
 
 //LEVEL 3
 #define SETTINGS_CLOCK_HOUR 0
@@ -144,6 +158,7 @@ void Error_Handler(void);
 #define SETTINGS_CALENDAR_YEAR 5
 #define SETTINGS_CORRECTION_VALUE 6
 #define SETTINGS_REFERENCE_VALUE 7
+
 
 //LEVELS
 #define SETTINGS_TIME_LEVEL 2
@@ -159,6 +174,7 @@ void Error_Handler(void);
 #define BAROMETER_LEVEL 0
 #define HIGROMETER_LEVEL 0
 #define ALTITUDE_LEVEL 0
+#define SETTINGS_SAVE_LEVEL 1
 
 //Editable
 #define EDITABLE 1

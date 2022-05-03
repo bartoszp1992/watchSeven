@@ -3,6 +3,8 @@
  *
  *  Created on: 19 kwi 2022
  *      Author: bartosz
+ *
+ *      Create Interface for LEDnode- writes actual values to menu, manages 7 segment display
  */
 
 #include "interface.h"
