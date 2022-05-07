@@ -81,6 +81,7 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define INPUT_Pin GPIO_PIN_0
 #define INPUT_GPIO_Port GPIOA
+#define INPUT_EXTI_IRQn EXTI0_1_IRQn
 #define ENCODER_ACTIVE_Pin GPIO_PIN_1
 #define ENCODER_ACTIVE_GPIO_Port GPIOA
 #define LED1_Pin GPIO_PIN_4

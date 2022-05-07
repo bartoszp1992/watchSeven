@@ -1,4 +1,4 @@
-20130159444510632
+20133462958098937
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -39,8 +39,15 @@ DEGSON DG301-5.0-02P
 
 
 0
+2
+2
+BartLib_Connector
+SMD_1x6_P2.54mm
+
+
 0
-0
+6
+6
 BartLib_Display
 LED 7.2mm
 
@@ -69,6 +76,13 @@ akademia
 0
 0
 0
+BartLib_Logo
+number
+
+
+0
+1
+1
 BartLib_Logo
 rezystore
 

@@ -168,9 +168,22 @@ void encoderAction(uint8_t direction) {
 
 void GPIO_EXTI_Rising_FallingCallback(uint16_t GPIO_Pin) {
 
-	HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
 
-	TIM2->CNT = 0; // reset timer if interrupt occurs
+
+
+	if(GPIO_Pin == INPUT_Pin){
+
+		//save clock if battery is pulled out
+		rtcGetTime(&chronograph);
+		backupWrite(&chronograph);
+		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 1);
+
+
+	}else{
+		TIM2->CNT = 0; // reset wakeup timer if interrupt occurs
+		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
+	}
+
 
 	if (GPIO_Pin == ENC1_Pin) {
 		if (HAL_GPIO_ReadPin(ENC1_GPIO_Port, ENC1_Pin)

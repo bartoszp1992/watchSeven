@@ -402,8 +402,8 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "",
-      "vrml": ""
+      "step": "../../../../../../../../run/media/bartosz/1848-68CC/LEDnode/LEDnode.step",
+      "vrml": "../../../../../../../../run/media/bartosz/1848-68CC/LEDnode/LEDnode.wrl"
     },
     "page_layout_descr_file": ""
   },
