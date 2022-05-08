@@ -242,5 +242,5 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc){
 	HAL_GPIO_WritePin(LED_STANDBY_GPIO_Port, LED_STANDBY_Pin, 1);
-//	flags[FLAG_SLEEP] = 1;
+	flags[FLAG_SLEEP] = 1;
 }
