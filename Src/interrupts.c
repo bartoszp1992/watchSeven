@@ -27,7 +27,8 @@ void encoderAction(uint8_t direction) {
 				&& menu.current.level == CHRONO_RESET_LEVEL) {
 			rtcResetChrono(&chronograph);
 
-		}else if(menu.current.entry == SETTINGS_SAVE && menu.current.level == SETTINGS_SAVE_LEVEL){
+		} else if (menu.current.entry == SETTINGS_SAVE
+				&& menu.current.level == SETTINGS_SAVE_LEVEL) {
 
 			backupWrite(&chronograph);
 
@@ -168,22 +169,18 @@ void encoderAction(uint8_t direction) {
 
 void GPIO_EXTI_Rising_FallingCallback(uint16_t GPIO_Pin) {
 
-
-
-
-	if(GPIO_Pin == INPUT_Pin){
+	if (GPIO_Pin == BACKUP_Pin) {
 
 		//save clock if battery is pulled out
+		HAL_GPIO_WritePin(LED_WRITE_GPIO_Port, LED_WRITE_Pin, 1);
 		rtcGetTime(&chronograph);
 		backupWrite(&chronograph);
-		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 1);
+		HAL_GPIO_WritePin(LED_WRITE_GPIO_Port, LED_WRITE_Pin, 0);
+		flags[FLAG_SLEEP] = 1;
 
-
-	}else{
+	} else {
 		TIM2->CNT = 0; // reset wakeup timer if interrupt occurs
-		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 1);
 	}
-
 
 	if (GPIO_Pin == ENC1_Pin) {
 		if (HAL_GPIO_ReadPin(ENC1_GPIO_Port, ENC1_Pin)
@@ -212,7 +209,6 @@ void GPIO_EXTI_Rising_FallingCallback(uint16_t GPIO_Pin) {
 
 	}
 
-	HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, 0);
 }
 
 void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin) {
@@ -241,4 +237,10 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 		temperature = adcTemperature(adcRead(&hadc1), voltageRef)
 				+ temperatureCorrection;
 	}
+}
+
+
+void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc){
+	HAL_GPIO_WritePin(LED_STANDBY_GPIO_Port, LED_STANDBY_Pin, 1);
+//	flags[FLAG_SLEEP] = 1;
 }

@@ -55,6 +55,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern RTC_HandleTypeDef hrtc;
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
@@ -143,6 +144,20 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles RTC and TAMP interrupts through EXTI lines 19 and 21.
+  */
+void RTC_TAMP_IRQHandler(void)
+{
+  /* USER CODE BEGIN RTC_TAMP_IRQn 0 */
+
+  /* USER CODE END RTC_TAMP_IRQn 0 */
+  HAL_RTCEx_WakeUpTimerIRQHandler(&hrtc);
+  /* USER CODE BEGIN RTC_TAMP_IRQn 1 */
+
+  /* USER CODE END RTC_TAMP_IRQn 1 */
+}
+
+/**
   * @brief This function handles EXTI line 0 and line 1 interrupts.
   */
 void EXTI0_1_IRQHandler(void)
@@ -150,7 +165,7 @@ void EXTI0_1_IRQHandler(void)
   /* USER CODE BEGIN EXTI0_1_IRQn 0 */
 
   /* USER CODE END EXTI0_1_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(INPUT_Pin);
+  HAL_GPIO_EXTI_IRQHandler(BACKUP_Pin);
   /* USER CODE BEGIN EXTI0_1_IRQn 1 */
 
   /* USER CODE END EXTI0_1_IRQn 1 */

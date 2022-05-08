@@ -79,15 +79,15 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define INPUT_Pin GPIO_PIN_0
-#define INPUT_GPIO_Port GPIOA
-#define INPUT_EXTI_IRQn EXTI0_1_IRQn
+#define BACKUP_Pin GPIO_PIN_0
+#define BACKUP_GPIO_Port GPIOA
+#define BACKUP_EXTI_IRQn EXTI0_1_IRQn
 #define ENCODER_ACTIVE_Pin GPIO_PIN_1
 #define ENCODER_ACTIVE_GPIO_Port GPIOA
-#define LED1_Pin GPIO_PIN_4
-#define LED1_GPIO_Port GPIOA
-#define LED2_Pin GPIO_PIN_5
-#define LED2_GPIO_Port GPIOA
+#define LED_STANDBY_Pin GPIO_PIN_4
+#define LED_STANDBY_GPIO_Port GPIOA
+#define LED_WRITE_Pin GPIO_PIN_5
+#define LED_WRITE_GPIO_Port GPIOA
 #define DISP_0_Pin GPIO_PIN_6
 #define DISP_0_GPIO_Port GPIOA
 #define DISP_A_Pin GPIO_PIN_7
@@ -185,8 +185,6 @@ void Error_Handler(void);
 #define ADC_TEMPERATURE
 #define ADC_VOLTAGE
 
-//uint32_t temperature[500];
-//uint32_t temperatureActualIndex;
 
 /* USER CODE END Private defines */
 

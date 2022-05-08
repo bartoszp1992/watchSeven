@@ -234,24 +234,6 @@ int main(void)
 	//										FLASH RESTORE SECTION
 
 	backupInit();
-
-	//for debug
-//	chronograph.actual.hour = 11;
-//	chronograph.actual.minute = 12;
-//	chronograph.actual.second = 44;
-//	chronograph.actual.day = 12;
-//	chronograph.actual.month = 11;
-//	chronograph.actual.year = 10;
-////
-//	backupWrite(&chronograph);
-//
-//	chronograph.actual.hour = 1;
-//	chronograph.actual.minute = 1;
-//	chronograph.actual.second = 1;
-//	chronograph.actual.day = 1;
-//	chronograph.actual.month = 1;
-//	chronograph.actual.year = 1;
-
 	backupRestore(&chronograph);
 
   /* USER CODE END 2 */
@@ -260,39 +242,45 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1) {
 
-		//read RTC time
-		rtcGetTime(&chronograph);
+		if (!flags[FLAG_SLEEP]  || !HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
+			//read RTC time
+			rtcGetTime(&chronograph);
 
-		//read sensor
-		bme280Read(&bme280);
+			//read sensor
+			bme280Read(&bme280);
 
-		//write actual values to menu matrix
-		interfaceWrite();
+			//write actual values to menu matrix
+			interfaceWrite();
 
-		//display current item
-		if (display.transitionStatus == LED_TRANSITION_DISABLED) {
-			interfaceShowActual();
+			//display current item
+			if (display.transitionStatus == LED_TRANSITION_DISABLED) {
+				interfaceShowActual();
+			}
+			HAL_GPIO_WritePin(LED_STANDBY_GPIO_Port, LED_STANDBY_Pin, 0);
 		}
 
 		//												LOW POWER SECTION
 		if (flags[FLAG_SLEEP]
-				&& HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin) == 1) {
+				&& HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
 			HAL_TIM_Base_Stop_IT(&htim1);
 			LEDclear(&display);
 			flags[FLAG_SLEEP] = 0;
 			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 0);
 			HAL_Delay(10);
-
+			HAL_GPIO_WritePin(LED_WRITE_GPIO_Port, LED_WRITE_Pin, 0);
+			HAL_GPIO_WritePin(LED_STANDBY_GPIO_Port, LED_STANDBY_Pin, 0);
 			HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,
 			PWR_STOPENTRY_WFI);
 
 			//											AFTER WAKE UP
+			SystemClock_Config();
 			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
 			HAL_Delay(10);
 			menuResetCurrent(&menu);
 			flags[FLAG_LOCKED] = 0;
 			HAL_TIM_Base_Start_IT(&htim1);
 		}
+
 
     /* USER CODE END WHILE */
 
@@ -327,7 +315,13 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
+  RCC_OscInitStruct.PLL.PLLN = 8;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
+  RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -337,11 +331,11 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -453,7 +447,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00303D5B;
+  hi2c1.Init.Timing = 0x10707DBC;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
@@ -545,6 +539,13 @@ static void MX_RTC_Init(void)
   {
     Error_Handler();
   }
+
+  /** Enable the WakeUp
+  */
+  if (HAL_RTCEx_SetWakeUpTimer_IT(&hrtc, 20, RTC_WAKEUPCLOCK_CK_SPRE_16BITS) != HAL_OK)
+  {
+    Error_Handler();
+  }
   /* USER CODE BEGIN RTC_Init 2 */
 
   /* USER CODE END RTC_Init 2 */
@@ -570,7 +571,7 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 29;
+  htim1.Init.Prescaler = 99;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim1.Init.Period = 1999;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -617,9 +618,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 8879;
+  htim2.Init.Prescaler = 17299;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 8999;
+  htim2.Init.Period = 18499;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -751,7 +752,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, ENCODER_ACTIVE_Pin|LED1_Pin|LED2_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, ENCODER_ACTIVE_Pin|LED_STANDBY_Pin|LED_WRITE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, DISP_0_Pin|DISP_A_Pin|DISP_B_Pin|DISP_3_Pin
@@ -763,16 +764,16 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(DISP_E_GPIO_Port, DISP_E_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pin : INPUT_Pin */
-  GPIO_InitStruct.Pin = INPUT_Pin;
+  /*Configure GPIO pin : BACKUP_Pin */
+  GPIO_InitStruct.Pin = BACKUP_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(INPUT_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(BACKUP_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : ENCODER_ACTIVE_Pin LED1_Pin LED2_Pin DISP_0_Pin
+  /*Configure GPIO pins : ENCODER_ACTIVE_Pin LED_STANDBY_Pin LED_WRITE_Pin DISP_0_Pin
                            DISP_A_Pin DISP_B_Pin DISP_3_Pin DISP_D_Pin
                            DISP_DP_Pin DISP_C_Pin DISP_G_Pin */
-  GPIO_InitStruct.Pin = ENCODER_ACTIVE_Pin|LED1_Pin|LED2_Pin|DISP_0_Pin
+  GPIO_InitStruct.Pin = ENCODER_ACTIVE_Pin|LED_STANDBY_Pin|LED_WRITE_Pin|DISP_0_Pin
                           |DISP_A_Pin|DISP_B_Pin|DISP_3_Pin|DISP_D_Pin
                           |DISP_DP_Pin|DISP_C_Pin|DISP_G_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;

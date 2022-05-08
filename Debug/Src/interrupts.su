@@ -1,5 +1,6 @@
 interrupts.c:12:6:encoderAction	16	static
-interrupts.c:169:6:GPIO_EXTI_Rising_FallingCallback	24	static
-interrupts.c:218:6:HAL_GPIO_EXTI_Falling_Callback	16	static
-interrupts.c:222:6:HAL_GPIO_EXTI_Rising_Callback	16	static
-interrupts.c:228:6:HAL_TIM_PeriodElapsedCallback	24	static
+interrupts.c:170:6:GPIO_EXTI_Rising_FallingCallback	24	static
+interrupts.c:214:6:HAL_GPIO_EXTI_Falling_Callback	16	static
+interrupts.c:218:6:HAL_GPIO_EXTI_Rising_Callback	16	static
+interrupts.c:224:6:HAL_TIM_PeriodElapsedCallback	24	static
+interrupts.c:243:6:HAL_RTCEx_WakeUpTimerEventCallback	16	static
