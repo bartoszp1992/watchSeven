@@ -21,6 +21,7 @@
  *
  * changelog:
  * v1.1 altimeter with centimeters
+ * v1.2 backup system, led blinking
  *
  *
  */
@@ -87,7 +88,8 @@ static void MX_I2C1_Init(void);
 static void MX_CRC_Init(void);
 /* USER CODE BEGIN PFP */
 
-//uint32_t adcRead(ADC_HandleTypeDef *adcHandler, uint32_t channel);
+void LPsleep(void);
+void LPwakeUp(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -242,7 +244,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1) {
 
-		if (!flags[FLAG_SLEEP]  || !HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
+		//												NORMAL WORK
+		if (!flags[FLAG_SLEEP] || !HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
 			//read RTC time
 			rtcGetTime(&chronograph);
 
@@ -256,31 +259,30 @@ int main(void)
 			if (display.transitionStatus == LED_TRANSITION_DISABLED) {
 				interfaceShowActual();
 			}
+
+			//turn off standby LED
 			HAL_GPIO_WritePin(LED_STANDBY_GPIO_Port, LED_STANDBY_Pin, 0);
 		}
 
 		//												LOW POWER SECTION
-		if (flags[FLAG_SLEEP]
-				&& HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
-			HAL_TIM_Base_Stop_IT(&htim1);
-			LEDclear(&display);
-			flags[FLAG_SLEEP] = 0;
-			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 0);
-			HAL_Delay(10);
-			HAL_GPIO_WritePin(LED_WRITE_GPIO_Port, LED_WRITE_Pin, 0);
-			HAL_GPIO_WritePin(LED_STANDBY_GPIO_Port, LED_STANDBY_Pin, 0);
-			HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,
-			PWR_STOPENTRY_WFI);
+		if (flags[FLAG_SLEEP] && HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
+
+			//go to sleep
+			LPsleep();
+
+			//when interrupt was caused by RTC, go to sleep
+			while (status[STATUS_INT_SOURCE] == STATUS_INT_SOURCE_RTC) {
+				LPsleep();
+			}
 
 			//											AFTER WAKE UP
-			SystemClock_Config();
-			HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
-			HAL_Delay(10);
-			menuResetCurrent(&menu);
-			flags[FLAG_LOCKED] = 0;
-			HAL_TIM_Base_Start_IT(&htim1);
-		}
 
+			//when interrupt was caused by external, wake up
+			if (status[STATUS_INT_SOURCE] == STATUS_INT_SOURCE_EXTI) {
+				LPwakeUp();
+			}
+
+		}
 
     /* USER CODE END WHILE */
 
@@ -820,7 +822,26 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void LPsleep(void) {
+	HAL_TIM_Base_Stop_IT(&htim1);
+	LEDclear(&display);
+	flags[FLAG_SLEEP] = 0;
+	HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 0);
+	HAL_Delay(10);
+	HAL_GPIO_WritePin(LED_WRITE_GPIO_Port, LED_WRITE_Pin, 0);
+	HAL_GPIO_WritePin(LED_STANDBY_GPIO_Port, LED_STANDBY_Pin, 0);
+	HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,
+	PWR_STOPENTRY_WFI);
+}
 
+void LPwakeUp(void) {
+	SystemClock_Config();
+	HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
+	HAL_Delay(10);
+	menuResetCurrent(&menu);
+	flags[FLAG_LOCKED] = 0;
+	HAL_TIM_Base_Start_IT(&htim1);
+}
 /* USER CODE END 4 */
 
 /**
