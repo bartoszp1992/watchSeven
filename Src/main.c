@@ -22,6 +22,7 @@
  * changelog:
  * v1.1 altimeter with centimeters
  * v1.2 backup system, led blinking
+ * v1.3 force/ondemand mode as status
  *
  *
  */
@@ -238,6 +239,9 @@ int main(void)
 	backupInit();
 	backupRestore(&chronograph);
 
+	HAL_Delay(500);
+	flags[FLAG_INITIALIZED] = 1;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -245,7 +249,7 @@ int main(void)
 	while (1) {
 
 		//												NORMAL WORK
-		if (!flags[FLAG_SLEEP] || !HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
+		if (!flags[FLAG_SLEEP] || status[STATUS_MODE_SWITCH] == STATUS_MODE_SWITCH_FORCE) {
 			//read RTC time
 			rtcGetTime(&chronograph);
 
@@ -265,7 +269,8 @@ int main(void)
 		}
 
 		//												LOW POWER SECTION
-		if (flags[FLAG_SLEEP] && HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
+//		if (flags[FLAG_SLEEP] && HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
+		if (flags[FLAG_SLEEP] && status[STATUS_MODE_SWITCH] == STATUS_MODE_SWITCH_ONDEMAND) {
 
 			//go to sleep
 			LPsleep();
@@ -797,8 +802,14 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(DISP_E_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : MODE_Pin BUTTON2_Pin BUTTON1_Pin */
-  GPIO_InitStruct.Pin = MODE_Pin|BUTTON2_Pin|BUTTON1_Pin;
+  /*Configure GPIO pin : MODE_Pin */
+  GPIO_InitStruct.Pin = MODE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(MODE_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : BUTTON2_Pin BUTTON1_Pin */
+  GPIO_InitStruct.Pin = BUTTON2_Pin|BUTTON1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);

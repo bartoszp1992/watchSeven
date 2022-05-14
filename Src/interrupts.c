@@ -171,7 +171,20 @@ void GPIO_EXTI_Rising_FallingCallback(uint16_t GPIO_Pin) {
 
 	status[STATUS_INT_SOURCE] = STATUS_INT_SOURCE_EXTI;
 
-	if (GPIO_Pin == BACKUP_Pin) {
+	//change status
+	if(GPIO_Pin == MODE_Pin){
+		if(HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)){
+			status[STATUS_MODE_SWITCH] = STATUS_MODE_SWITCH_ONDEMAND;
+		}else{
+			status[STATUS_MODE_SWITCH] = STATUS_MODE_SWITCH_FORCE;
+		}
+	}
+
+
+	if (GPIO_Pin == BACKUP_Pin && flags[FLAG_INITIALIZED]) {
+
+		//turn off force mode
+		status[STATUS_MODE_SWITCH] = STATUS_MODE_SWITCH_ONDEMAND;
 
 		//save clock if battery is pulled out
 		HAL_GPIO_WritePin(LED_WRITE_GPIO_Port, LED_WRITE_Pin, 1);

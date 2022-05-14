@@ -21,16 +21,21 @@
 //flag numbers
 #define FLAG_LOCKED 0 // stores 1 if menu scrolling is locked due to value setting
 #define FLAG_SLEEP 1 // stores 1 if watch will go to sleep in next loop pass- set by timer2
+#define FLAG_INITIALIZED 2
 
 //status numbers
 #define STATUS_INT_SOURCE 0 // stores info what caused interrupt and wake up MCU
+#define STATUS_MODE_SWITCH 1 //stores info about set mode
 
 //status variants
 #define STATUS_INT_SOURCE_RTC 0
 #define STATUS_INT_SOURCE_EXTI 1
 
+#define STATUS_MODE_SWITCH_ONDEMAND 1
+#define STATUS_MODE_SWITCH_FORCE 0
 
-volatile uint8_t flags[2];
+
+volatile uint8_t flags[3];
 volatile uint8_t status[2];
 
 
