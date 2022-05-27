@@ -254,6 +254,7 @@ int main(void)
 			rtcGetTime(&chronograph);
 
 			//read sensor
+			if((menu.current.level == 0))
 			bme280Read(&bme280);
 
 			//write actual values to menu matrix

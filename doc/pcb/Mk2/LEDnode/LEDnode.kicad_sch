@@ -5120,12 +5120,12 @@
     (pin "3" (uuid fd6ab264-3c95-4426-a514-02bf52425b28))
   )
 
-  (symbol (lib_id "Device:Q_NMOS_GSD") (at 103.505 134.62 0) (mirror x) (unit 1)
+  (symbol (lib_id "Device:Q_NMOS_GSD") (at 103.505 134.62 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid d758ce62-ce56-4102-99f3-1a8e22ed504c)
-    (property "Reference" "Q7" (id 0) (at 98.425 130.81 90))
-    (property "Value" "IRLML6346" (id 1) (at 100.965 127.635 90))
-    (property "Footprint" "Package_TO_SOT_SMD:SOT-23" (id 2) (at 108.585 137.16 0)
+    (property "Reference" "Q7" (id 0) (at 98.425 138.43 90))
+    (property "Value" "BSS138" (id 1) (at 100.965 141.605 90))
+    (property "Footprint" "Package_TO_SOT_SMD:SOT-23" (id 2) (at 108.585 132.08 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 103.505 134.62 0)
@@ -5782,7 +5782,7 @@
       (reference "Q6") (unit 1) (value "BSS138") (footprint "Package_TO_SOT_SMD:SOT-23")
     )
     (path "/d758ce62-ce56-4102-99f3-1a8e22ed504c"
-      (reference "Q7") (unit 1) (value "IRLML6346") (footprint "Package_TO_SOT_SMD:SOT-23")
+      (reference "Q7") (unit 1) (value "BSS138") (footprint "Package_TO_SOT_SMD:SOT-23")
     )
     (path "/90f62ab4-3b57-4e43-92c1-505510d0ded2"
       (reference "R1") (unit 1) (value "10k") (footprint "Resistor_SMD:R_0603_1608Metric")
