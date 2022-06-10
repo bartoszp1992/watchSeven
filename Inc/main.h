@@ -142,8 +142,8 @@ void Error_Handler(void);
 #define CLOCK_SECONDHAND 1
 #define CHRONO_HUNDREDTHS 2
 #define CHRONO_HOURS 3
-#define CHRONO_START 4
-#define CHRONO_RESET 5
+//#define CHRONO_START 4 //deprecated
+#define CHRONO_RESET 4
 #define SETTINGS_CLOCK 6
 #define SETTINGS_CALENDAR 7
 #define SETTINGS_CORRECTION 8

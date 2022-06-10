@@ -8,4 +8,5 @@
   (lib (name "BartLib_Logo")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Logo.pretty")(options "")(descr ""))
   (lib (name "BartLib_Connector")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Connector.pretty")(options "")(descr ""))
   (lib (name "BartLib_Crystal")(type "KiCad")(uri "${KIPRJMOD}/BartLib/BartLib_Crystal.pretty")(options "")(descr ""))
+  (lib (name "BartLib_Touch")(type "KiCad")(uri "/home/bartosz/projekty/elektronika/solderingIronDrv/BartLib/BartLib_Touch.pretty")(options "")(descr ""))
 )

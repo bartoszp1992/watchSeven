@@ -13,8 +13,8 @@ void encoderAction(uint8_t direction) {
 
 	if (direction == ENCODER_ACTION_ENTER) {
 
-		if (menu.current.entry == CHRONO_START
-				&& menu.current.level == CHRONO_START_LEVEL) {
+		if (menu.current.entry == CHRONO_HUNDREDTHS
+				&& menu.current.level == CHRONO_HUNDREDTHS_LEVEL) {
 			if (chronograph.chronoMode == RTC_CHRONO_MODE_INACTIVE) {
 				rtcStartChrono(&chronograph);
 			} else if (chronograph.chronoMode == RTC_CHRONO_MODE_RUNNING) {

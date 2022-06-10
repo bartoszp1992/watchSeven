@@ -23,7 +23,7 @@
  * v1.1 altimeter with centimeters
  * v1.2 backup system, led blinking
  * v1.3 force/ondemand mode as status
- *
+ * v1.4 chrono start ad decimals, stop entry deleted
  *
  */
 /* USER CODE END Header */
@@ -168,9 +168,9 @@ int main(void)
 	//level 1
 	menuItemInit(&menu, CLOCK_DATE, 1, CLOCK, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, CLOCK_SECONDHAND, 1, CLOCK, MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, CHRONO_HOURS, 1, CHRONO, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, CHRONO_HUNDREDTHS, 1, CHRONO, MENU_NONE, MENU_NONE);
-	menuItemInit(&menu, CHRONO_START, 1, CHRONO, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, CHRONO_HOURS, 1, CHRONO, MENU_NONE, MENU_NONE);
+//	menuItemInit(&menu, CHRONO_START, 1, CHRONO, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, CHRONO_RESET, 1, CHRONO, MENU_NONE, MENU_NONE);
 
 	menuItemInit(&menu, SETTINGS_CLOCK, 1, SETTINGS, SETTINGS_CLOCK_HOUR,
@@ -214,8 +214,8 @@ int main(void)
 	NOT_EDITABLE);
 
 	//level 1
-	menuItemChangeValue(&menu, CHRONO_START, 1, "St  ", INTER_DISABLED,
-	NOT_EDITABLE);
+//	menuItemChangeValue(&menu, CHRONO_START, 1, "St  ", INTER_DISABLED,
+//	NOT_EDITABLE);
 	menuItemChangeValue(&menu, CHRONO_RESET, 1, "----", INTER_COLON,
 	NOT_EDITABLE);
 	menuItemChangeValue(&menu, SETTINGS_CLOCK, 1, "SC  ", INTER_DISABLED,
