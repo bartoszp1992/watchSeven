@@ -132,10 +132,6 @@ void rtcGetTime(RTCChronoTypeDef *chrono) {
 			chrono->chrono.month = chrono->chrono.month + 12;
 		}
 
-		//max chrono count
-		if (chrono->chrono.hour >= 5) {
-			chrono->chronoMode = RTC_CHRONO_MODE_STOP;
-		}
 	}
 
 }

@@ -24,6 +24,7 @@
  * v1.2 backup system, led blinking
  * v1.3 force/ondemand mode as status
  * v1.4 chrono start ad decimals, stop entry deleted
+ * v1.5 fixed bug in chrono working only to 5h- from libra
  *
  */
 /* USER CODE END Header */
