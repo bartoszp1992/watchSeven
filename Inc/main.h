@@ -51,6 +51,7 @@ extern "C" {
 #include "interrupts.h"
 #include "interface.h"
 #include "bme280.h"
+#include "lis3mdl.h"
 //#include "eeprom_emul.h"
 #include "backup.h"
 
@@ -135,7 +136,8 @@ void Error_Handler(void);
 #define BAROMETER 3
 #define HIGROMETER 4
 #define ALTITUDE 5
-#define SETTINGS 6
+#define COMPASS 6
+#define SETTINGS 7
 
 //LEVEL 1
 #define CLOCK_DATE 0
@@ -176,6 +178,7 @@ void Error_Handler(void);
 #define HIGROMETER_LEVEL 0
 #define ALTITUDE_LEVEL 0
 #define SETTINGS_SAVE_LEVEL 1
+#define COMPASS_LEVEL 0
 
 //Editable
 #define EDITABLE 1

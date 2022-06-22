@@ -1,4 +1,4 @@
-Src/interface.o: ../Src/interface.c ../Inc/interface.h ../Inc/main.h \
+Src/lis3mdl.o: ../Src/lis3mdl.c ../Inc/lis3mdl.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h \
  ../Inc/stm32g0xx_hal_conf.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rcc.h \
@@ -37,25 +37,9 @@ Src/interface.o: ../Src/interface.c ../Inc/interface.h ../Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim_ex.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_crc.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_bus.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_cortex.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_rcc.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_system.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_utils.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_pwr.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_gpio.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dma.h \
- ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_exti.h ../Inc/7seg.h \
- ../Inc/menu.h ../Inc/rtc.h ../Inc/adc.h ../Inc/interrupts.h \
- ../Inc/lis3mdl.h ../Inc/interface.h ../Inc/bme280.h ../Inc/backup.h \
- ../Inc/eeprom_emul.h ../Inc/eeprom_emul_conf.h \
- ../Inc/eeprom_emul_types.h ../Inc/flash_interface.h
+ ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h
 
-../Inc/interface.h:
-
-../Inc/main.h:
+../Inc/lis3mdl.h:
 
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h:
 
@@ -134,49 +118,3 @@ Src/interface.o: ../Src/interface.c ../Inc/interface.h ../Inc/main.h \
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h:
 
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_crc.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_bus.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_cortex.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_rcc.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_system.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_utils.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_pwr.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_gpio.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dma.h:
-
-../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_exti.h:
-
-../Inc/7seg.h:
-
-../Inc/menu.h:
-
-../Inc/rtc.h:
-
-../Inc/adc.h:
-
-../Inc/interrupts.h:
-
-../Inc/lis3mdl.h:
-
-../Inc/interface.h:
-
-../Inc/bme280.h:
-
-../Inc/backup.h:
-
-../Inc/eeprom_emul.h:
-
-../Inc/eeprom_emul_conf.h:
-
-../Inc/eeprom_emul_types.h:
-
-../Inc/flash_interface.h:

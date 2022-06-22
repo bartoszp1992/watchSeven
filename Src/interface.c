@@ -182,6 +182,67 @@ void interfaceWrite(void) {
 		NOT_EDITABLE);
 	}
 
+	//								COMPASS
+
+	angle = (360 - ((lis3mdl.compassAngleXY * 57) + 180)) + 90;
+
+	if (angle > 360) {
+		angle = angle - 360;
+	}
+	if (angle < 0) {
+		angle = angle + 360;
+	}
+
+	_interfaceClear(buffer);
+	//								AZIMUTH VARIANT
+
+//	_interfaceIntToArray(buffer, 1, angle);
+//	buffer[0] = 'A';
+//	menuItemChangeValue(&menu, COMPASS, COMPASS_LEVEL, buffer,
+//	INTER_DISABLED, NOT_EDITABLE);
+
+	//								DIRECTION VARIANT
+//	buffer[0] = 'C';
+//
+//	if (angle >= 338 || angle < 23) {//N
+//		buffer[2] = 'n';
+//	} else if (angle >= 23 && angle < 68) {//NE
+//		buffer[2] = 'n';
+//		buffer[3] = 'E';
+//	} else if (angle >= 68 && angle < 113){//E
+//		buffer[2] = 'E';
+//	} else if (angle >= 113 && angle < 158){//SE
+//		buffer[2] = 'S';
+//		buffer[3] = 'E';
+//	} else if (angle >= 158 && angle < 203){//S
+//		buffer[2] = 'S';
+//	} else if (angle >= 203 && angle < 248){//SW
+//		buffer[2] = 'S';
+//		buffer[3] = '-';
+//	} else if (angle >= 248 && angle < 293){//W
+//		buffer[2] = '-';
+//	} else if (angle >= 293 && angle < 338){//NW
+//		buffer[2] = 'n';
+//		buffer[3] = '-';
+//	}
+//	menuItemChangeValue(&menu, COMPASS, COMPASS_LEVEL, buffer,
+//	INTER_DISABLED, NOT_EDITABLE);
+
+	//								ROTATE VARIANT
+	if (angle >= 345 || angle < 15) {
+		buffer[2] = 'n';
+	} else if (angle >= 15 && angle < 165) {
+		buffer[1] = '<';
+	} else if (angle >= 165 && angle < 195) {
+		buffer[2] = 'S';
+	} else if (angle >= 195 && angle < 345) {
+		buffer[3] = '>';
+	}
+
+	buffer[0] = 'C';
+	menuItemChangeValue(&menu, COMPASS, COMPASS_LEVEL, buffer,
+	INTER_DISABLED, NOT_EDITABLE);
+
 }
 
 void interfaceShowActual(void) {

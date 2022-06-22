@@ -45,6 +45,10 @@
 #define BME280_DIG_H1_REG 0xA1
 #define BME280_DIG_H2_REG 0xE1
 
+
+
+
+
 //									COMP FUNCTIONS DECLARATIONS
 int32_t _BME280_compensate_T_int32(bme280TypeDef *bme280, int32_t adc_T);
 uint32_t _BME280_compensate_P_int64(bme280TypeDef *bme280, int32_t adc_P);

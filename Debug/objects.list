@@ -35,6 +35,7 @@
 "./Src/flash_interface.o"
 "./Src/interface.o"
 "./Src/interrupts.o"
+"./Src/lis3mdl.o"
 "./Src/main.o"
 "./Src/menu.o"
 "./Src/rtc.o"

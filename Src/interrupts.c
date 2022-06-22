@@ -237,20 +237,23 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin) {
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	if (htim->Instance == TIM1) {
+	if (htim->Instance == TIM1) {//led multiplexing and transition - 320Hz
 		LEDmultiplexing(&display);
 	}
-	if (htim->Instance == TIM2) {
+	if (htim->Instance == TIM2) {//going to sleep - 0,2Hz
 		flags[FLAG_SLEEP] = 1;
 	}
-	if (htim->Instance == TIM3) {
+	if (htim->Instance == TIM3) {//calibrating compass - 1Hz
 		//								READ REF VOLTAGE
-		adcSetChannel(&hadc1, ADC_CHANNEL_VREFINT);
-		uint32_t voltageRef = adcVoltage(adcRead(&hadc1));
+//		adcSetChannel(&hadc1, ADC_CHANNEL_VREFINT);
+//		uint32_t voltageRef = adcVoltage(adcRead(&hadc1));
+//
+//		adcSetChannel(&hadc1, ADC_CHANNEL_TEMPSENSOR);
+//		temperature = adcTemperature(adcRead(&hadc1), voltageRef)
+//				+ temperatureCorrection;
 
-		adcSetChannel(&hadc1, ADC_CHANNEL_TEMPSENSOR);
-		temperature = adcTemperature(adcRead(&hadc1), voltageRef)
-				+ temperatureCorrection;
+		lis3mdlGetCalibrationSample(&lis3mdl);
+
 	}
 }
 

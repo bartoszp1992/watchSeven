@@ -25,6 +25,7 @@
  * v1.3 force/ondemand mode as status
  * v1.4 chrono start ad decimals, stop entry deleted
  * v1.5 fixed bug in chrono working only to 5h- from libra
+ * v2.0 working compass with calibration
  *
  */
 /* USER CODE END Header */
@@ -74,6 +75,8 @@ MenuTypeDef menu;
 RTCChronoTypeDef chronograph;
 //												BME280 INSTANCE CREATE
 bme280TypeDef bme280;
+//												LIS3MDL INSTANCE CREATE
+lis3mdlTypeDef lis3mdl;
 
 /* USER CODE END PV */
 
@@ -140,7 +143,7 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim3);
 
 	adcInit(&hadc1);
-	temperatureCorrection = -5;
+	temperatureCorrection = -7;
 	bme280.pressureReference = 1013;
 
 //												DISPLAY PIN ASSIGNMENT
@@ -163,6 +166,7 @@ int main(void)
 	menuItemInit(&menu, HIGROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, TEMPERATURE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, ALTITUDE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+	menuItemInit(&menu, COMPASS, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, SETTINGS, 0, MENU_NONE, SETTINGS_CLOCK,
 	SETTINGS_SAVE);
 
@@ -171,7 +175,6 @@ int main(void)
 	menuItemInit(&menu, CLOCK_SECONDHAND, 1, CLOCK, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, CHRONO_HUNDREDTHS, 1, CHRONO, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, CHRONO_HOURS, 1, CHRONO, MENU_NONE, MENU_NONE);
-//	menuItemInit(&menu, CHRONO_START, 1, CHRONO, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, CHRONO_RESET, 1, CHRONO, MENU_NONE, MENU_NONE);
 
 	menuItemInit(&menu, SETTINGS_CLOCK, 1, SETTINGS, SETTINGS_CLOCK_HOUR,
@@ -231,6 +234,7 @@ int main(void)
 	INTER_DISABLED, NOT_EDITABLE);
 
 	bme280Init(&bme280, &hi2c1);
+	lis3mdlInit(&lis3mdl, &hi2c1);
 	HAL_GPIO_WritePin(ENCODER_ACTIVE_GPIO_Port, ENCODER_ACTIVE_Pin, 1);
 	HAL_Delay(20);
 	menuResetCurrent(&menu);
@@ -250,13 +254,16 @@ int main(void)
 	while (1) {
 
 		//												NORMAL WORK
-		if (!flags[FLAG_SLEEP] || status[STATUS_MODE_SWITCH] == STATUS_MODE_SWITCH_FORCE) {
+		if (!flags[FLAG_SLEEP]
+				|| status[STATUS_MODE_SWITCH] == STATUS_MODE_SWITCH_FORCE) {
 			//read RTC time
 			rtcGetTime(&chronograph);
 
 			//read sensor
-			if((menu.current.level == 0))
-			bme280Read(&bme280);
+			if ((menu.current.level == 0)) {
+				bme280Read(&bme280);
+				lis3mdlRead(&lis3mdl);
+			}
 
 			//write actual values to menu matrix
 			interfaceWrite();
@@ -272,14 +279,18 @@ int main(void)
 
 		//												LOW POWER SECTION
 //		if (flags[FLAG_SLEEP] && HAL_GPIO_ReadPin(MODE_GPIO_Port, MODE_Pin)) {
-		if (flags[FLAG_SLEEP] && status[STATUS_MODE_SWITCH] == STATUS_MODE_SWITCH_ONDEMAND) {
+		if (flags[FLAG_SLEEP]
+				&& status[STATUS_MODE_SWITCH] == STATUS_MODE_SWITCH_ONDEMAND) {
 
 			//go to sleep
 			LPsleep();
 
 			//when interrupt was caused by RTC, go to sleep
 			while (status[STATUS_INT_SOURCE] == STATUS_INT_SOURCE_RTC) {
+				lis3mdlRead(&lis3mdl);
+				lis3mdlGetCalibrationSample(&lis3mdl);
 				LPsleep();
+
 			}
 
 			//											AFTER WAKE UP
@@ -672,9 +683,9 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 999;
+  htim3.Init.Prescaler = 9199;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 8999;
+  htim3.Init.Period = 6899;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)

@@ -49,8 +49,8 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dma.h \
  ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_exti.h ../Inc/main.h \
  ../Inc/7seg.h ../Inc/menu.h ../Inc/rtc.h ../Inc/adc.h \
- ../Inc/interrupts.h ../Inc/interface.h ../Inc/bme280.h ../Inc/backup.h \
- ../Inc/eeprom_emul.h ../Inc/eeprom_emul_conf.h \
+ ../Inc/interrupts.h ../Inc/lis3mdl.h ../Inc/interface.h ../Inc/bme280.h \
+ ../Inc/backup.h ../Inc/eeprom_emul.h ../Inc/eeprom_emul_conf.h \
  ../Inc/eeprom_emul_types.h ../Inc/flash_interface.h
 
 ../Inc/main.h:
@@ -164,6 +164,8 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 ../Inc/adc.h:
 
 ../Inc/interrupts.h:
+
+../Inc/lis3mdl.h:
 
 ../Inc/interface.h:
 

@@ -10,8 +10,10 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 #include "main.h"
 #include "bme280.h"
+#include "lis3mdl.h"
 
 #define TEMPERATURE_CORRECTION_MAX 30
 #define TEMPERATURE_CORRECTION_MIN -40
@@ -28,10 +30,13 @@ extern ADC_HandleTypeDef hadc1;
 char buffer[6];
 
 extern bme280TypeDef bme280;
+extern lis3mdlTypeDef lis3mdl;
 
 volatile int32_t temperature;
 
 volatile int32_t temperatureCorrection;
+
+volatile int16_t angle;
 
 
 

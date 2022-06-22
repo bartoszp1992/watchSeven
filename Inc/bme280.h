@@ -11,6 +11,8 @@
 #include "stm32g0xx_hal.h"
 #include <math.h>
 
+
+//									CONFIGURATION / MODES
 #define BME280_SKIPPED 0x00
 #define BME280_OVERSAMPLING_DISABLED 0x1
 #define BME280_OVERSAMPLING_X2 0x2
@@ -24,7 +26,6 @@
 #define BME280_IIR_8 0x4
 #define BME280_IIR_16 0x4
 
-
 //USER CONFIGURATION
 #define BME280_I2C_TIMEOUT 100
 
@@ -33,8 +34,6 @@
 #define BME280_OVERSAMPLING_PRE BME280_OVERSAMPLING_X16
 
 #define BME280_IIR_FILTER BME280_IIR_4
-
-
 
 
 

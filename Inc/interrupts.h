@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 #include "main.h"
-//#include "rtc.h"
+#include "lis3mdl.h"
 
 
 #define ENCODER_ACTION_LEFT 0
@@ -45,6 +45,8 @@ extern RTCChronoTypeDef chronograph;
 
 extern volatile int32_t temperature;//adc
 extern volatile int32_t temperatureCorrection;
+
+extern lis3mdlTypeDef lis3mdl;
 
 
 

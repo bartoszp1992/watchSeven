@@ -183,25 +183,36 @@ static void _LEDfieldOn(LEDdisplayTypeDef *LEDdisplay, uint8_t field) {
 static void _LEDallOff(LEDdisplayTypeDef *LEDdisplay) {
 
 #if LED_FIELDS >=1
-	HAL_GPIO_WritePin(LEDdisplay->Field0Port, LEDdisplay->Field0Pin, LED_FIELD_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->Field0Port, LEDdisplay->Field0Pin,
+			LED_FIELD_OFF);
 #endif
 #if LED_FIELDS >=2
-	HAL_GPIO_WritePin(LEDdisplay->Field1Port, LEDdisplay->Field1Pin, LED_FIELD_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->Field1Port, LEDdisplay->Field1Pin,
+			LED_FIELD_OFF);
 #endif
 #if LED_FIELDS >=3
-	HAL_GPIO_WritePin(LEDdisplay->Field2Port, LEDdisplay->Field2Pin, LED_FIELD_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->Field2Port, LEDdisplay->Field2Pin,
+			LED_FIELD_OFF);
 #endif
 #if LED_FIELDS >=4
-	HAL_GPIO_WritePin(LEDdisplay->Field3Port, LEDdisplay->Field3Pin, LED_FIELD_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->Field3Port, LEDdisplay->Field3Pin,
+			LED_FIELD_OFF);
 #endif
 
-	HAL_GPIO_WritePin(LEDdisplay->SegAPort, LEDdisplay->SegAPin, LED_SEGMENT_OFF);
-	HAL_GPIO_WritePin(LEDdisplay->SegBPort, LEDdisplay->SegBPin, LED_SEGMENT_OFF);
-	HAL_GPIO_WritePin(LEDdisplay->SegCPort, LEDdisplay->SegCPin, LED_SEGMENT_OFF);
-	HAL_GPIO_WritePin(LEDdisplay->SegDPort, LEDdisplay->SegDPin, LED_SEGMENT_OFF);
-	HAL_GPIO_WritePin(LEDdisplay->SegEPort, LEDdisplay->SegEPin, LED_SEGMENT_OFF);
-	HAL_GPIO_WritePin(LEDdisplay->SegFPort, LEDdisplay->SegFPin, LED_SEGMENT_OFF);
-	HAL_GPIO_WritePin(LEDdisplay->SegGPort, LEDdisplay->SegGPin, LED_SEGMENT_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->SegAPort, LEDdisplay->SegAPin,
+			LED_SEGMENT_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->SegBPort, LEDdisplay->SegBPin,
+			LED_SEGMENT_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->SegCPort, LEDdisplay->SegCPin,
+			LED_SEGMENT_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->SegDPort, LEDdisplay->SegDPin,
+			LED_SEGMENT_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->SegEPort, LEDdisplay->SegEPin,
+			LED_SEGMENT_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->SegFPort, LEDdisplay->SegFPin,
+			LED_SEGMENT_OFF);
+	HAL_GPIO_WritePin(LEDdisplay->SegGPort, LEDdisplay->SegGPin,
+			LED_SEGMENT_OFF);
 	HAL_GPIO_WritePin(LEDdisplay->SegDOTPort, LEDdisplay->SegDOTPin,
 	LED_SEGMENT_OFF);
 
@@ -369,6 +380,12 @@ static void _LEDwriteCharacter(LEDdisplayTypeDef *LEDdisplay, uint8_t character)
 			_LEDsegmentOn(LEDdisplay, LED_SEG_F);
 			break;
 
+		case 'n':
+			_LEDsegmentOn(LEDdisplay, LED_SEG_G);
+			_LEDsegmentOn(LEDdisplay, LED_SEG_C);
+			_LEDsegmentOn(LEDdisplay, LED_SEG_E);
+			break;
+
 		case 'O':
 			_LEDsegmentOn(LEDdisplay, LED_SEG_A);
 			_LEDsegmentOn(LEDdisplay, LED_SEG_B);
@@ -428,6 +445,20 @@ static void _LEDwriteCharacter(LEDdisplayTypeDef *LEDdisplay, uint8_t character)
 			_LEDsegmentOn(LEDdisplay, LED_SEG_F);
 			_LEDsegmentOn(LEDdisplay, LED_SEG_G);
 			break;
+
+		case '<':
+			_LEDsegmentOn(LEDdisplay, LED_SEG_B);
+			_LEDsegmentOn(LEDdisplay, LED_SEG_C);
+			_LEDsegmentOn(LEDdisplay, LED_SEG_G);
+			break;
+
+		case '>':
+			_LEDsegmentOn(LEDdisplay, LED_SEG_F);
+			_LEDsegmentOn(LEDdisplay, LED_SEG_E);
+			_LEDsegmentOn(LEDdisplay, LED_SEG_G);
+			break;
+
+
 		}
 	}
 }
@@ -501,7 +532,6 @@ void LEDinit(LEDdisplayTypeDef *LEDdisplay,
 	LEDdisplay->actualField = LED_FIELD_0;
 }
 
-
 /**
  * @brief  Set separator for transition
  *
@@ -513,8 +543,8 @@ void LEDinit(LEDdisplayTypeDef *LEDdisplay,
  *
  * @retval None
  */
-void LEDseparator(LEDdisplayTypeDef *LEDdisplay, char* separator){
-	for(uint8_t i = 0; i <= LED_TRANSITION_SEPARATOR_SIZE; i++){
+void LEDseparator(LEDdisplayTypeDef *LEDdisplay, char *separator) {
+	for (uint8_t i = 0; i <= LED_TRANSITION_SEPARATOR_SIZE; i++) {
 		LEDdisplay->transitionSeparator[i] = separator[i];
 	}
 }

@@ -20,7 +20,7 @@
 #define MENU_LEVELS 3
 #define MENU_ENTRIES_MAX 11
 
-#define MENU_ENTRIES_MAIN 7 //entries in main menu - becouse main have no parent and dont know what is last element.
+#define MENU_ENTRIES_MAIN 8 //entries in main menu - becouse main have no parent and dont know what is last element.
 
 
 //END OF USER COFIGURATION

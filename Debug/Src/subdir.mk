@@ -13,6 +13,7 @@ C_SRCS += \
 ../Src/flash_interface.c \
 ../Src/interface.c \
 ../Src/interrupts.c \
+../Src/lis3mdl.c \
 ../Src/main.c \
 ../Src/menu.c \
 ../Src/rtc.c \
@@ -31,6 +32,7 @@ OBJS += \
 ./Src/flash_interface.o \
 ./Src/interface.o \
 ./Src/interrupts.o \
+./Src/lis3mdl.o \
 ./Src/main.o \
 ./Src/menu.o \
 ./Src/rtc.o \
@@ -49,6 +51,7 @@ C_DEPS += \
 ./Src/flash_interface.d \
 ./Src/interface.d \
 ./Src/interrupts.d \
+./Src/lis3mdl.d \
 ./Src/main.d \
 ./Src/menu.d \
 ./Src/rtc.d \
@@ -66,7 +69,7 @@ Src/%.o: ../Src/%.c Src/subdir.mk
 clean: clean-Src
 
 clean-Src:
-	-$(RM) ./Src/7seg.d ./Src/7seg.o ./Src/adc.d ./Src/adc.o ./Src/backup.d ./Src/backup.o ./Src/bme280.d ./Src/bme280.o ./Src/eeprom_emul.d ./Src/eeprom_emul.o ./Src/flash_interface.d ./Src/flash_interface.o ./Src/interface.d ./Src/interface.o ./Src/interrupts.d ./Src/interrupts.o ./Src/main.d ./Src/main.o ./Src/menu.d ./Src/menu.o ./Src/rtc.d ./Src/rtc.o ./Src/stm32g0xx_hal_msp.d ./Src/stm32g0xx_hal_msp.o ./Src/stm32g0xx_it.d ./Src/stm32g0xx_it.o ./Src/syscalls.d ./Src/syscalls.o ./Src/sysmem.d ./Src/sysmem.o ./Src/system_stm32g0xx.d ./Src/system_stm32g0xx.o
+	-$(RM) ./Src/7seg.d ./Src/7seg.o ./Src/adc.d ./Src/adc.o ./Src/backup.d ./Src/backup.o ./Src/bme280.d ./Src/bme280.o ./Src/eeprom_emul.d ./Src/eeprom_emul.o ./Src/flash_interface.d ./Src/flash_interface.o ./Src/interface.d ./Src/interface.o ./Src/interrupts.d ./Src/interrupts.o ./Src/lis3mdl.d ./Src/lis3mdl.o ./Src/main.d ./Src/main.o ./Src/menu.d ./Src/menu.o ./Src/rtc.d ./Src/rtc.o ./Src/stm32g0xx_hal_msp.d ./Src/stm32g0xx_hal_msp.o ./Src/stm32g0xx_it.d ./Src/stm32g0xx_it.o ./Src/syscalls.d ./Src/syscalls.o ./Src/sysmem.d ./Src/sysmem.o ./Src/system_stm32g0xx.d ./Src/system_stm32g0xx.o
 
 .PHONY: clean-Src
 
