@@ -129,14 +129,19 @@ void Error_Handler(void);
 #define ENC2_GPIO_Port GPIOB
 #define ENC2_EXTI_IRQn EXTI4_15_IRQn
 /* USER CODE BEGIN Private defines */
+
+
+
 //LEVEL 0
 #define CLOCK 0
 #define CHRONO 1
-#define TEMPERATURE 2
+
 #define BAROMETER 3
 #define HIGROMETER 4
 #define ALTITUDE 5
 #define COMPASS 6
+
+#define TEMPERATURE 2
 #define SETTINGS 7
 
 //LEVEL 1

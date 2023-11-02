@@ -35,6 +35,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -162,11 +163,14 @@ int main(void)
 	menuItemInit(&menu, CLOCK, 0, MENU_NONE, 0, 1);
 	menuItemInit(&menu, CHRONO, 0, MENU_NONE, CHRONO_HUNDREDTHS,
 	CHRONO_RESET);
+
+
 	menuItemInit(&menu, BAROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, HIGROMETER, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, TEMPERATURE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, ALTITUDE, 0, MENU_NONE, MENU_NONE, MENU_NONE);
 	menuItemInit(&menu, COMPASS, 0, MENU_NONE, MENU_NONE, MENU_NONE);
+
 	menuItemInit(&menu, SETTINGS, 0, MENU_NONE, SETTINGS_CLOCK,
 	SETTINGS_SAVE);
 
@@ -261,6 +265,7 @@ int main(void)
 
 			//read sensor
 			if ((menu.current.level == 0)) {
+
 				bme280Read(&bme280);
 				lis3mdlRead(&lis3mdl);
 			}

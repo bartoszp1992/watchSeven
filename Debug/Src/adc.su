@@ -1,5 +1,5 @@
-adc.c:25:6:adcInit	16	static
-adc.c:40:6:adcSetChannel	40	static
-adc.c:62:10:adcRead	16	static
-adc.c:80:10:adcTemperature	16	static
-adc.c:94:10:adcVoltage	16	static
+../Src/adc.c:25:6:adcInit	16	static
+../Src/adc.c:40:6:adcSetChannel	40	static
+../Src/adc.c:62:10:adcRead	16	static
+../Src/adc.c:80:10:adcTemperature	16	static
+../Src/adc.c:94:10:adcVoltage	16	static
